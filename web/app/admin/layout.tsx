@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
     // Verify Admin Role
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { data: { user }, error } = await supabase.auth.getUser();
 
