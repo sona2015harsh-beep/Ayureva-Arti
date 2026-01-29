@@ -1,12 +1,25 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
-    // TODO: Add real auth check here
-    const isAdmin = true; // Mock check
+export default async function AdminLayout({ children }: { children: ReactNode }) {
+    // Verify Admin Role
+    const supabase = createClient();
 
-    if (!isAdmin) {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error || !user) {
+        redirect('/admin/login');
+    }
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+    if (profile?.role !== 'admin') {
         redirect('/');
     }
 
