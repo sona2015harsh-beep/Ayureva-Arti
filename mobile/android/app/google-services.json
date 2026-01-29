@@ -1,0 +1,29 @@
+{
+    "project_info": {
+        "project_number": "960435975544",
+        "project_id": "ayureva-mobile",
+        "storage_bucket": "ayureva-mobile.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:960435975544:android:1785c0ef75f0ae20e9848d",
+                "android_client_info": {
+                    "package_name": "com.ayureva.app"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDwNDaJvevOC74bjBNCHExz8gNETTV_Sh0"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
