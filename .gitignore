@@ -1,0 +1,27 @@
+# General
+.DS_Store
+.idea/
+.vscode/
+
+# Web
+web/.next/
+web/node_modules/
+web/.env
+web/.env.local
+web/build/
+web/dist/
+
+# Mobile
+mobile/build/
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.pub-cache/
+mobile/.pub/
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Flutter/flutter_export_environment.sh
+mobile/android/.gradle
+mobile/android/local.properties
+mobile/*.iml
+mobile/android/*.iml
+mobile/android/app/*.iml

@@ -1,0 +1,215 @@
+// Prisma schema synced with Supabase Database
+// Last updated: 2026-01-28
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// PROFILES - Maps to public.profiles (synced with auth.users via trigger)
+model profiles {
+  id         String   @id @db.Uuid
+  email      String?
+  full_name  String?
+  avatar_url String?
+  role       String?  @default("student")
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  courses_taught courses[]     @relation("InstructorCourses")
+  enrollments    enrollments[]
+  
+  // Phase 2 Relations
+  quiz_results   quiz_results[]
+  live_classes   live_classes[]   @relation("InstructorClasses")
+  notifications  notifications[]
+  device_tokens  device_tokens[]
+  video_progress video_progress[]
+}
+
+// COURSES
+model courses {
+  id             String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title          String
+  subtitle       String?
+  description    String?
+  price          Float
+  original_price Float?
+  thumbnail_url  String?
+  instructor_id  String?  @db.Uuid
+  rating         Float?   @default(0)
+  reviews_count  Int?     @default(0)
+  is_published   Boolean? @default(false)
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  instructor  profiles?     @relation("InstructorCourses", fields: [instructor_id], references: [id])
+  modules     modules[]
+  enrollments enrollments[]
+  
+  // Phase 2 Relations
+  live_classes live_classes[]
+}
+
+// MODULES / SECTIONS
+model modules {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  course_id   String   @db.Uuid
+  title       String
+  order_index Int
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  course courses  @relation(fields: [course_id], references: [id])
+  videos videos[]
+}
+
+// VIDEOS / LESSONS
+model videos {
+  id              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  module_id       String   @db.Uuid
+  title           String
+  duration        String?
+  video_url       String?
+  is_free_preview Boolean? @default(false)
+  order_index     Int
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  module modules @relation(fields: [module_id], references: [id])
+  
+  // Phase 2 Relations
+  questions      questions[]
+  quiz_results   quiz_results[]
+  video_progress video_progress[]
+}
+
+// ENROLLMENTS
+model enrollments {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String   @db.Uuid
+  course_id   String   @db.Uuid
+  payment_id  String?
+  amount_paid Float?
+  enrolled_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user   profiles @relation(fields: [user_id], references: [id])
+  course courses  @relation(fields: [course_id], references: [id])
+
+  @@unique([user_id, course_id])
+}
+
+// ============================================
+// PHASE 2: QUIZ FEATURE
+// ============================================
+
+model questions {
+  id              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  video_id        String   @db.Uuid
+  question_text   String
+  option_a        String
+  option_b        String
+  option_c        String?
+  option_d        String?
+  correct_option  String   // 'A', 'B', 'C', 'D'
+  explanation     String?
+  order_index     Int?     @default(1)
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  video videos @relation(fields: [video_id], references: [id], onDelete: Cascade)
+}
+
+model quiz_results {
+  id              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id         String   @db.Uuid
+  video_id        String   @db.Uuid
+  score           Int
+  total_questions Int
+  completed_at    DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user  profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  video videos   @relation(fields: [video_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, video_id])
+}
+
+// ============================================
+// PHASE 2: LIVE CLASSES
+// ============================================
+
+model live_classes {
+  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  course_id        String?  @db.Uuid
+  title            String
+  description      String?
+  instructor_id    String?  @db.Uuid
+  jitsi_room_id    String
+  scheduled_at     DateTime @db.Timestamptz(6)
+  duration_minutes Int?     @default(60)
+  is_active        Boolean? @default(false)
+  max_participants Int?     @default(100)
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  course     courses?  @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  instructor profiles? @relation("InstructorClasses", fields: [instructor_id], references: [id])
+}
+
+// ============================================
+// PHASE 2: NOTIFICATIONS
+// ============================================
+
+model notifications {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String   @db.Uuid
+  title      String
+  body       String
+  type       String?  // 'new_content', 'live_class', 'reminder', 'system'
+  data       Json?
+  is_read    Boolean? @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model device_tokens {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String   @db.Uuid
+  token      String
+  platform   String?  // 'ios', 'android', 'web'
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, token])
+}
+
+// ============================================
+// PHASE 2: VIDEO PROGRESS
+// ============================================
+
+model video_progress {
+  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id          String   @db.Uuid
+  video_id         String   @db.Uuid
+  progress_seconds Int?     @default(0)
+  is_completed     Boolean? @default(false)
+  last_watched_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user  profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  video videos   @relation(fields: [video_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, video_id])
+}
+
