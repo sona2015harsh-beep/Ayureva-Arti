@@ -31,9 +31,9 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }}" > .env
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
-          echo "SUPABASE_ANON=${{ secrets.SUPABASE_ANON }}" >> .env
+          echo "RAZORPAY_KEY_ID=rzp_test_1234567890" > .env
+          echo "SUPABASE_URL=https://mock.supabase.co" >> .env
+          echo "SUPABASE_ANON=mock-anon-key-123" >> .env
 
       - name: Build APK
         run: flutter build apk --release
