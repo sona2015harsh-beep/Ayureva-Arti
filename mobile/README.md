@@ -2,4 +2,7 @@
 
 ## Android Build
 This project uses GitHub Actions to automatically build the APK.
-Go to the "Actions" tab to download the latest release.
+
+### Distribution
+Builds are now automatically uploaded to **Firebase App Distribution**.
+Check your email for the download link after every push to `main`.
