@@ -27,24 +27,22 @@ const nextConfig = {
           },
         ],
       },
-    ],
-      },
     ]
   },
   async redirects() {
-  return [
-    {
-      source: '/app-v2.apk',
-      destination: 'http://tmpfiles.org/dl/21750301/app-release.apk', // TODO: REPLACE with permanent URL (Supabase/Firebase)
-      permanent: false,
-    },
-    {
-      source: '/app-release.apk', // Legacy link support
-      destination: 'http://tmpfiles.org/dl/21750301/app-release.apk',
-      permanent: false,
-    },
-  ]
-},
+    return [
+      {
+        source: '/app-v2.apk',
+        destination: 'http://tmpfiles.org/dl/21750301/app-release.apk', // TODO: REPLACE with permanent URL (Supabase/Firebase)
+        permanent: false,
+      },
+      {
+        source: '/app-release.apk', // Legacy link support
+        destination: 'http://tmpfiles.org/dl/21750301/app-release.apk',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default nextConfig
