@@ -1,4 +1,4 @@
-package com.example.ayureva_mobile
+package com.ayureva.app
 
 import io.flutter.embedding.android.FlutterActivity
 

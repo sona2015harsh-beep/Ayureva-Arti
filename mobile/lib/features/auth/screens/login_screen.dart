@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  int _selectedTabIndex = 0; // 0 = Email, 1 = Phone
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -23,18 +23,59 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   bool _obscurePassword = true;
 
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
   void dispose() {
-    _tabController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  // --- UI Helpers ---
+  Widget _buildSegmentOption(String title, int index) {
+    final isSelected = _selectedTabIndex == index;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _selectedTabIndex = index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: isSelected ? AppShadows.small : [],
+          ),
+          child: Text(
+            title,
+            style: isSelected 
+              ? AppTypography.labelLarge.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold) 
+              : AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+          ),
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration(String label, IconData icon, {String? prefixText}) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: AppColors.primary),
+      prefixText: prefixText,
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+      ),
+    );
   }
 
   Future<void> _login() async {
@@ -43,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     setState(() => _isLoading = true);
 
     try {
-      final isEmail = _tabController.index == 0;
+      final isEmail = _selectedTabIndex == 0;
       if (!isEmail) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -188,103 +229,62 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                 const SizedBox(height: 40),
 
-                // Tab Bar
+                // Custom Segmented Control
                 FadeInUp(
                   delay: const Duration(milliseconds: 200),
                   child: Container(
+                    height: 50,
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade200),
                     ),
-                    child: TabBar(
-                      controller: _tabController,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      indicator: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      labelColor: Colors.white,
-                      unselectedLabelColor: AppColors.textSecondary,
-                      labelStyle: AppTypography.labelLarge,
-                      dividerColor: Colors.transparent,
-                      tabs: const [
-                        Tab(text: 'Email'),
-                        Tab(text: 'Phone'),
+                    child: Row(
+                      children: [
+                        _buildSegmentOption("Email", 0),
+                        _buildSegmentOption("Phone", 1),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
 
-                // Tab Views
+                // Dynamic Input Field (No Fixed Height)
                 FadeInUp(
                   delay: const Duration(milliseconds: 300),
-                  child: SizedBox(
-                    height: 160,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        // Email Tab
-                        Column(
-                          children: [
-                            TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'Email Address',
-                                hintText: 'you@example.com',
-                                prefixIcon: Icon(Icons.email_outlined),
-                              ),
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter your email';
-                                }
-                                if (!value!.contains('@')) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                        
-                        // Phone Tab
-                        Column(
-                          children: [
-                            TextFormField(
-                              controller: _phoneController,
-                              keyboardType: TextInputType.phone,
-                              decoration: const InputDecoration(
-                                labelText: 'Phone Number',
-                                hintText: '9876543210',
-                                prefixIcon: Icon(Icons.phone_outlined),
-                                prefixText: '+91 ',
-                              ),
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter your phone number';
-                                }
-                                if (value!.length != 10) {
-                                  return 'Please enter a valid 10-digit number';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: _selectedTabIndex == 0
+                        ? TextFormField(
+                            key: const ValueKey('email'),
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: AppTypography.bodyMedium,
+                            decoration: _inputDecoration('Email Address', Icons.email_outlined),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) return 'Please enter your email';
+                              if (!value!.contains('@')) return 'Please enter a valid email';
+                              return null;
+                            },
+                          )
+                        : TextFormField(
+                            key: const ValueKey('phone'),
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            style: AppTypography.bodyMedium,
+                            decoration: _inputDecoration('Phone Number', Icons.phone_outlined, prefixText: '+91 '),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) return 'Enter phone number';
+                              if (value!.length != 10) return 'Valid 10-digit number required';
+                              return null;
+                            },
+                          ),
                   ),
                 ),
+
+                const SizedBox(height: 16),
 
                 // Password Field
                 FadeInUp(
@@ -292,28 +292,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   child: TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      prefixIcon: const Icon(Icons.lock_outlined),
+                    style: AppTypography.bodyMedium,
+                    decoration: _inputDecoration('Password', Icons.lock_outlined).copyWith(
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword 
-                              ? Icons.visibility_outlined 
-                              : Icons.visibility_off_outlined,
+                          _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                          color: AppColors.textSecondary,
                         ),
-                        onPressed: () {
-                          setState(() => _obscurePassword = !_obscurePassword);
-                        },
+                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                       ),
                     ),
                     validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Please enter your password';
-                      }
-                      if (value!.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
+                      if (value?.isEmpty ?? true) return 'Enter password';
+                      if (value!.length < 6) return 'Min 6 chars';
                       return null;
                     },
                   ),

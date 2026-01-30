@@ -29,6 +29,25 @@ const nextConfig = {
       },
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/app',
+        destination: 'https://files.catbox.moe/hksic7.apk',
+        permanent: false,
+      },
+      {
+        source: '/download',
+        destination: 'https://files.catbox.moe/hksic7.apk',
+        permanent: false,
+      },
+      {
+        source: '/download/android',
+        destination: 'https://files.catbox.moe/hksic7.apk',
+        permanent: false,
+      },
+    ]
+  },
 
 }
 
