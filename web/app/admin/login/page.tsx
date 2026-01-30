@@ -16,19 +16,26 @@ export default function AdminLogin() {
         e.preventDefault()
         setLoading(true)
         setError(null)
+        console.log("Login attempt starting for:", email)
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             })
+            console.log("Supabase response:", { data, error })
 
-            if (error) throw error
+            if (error) {
+                console.error("Login error:", error.message)
+                throw error
+            }
 
+            console.log("Login success! Redirecting to /admin...")
             // Full reload to ensure Middleware sees the new session cookie immediately
             window.location.href = '/admin'
         } catch (err: any) {
-            setError(err.message)
+            console.error("Catch block error:", err)
+            setError(err.message || "An unknown error occurred")
             setLoading(false)
         }
     }
