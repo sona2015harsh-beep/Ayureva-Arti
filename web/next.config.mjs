@@ -33,17 +33,17 @@ const nextConfig = {
     return [
       {
         source: '/app',
-        destination: 'https://files.catbox.moe/hksic7.apk',
+        destination: '/app-release.apk',
         permanent: false,
       },
       {
         source: '/download',
-        destination: 'https://files.catbox.moe/hksic7.apk',
+        destination: '/app-release.apk',
         permanent: false,
       },
       {
         source: '/download/android',
-        destination: 'https://files.catbox.moe/hksic7.apk',
+        destination: '/app-release.apk',
         permanent: false,
       },
     ]
