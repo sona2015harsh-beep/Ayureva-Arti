@@ -197,19 +197,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 FadeInDown(
                   child: Column(
                     children: [
-                      // App Logo placeholder (replace with actual logo)
+                      // App Logo
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: 100,
+                        height: 100,
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          gradient: AppColors.primaryGradient,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: AppShadows.medium,
                         ),
-                        child: const Icon(
-                          Icons.spa_outlined,
-                          size: 40,
-                          color: Colors.white,
+                        child: Image.asset(
+                          'assets/images/logo_icon.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 24),

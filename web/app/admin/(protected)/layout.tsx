@@ -27,10 +27,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <div className="flex h-screen bg-gray-100 dark:bg-zinc-900">
             {/* Sidebar */}
             <aside className="w-64 bg-white dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-700">
-                <div className="p-6">
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-red-600 bg-clip-text text-transparent">
-                        Ayureva Admin
-                    </h1>
+                <div className="p-6 flex justify-center">
+                    <img
+                        src="/logo.png"
+                        alt="Ayureva Admin"
+                        className="h-12 object-contain"
+                    />
                 </div>
                 <nav className="mt-6 px-4 space-y-2">
                     <NavItem href="/admin" label="Dashboard" icon="📊" />

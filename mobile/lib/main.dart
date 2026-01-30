@@ -90,17 +90,14 @@ class _AppLaunchWrapperState extends State<AppLaunchWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(color: Color(0xFF1B5E20)), // Green
-                const SizedBox(height: 24),
-                Text(
-                  "Ayureva", 
-                  style: TextStyle(
-                    fontSize: 32, 
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
-                    letterSpacing: 1.2,
-                  ),
+                // Logo
+                Image.asset(
+                  'assets/images/logo_full.png',
+                  width: 200,
+                  fit: BoxFit.contain,
                 ),
+                const SizedBox(height: 24),
+                const CircularProgressIndicator(color: Color(0xFF1B5E20)),
               ],
             ),
           ),
