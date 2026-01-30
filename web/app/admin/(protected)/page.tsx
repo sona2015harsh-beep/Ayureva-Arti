@@ -1,22 +1,26 @@
 import { prisma } from '@/lib/prisma';
 import { formatDistanceToNow } from 'date-fns';
+import Link from 'next/link';
+import { Plus, Video, FileText, BarChart3 } from 'lucide-react';
 
 async function getStats() {
-    const studentCount = await prisma.profiles.count({ where: { role: 'student' } });
-    const courseCount = await prisma.courses.count({ where: { is_published: true } });
-    const activeSubs = await prisma.enrollments.count();
+    // Parallelize DB queries for speed
+    const [studentCount, courseCount, activeSubs, allEnrollments, recentActivity] = await Promise.all([
+        prisma.profiles.count({ where: { role: 'student' } }),
+        prisma.courses.count({ where: { is_published: true } }),
+        prisma.enrollments.count(),
+        prisma.enrollments.findMany({
+            select: { amount_paid: true, course: { select: { price: true } } } // Optimize: Select only needed fields
+        }),
+        prisma.enrollments.findMany({
+            take: 5,
+            orderBy: { enrolled_at: 'desc' },
+            include: { user: true, course: true }
+        })
+    ]);
 
-    // Revenue is sum of amount_paid from enrollments
-    const allEnrollments = await prisma.enrollments.findMany({
-        include: { course: true }
-    });
+    // Revenue calculation on lightweight data
     const revenue = allEnrollments.reduce((sum, enr) => sum + (enr.amount_paid || enr.course.price), 0);
-
-    const recentActivity = await prisma.enrollments.findMany({
-        take: 5,
-        orderBy: { enrolled_at: 'desc' },
-        include: { user: true, course: true }
-    });
 
     return { studentCount, courseCount, activeSubs, revenue, recentActivity };
 }
@@ -39,7 +43,10 @@ export default async function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Recent Activity */}
                 <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
-                    <h3 className="text-lg font-bold mb-4">Recent Enrollments</h3>
+                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                        <BarChart3 className="h-5 w-5 text-gray-500" />
+                        Recent Enrollments
+                    </h3>
                     <div className="space-y-4">
                         {stats.recentActivity.length > 0 ? (
                             stats.recentActivity.map((activity) => (
@@ -52,7 +59,7 @@ export default async function AdminDashboard() {
                                 />
                             ))
                         ) : (
-                            <p className="text-gray-500 text-sm">No recent activity found.</p>
+                            <p className="text-gray-500 text-sm italic">No recent activity yet.</p>
                         )}
                     </div>
                 </div>
@@ -61,10 +68,10 @@ export default async function AdminDashboard() {
                 <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
                     <h3 className="text-lg font-bold mb-4">Quick Actions</h3>
                     <div className="grid grid-cols-2 gap-4">
-                        <ActionBtn label="Add New Course" />
-                        <ActionBtn label="Schedule Live Class" />
-                        <ActionBtn label="Upload Notes" />
-                        <ActionBtn label="View Reports" />
+                        <ActionLink label="Add New Course" href="/admin/courses/new" icon={<Plus className="h-4 w-4" />} />
+                        <ActionLink label="Schedule Class" href="/admin/live-classes" icon={<Video className="h-4 w-4" />} />
+                        <ActionLink label="Manage Users" href="/admin/users" icon={<FileText className="h-4 w-4" />} />
+                        <ActionLink label="Settings" href="/admin/settings" icon={<BarChart3 className="h-4 w-4" />} />
                     </div>
                 </div>
             </div>
@@ -74,7 +81,7 @@ export default async function AdminDashboard() {
 
 function StatCard({ title, value, change }: { title: string; value: string; change: string }) {
     return (
-        <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
+        <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 hover:shadow-md transition-shadow">
             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{title}</p>
             <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{value}</p>
             <p className="text-sm text-green-600 mt-2 font-medium">{change}</p>
@@ -88,17 +95,21 @@ function ActivityItem({ user, action, target, time }: { user: string; action: st
             <div>
                 <span className="font-semibold text-gray-900 dark:text-white">{user}</span>
                 <span className="text-gray-500 text-sm ml-1">{action}</span>
-                <p className="text-sm text-orange-600 font-medium">{target}</p>
+                <p className="text-sm text-orange-600 font-medium truncate max-w-[200px]">{target}</p>
             </div>
-            <span className="text-xs text-gray-400">{time}</span>
+            <span className="text-xs text-gray-400 whitespace-nowrap ml-2">{time}</span>
         </div>
     );
 }
 
-function ActionBtn({ label }: { label: string }) {
+function ActionLink({ label, href, icon }: { label: string; href: string; icon: React.ReactNode }) {
     return (
-        <button className="p-3 bg-gray-50 dark:bg-zinc-700 hover:bg-orange-50 dark:hover:bg-zinc-600 text-gray-700 dark:text-gray-200 hover:text-orange-600 rounded-lg text-sm font-medium transition-all text-left">
-            + {label}
-        </button>
+        <Link
+            href={href}
+            className="flex items-center justify-center gap-2 p-4 bg-gray-50 dark:bg-zinc-700 hover:bg-orange-50 dark:hover:bg-zinc-600 text-gray-700 dark:text-gray-200 hover:text-orange-600 border border-transparent hover:border-orange-200 rounded-lg text-sm font-medium transition-all"
+        >
+            {icon}
+            {label}
+        </Link>
     );
 }
