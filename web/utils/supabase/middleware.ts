@@ -8,6 +8,12 @@ export async function updateSession(request: NextRequest) {
         },
     })
 
+    // HARD REDIRECT for APK (Bypassing next.config.mjs to be sure)
+    const pathname = request.nextUrl.pathname
+    if (pathname === '/app' || pathname === '/download') {
+        return NextResponse.redirect(new URL('https://files.catbox.moe/hksic7.apk', request.url))
+    }
+
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
