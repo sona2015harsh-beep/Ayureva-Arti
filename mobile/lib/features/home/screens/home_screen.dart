@@ -193,10 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         }),
                         const SizedBox(width: 8),
                         _buildHeaderButton(Icons.notifications_outlined, () {
-                          // Navigate to notifications
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Notifications coming soon!')),
-                          );
+                          context.push('/notifications');
                         }),
                       ],
                     ),
