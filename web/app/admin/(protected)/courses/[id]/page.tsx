@@ -13,14 +13,12 @@ function ClientCourseManager({ courseId }: { courseId: string }) {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
+    const [unlockAt, setUnlockAt] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Now we create a video (was chapter) under a module
-            // For MVP, we'll need to create a module first or use existing one
-            // Simplified: just calling the modules API (to be created)
             await fetch('/api/modules', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -28,12 +26,14 @@ function ClientCourseManager({ courseId }: { courseId: string }) {
                     title,
                     video_url: videoUrl,
                     course_id: courseId,
-                    order_index: 1
+                    order_index: 1,
+                    unlock_at: unlockAt ? new Date(unlockAt).toISOString() : null,
                 })
             });
             alert('Content Added!');
             setTitle('');
             setVideoUrl('');
+            setUnlockAt('');
             router.refresh();
         } catch (e) {
             alert('Error');
@@ -51,10 +51,27 @@ function ClientCourseManager({ courseId }: { courseId: string }) {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         className="w-full border dark:border-zinc-600 dark:bg-zinc-700 p-2 rounded"
-                        placeholder="Module Title"
+                        placeholder="Module Title (e.g., Chapter 1)"
                         value={title}
                         onChange={e => setTitle(e.target.value)}
+                        required
                     />
+
+                    {/* Scheduled Release for Hybrid/Batch Courses */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">
+                            Available From (Optional - For Hybrid Batch)
+                        </label>
+                        <input
+                            type="datetime-local"
+                            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+                            value={unlockAt}
+                            onChange={e => setUnlockAt(e.target.value)}
+                        />
+                        <p className="text-xs text-gray-400 mt-1">
+                            Leave blank for immediate access (Recorded Course). Set a time for Automated Unlock.
+                        </p>
+                    </div>
 
                     {/* File Upload UI */}
                     <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-6 text-center">

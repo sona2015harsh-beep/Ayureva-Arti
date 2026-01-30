@@ -439,21 +439,35 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           final durationStr = duration > 60
               ? '${(duration / 60).ceil()}m'
               : '${duration}s';
+              
+          // Check for Scheduled/Drip Content
+          final unlockAtStr = video['unlock_at'];
+          DateTime? unlockAt;
+          bool isLockedBySchedule = false;
+          
+          if (unlockAtStr != null) {
+             unlockAt = DateTime.tryParse(unlockAtStr)?.toLocal();
+             if (unlockAt != null && unlockAt.isAfter(DateTime.now())) {
+               isLockedBySchedule = true;
+             }
+          }
+          
+          final isAccessible = (_isEnrolled || isFreePreview) && !isLockedBySchedule;
           
           return ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: _isEnrolled || isFreePreview
+                color: isAccessible
                     ? AppColors.primary.withOpacity(0.1)
                     : Colors.grey.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                _isEnrolled || isFreePreview
+                isAccessible
                     ? Icons.play_circle_outline
-                    : Icons.lock_outline,
-                color: _isEnrolled || isFreePreview
+                    : (isLockedBySchedule ? Icons.schedule : Icons.lock_outline),
+                color: isAccessible
                     ? AppColors.primary
                     : Colors.grey,
                 size: 20,
@@ -461,35 +475,58 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             ),
             title: Text(
               video['title'] ?? 'Video',
-              style: AppTypography.bodyMedium,
+              style: AppTypography.bodyMedium.copyWith(
+                color: isAccessible ? AppColors.textPrimary : AppColors.textMuted,
+              ),
             ),
-            subtitle: Row(
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(durationStr, style: AppTypography.bodySmall),
-                if (isFreePreview && !_isEnrolled) ...[
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Text(
-                      'FREE PREVIEW',
-                      style: TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(durationStr, style: AppTypography.bodySmall),
+                    if (isFreePreview && !_isEnrolled) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text(
+                          'FREE PREVIEW',
+                          style: TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                if (isLockedBySchedule && unlockAt != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      'Available: ${_formatDate(unlockAt)}',
+                      style: const TextStyle(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.w500),
                     ),
                   ),
-                ],
               ],
             ),
-            trailing: const Icon(Icons.chevron_right, size: 20),
+            trailing: isAccessible 
+                ? const Icon(Icons.chevron_right, size: 20) 
+                : const Icon(Icons.lock, size: 16, color: Colors.grey),
             onTap: () {
-              if (_isEnrolled || isFreePreview) {
+              if (isAccessible) {
                 context.push('/video-player/${video['id']}');
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Enroll to access this video')),
-                );
+                if (isLockedBySchedule) {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('This class unlocks on ${_formatDate(unlockAt!)}')),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Enroll to access this video')),
+                  );
+                }
               }
             },
           );
@@ -497,6 +534,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       ),
     );
   }
+
+  String _formatDate(DateTime date) {
+    // Simple formatter since we might not have intl package handy in this file context, 
+    // or to keep it simple. ideally use DateFormat.
+    return '${date.day}/${date.month} ${_TwoDigits(date.hour)}:${_TwoDigits(date.minute)}';
+  }
+  
+  String _TwoDigits(int n) => n >= 10 ? '$n' : '0$n';
+}
 
   Widget _buildInstructorPreview() {
     final instructor = _course!['instructor'];
