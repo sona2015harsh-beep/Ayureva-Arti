@@ -542,7 +542,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   }
   
   String _TwoDigits(int n) => n >= 10 ? '$n' : '0$n';
-}
+
 
   Widget _buildInstructorPreview() {
     final instructor = _course!['instructor'];

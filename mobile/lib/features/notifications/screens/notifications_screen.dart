@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/services/notification_service.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/services/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsScreen extends StatefulWidget {
@@ -113,7 +113,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        boxShadow: [AppShadows.small],
+        boxShadow: AppShadows.small,
         border: Border(left: BorderSide(color: iconColor, width: 4)),
       ),
       child: Column(
@@ -131,7 +131,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               Text(
                 timeago.format(createdAt),
-                style: AppTypography.caption.copyWith(color: AppColors.textSecondary),
+                style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
             ],
           ),

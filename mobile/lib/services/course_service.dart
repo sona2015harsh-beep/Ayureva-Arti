@@ -10,7 +10,7 @@ class CourseService {
     String sortBy = 'newest', // newest, popular, price_low, price_high
   }) async {
     try {
-      var query = _supabase
+      dynamic query = _supabase
           .from('courses')
           .select('''
             *,

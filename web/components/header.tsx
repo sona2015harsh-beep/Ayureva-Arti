@@ -30,7 +30,7 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-3">
             <div className="relative w-12 h-12">
               <NextImage
-                src="/logo.png"
+                src="/icon.png"
                 alt="Ayureva Logo"
                 fill
                 className="object-contain"

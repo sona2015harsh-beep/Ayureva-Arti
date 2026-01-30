@@ -140,7 +140,7 @@ class _MyDownloadsScreenState extends State<MyDownloadsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        boxShadow: [AppShadows.small],
+        boxShadow: AppShadows.small,
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -29,7 +29,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <aside className="w-64 bg-white dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-700">
                 <div className="p-6 flex justify-center">
                     <img
-                        src="/logo.png"
+                        src="/icon.png"
                         alt="Ayureva Admin"
                         className="h-12 object-contain"
                     />
