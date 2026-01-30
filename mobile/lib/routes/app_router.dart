@@ -17,6 +17,7 @@ import '../features/quiz/screens/quiz_screen.dart';
 import '../features/live_class/screens/live_classes_screen.dart';
 import '../features/live_class/screens/jitsi_meeting_screen.dart';
 import '../features/notifications/screens/notifications_screen.dart';
+import '../features/downloads/screens/my_downloads_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -143,6 +144,12 @@ class AppRouter {
       GoRoute(
         path: '/about-instructor',
         builder: (context, state) => const AboutInstructorScreen(),
+      ),
+
+      // Downloads
+      GoRoute(
+        path: '/downloads',
+        builder: (context, state) => const MyDownloadsScreen(),
       ),
     ],
   );

@@ -74,4 +74,12 @@ class DownloadService {
   static Future<void> openFile(String taskId) async {
     await FlutterDownloader.open(taskId: taskId);
   }
+
+  static Future<List<DownloadTask>?> getDownloadedTasks() async {
+    return await FlutterDownloader.loadTasks();
+  }
+
+  static Future<void> removeTask(String taskId) async {
+    await FlutterDownloader.remove(taskId: taskId, shouldDeleteContent: true);
+  }
 }

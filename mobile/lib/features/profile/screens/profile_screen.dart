@@ -156,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                       _MenuItem(
                         icon: Icons.download_outlined,
                         title: 'My Downloads',
-                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Downloads coming soon!'))),
+                        onTap: () => context.push('/downloads'),
                       ),
                       _MenuItem(
                         icon: Icons.receipt_long_outlined,
