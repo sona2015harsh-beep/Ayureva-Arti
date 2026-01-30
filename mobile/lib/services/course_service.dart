@@ -3,19 +3,52 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class CourseService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  // Fetch all published courses
-  Future<List<Map<String, dynamic>>> getCourses() async {
+  // Fetch courses with filters
+  Future<List<Map<String, dynamic>>> getCourses({
+    bool? isFree,
+    String? category,
+    String sortBy = 'newest', // newest, popular, price_low, price_high
+  }) async {
     try {
-      final response = await _supabase
+      var query = _supabase
           .from('courses')
           .select('''
             *,
             instructor:profiles!instructor_id(full_name, avatar_url),
             modules:modules(count)
           ''')
-          .eq('is_published', true)
-          .order('created_at', ascending: false);
+          .eq('is_published', true);
 
+      // Apply Filters
+      if (isFree != null) {
+        if (isFree) {
+          query = query.eq('price', 0);
+        } else {
+          query = query.gt('price', 0);
+        }
+      }
+
+      if (category != null && category.isNotEmpty) {
+        query = query.ilike('subtitle', '%$category%'); // Assuming subtitle is used as category/tag
+      }
+
+      // Apply Sorting
+      switch (sortBy) {
+        case 'popular':
+          query = query.order('rating', ascending: false);
+          break;
+        case 'price_low':
+          query = query.order('price', ascending: true);
+          break;
+        case 'price_high':
+          query = query.order('price', ascending: false);
+          break;
+        case 'newest':
+        default:
+          query = query.order('created_at', ascending: false);
+      }
+
+      final response = await query;
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       print('Error fetching courses: $e');

@@ -16,6 +16,9 @@ class _CoursesScreenState extends State<CoursesScreen> {
   final CourseService _courseService = CourseService();
   
   String _selectedCategory = 'All';
+  String _selectedSort = 'newest'; // newest, popular, price_low, price_high
+  bool _isFreeOnly = false;
+  
   List<String> _categories = ['All'];
   List<Map<String, dynamic>> _courses = [];
   bool _isLoading = true;
@@ -29,15 +32,145 @@ class _CoursesScreenState extends State<CoursesScreen> {
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
     
-    final courses = await _courseService.getCourses();
+    // Pass filters to service
+    final courses = await _courseService.getCourses(
+      category: _selectedCategory == 'All' ? null : _selectedCategory,
+      sortBy: _selectedSort,
+      isFree: _isFreeOnly ? true : null,
+    );
+    
     final categories = await _courseService.getCategories();
     
-    setState(() {
-      _courses = courses;
-      _categories = ['All', ...categories];
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _courses = courses;
+        if (_categories.length <= 1) {
+           _categories = ['All', ...categories];
+        }
+        _isLoading = false;
+      });
+    }
   }
+
+  void _showFilterOptions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Filters & Sort', style: AppTypography.h3),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 16),
+                  
+                  // Sort By
+                  Text('Sort By', style: AppTypography.labelLarge),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      _buildFilterChip('Newest', 'newest', setModalState),
+                      _buildFilterChip('Popular', 'popular', setModalState),
+                      _buildFilterChip('Price: Low to High', 'price_low', setModalState),
+                      _buildFilterChip('Price: High to Low', 'price_high', setModalState),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Price Filter
+                  Text('Price', style: AppTypography.labelLarge),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      FilterChip(
+                        label: const Text('All Courses'),
+                        selected: !_isFreeOnly,
+                        onSelected: (val) => setModalState(() => _isFreeOnly = false),
+                        checkmarkColor: Colors.white,
+                        selectedColor: AppColors.primary,
+                        labelStyle: TextStyle(
+                          color: !_isFreeOnly ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      FilterChip(
+                        label: const Text('Free Only'),
+                        selected: _isFreeOnly,
+                        onSelected: (val) => setModalState(() => _isFreeOnly = true),
+                        checkmarkColor: Colors.white,
+                        selectedColor: AppColors.primary,
+                        labelStyle: TextStyle(
+                          color: _isFreeOnly ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Apply Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _loadData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('Apply Filters'),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterChip(String label, String value, StateSetter setModalState) {
+    final isSelected = _selectedSort == value;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) {
+        if (selected) {
+          setModalState(() => _selectedSort = value);
+        }
+      },
+      selectedColor: AppColors.primary,
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : AppColors.textPrimary,
+      ),
+    );
+  }
+
+  // .. search logic remains ..
 
   Future<void> _searchCourses(String query) async {
     if (query.isEmpty) {
@@ -99,7 +232,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                             : IconButton(
                                 icon: const Icon(Icons.tune),
                                 onPressed: () {
-                                  // TODO: Show filters
+                                  _showFilterOptions();
                                 },
                               ),
                         filled: true,
