@@ -6,6 +6,7 @@ import 'core/services/api_service.dart';
 import 'routes/app_router.dart';
 import 'core/config/env.dart';
 import 'core/services/supabase_service.dart';
+import 'core/services/download_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +42,7 @@ class _AppLaunchWrapperState extends State<AppLaunchWrapper> {
     try {
       await Env.load();
       await SupabaseService.initialize();
+      await DownloadService.init(); // Initialize Downloader
       if (mounted) {
         setState(() {
           _initialized = true;
@@ -88,11 +90,8 @@ class _AppLaunchWrapperState extends State<AppLaunchWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Use a simple CircularProgressIndicator if assets aren't ready
-                // Ideally this should match the Launch Screen
                 const CircularProgressIndicator(color: Color(0xFF1B5E20)), // Green
                 const SizedBox(height: 24),
-                // Logo placeholder or text
                 Text(
                   "Ayureva", 
                   style: TextStyle(

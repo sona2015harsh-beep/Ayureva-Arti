@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/services/download_service.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String lessonId;
@@ -238,9 +239,40 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _lesson['title'],
-                    style: AppTypography.h4,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _lesson['title'],
+                          style: AppTypography.h4,
+                        ),
+                      ),
+                       IconButton(
+                        onPressed: () async {
+                           // Mock download for demo
+                           final taskId = await DownloadService.startDownload(
+                             url: 'https://files.catbox.moe/c9339e.mp4',       // Example URL
+                             fileName: '${_lesson['title'].replaceAll(":", "")}.mp4', // Sanitize filename
+                           );
+                           if (taskId != null) {
+                             if (mounted) {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                 const SnackBar(content: Text('Download started...')),
+                               );
+                             }
+                           } else {
+                             if (mounted) {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                 const SnackBar(content: Text('Could not start download. Check permissions.')),
+                               );
+                             }
+                           }
+                        },
+                        icon: const Icon(Icons.download_for_offline_outlined),
+                        color: AppColors.primary,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Row(
