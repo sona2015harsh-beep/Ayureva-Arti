@@ -479,10 +479,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     : Colors.grey.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                isAccessible
-                    ? Icons.play_circle_outline
-                    : (isLockedBySchedule ? Icons.schedule : Icons.lock_outline),
                 color: isAccessible
                     ? AppColors.primary
                     : Colors.grey,
@@ -515,8 +511,29 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                         ),
                       ),
                     ],
+                    // Completed Checkmark
+                    if (video['is_completed'] == true) ...[
+                       const SizedBox(width: 8),
+                       const Icon(Icons.check_circle, size: 14, color: Colors.green),
+                       const SizedBox(width: 4),
+                       const Text('Watched', style: TextStyle(color: Colors.green, fontSize: 11)),
+                    ],
                   ],
                 ),
+                // Progress Bar
+                if (video['position_seconds'] != null && (video['position_seconds'] as int) > 0 && video['is_completed'] != true)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(2),
+                      child: LinearProgressIndicator(
+                        value: (video['position_seconds'] / (video['duration'] ?? 1)),
+                        backgroundColor: Colors.grey[200],
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.orange),
+                        minHeight: 3,
+                      ),
+                    ),
+                  ),
                 if (isLockedBySchedule && unlockAt != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),

@@ -87,6 +87,36 @@ class CourseService {
         response['modules'] = modules;
       }
 
+      }
+
+      // Fetch User Progress
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId != null && response['modules'] != null) {
+        final progressResponse = await _supabase
+            .from('video_progress')
+            .select('video_id, position_seconds, is_completed')
+            .eq('user_id', userId);
+
+        final progressMap = {
+          for (var p in progressResponse) p['video_id']: p
+        };
+
+        // Inject progress into videos
+        if (response['modules'] != null) {
+          for (var module in response['modules']) {
+            if (module['videos'] != null) {
+              for (var video in module['videos']) {
+                final prog = progressMap[video['id']];
+                if (prog != null) {
+                  video['position_seconds'] = prog['position_seconds'];
+                  video['is_completed'] = prog['is_completed'];
+                }
+              }
+            }
+          }
+        }
+      }
+
       return response;
     } catch (e) {
       print('Error fetching course details: $e');
