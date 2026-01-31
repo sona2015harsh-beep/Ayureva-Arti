@@ -18,9 +18,11 @@ export default function AdminLiveClasses() {
     // Form State
     const [formData, setFormData] = useState({
         title: '',
+        description: '',
         course_id: '',
         scheduled_at: '',
         duration_minutes: 60,
+        max_participants: 100,
         thumbnail_url: '',
     });
 
@@ -63,9 +65,11 @@ export default function AdminLiveClasses() {
 
         const { error } = await supabase.from('live_classes').insert({
             title: formData.title,
+            description: formData.description || null,
             course_id: formData.course_id || null, // Handle empty string
             scheduled_at: new Date(formData.scheduled_at).toISOString(),
             duration_minutes: formData.duration_minutes,
+            max_participants: formData.max_participants,
             instructor_id: userData.user.id, // Current admin as instructor
             jitsi_room_id: roomName,
             thumbnail_url: formData.thumbnail_url || null,
@@ -75,7 +79,15 @@ export default function AdminLiveClasses() {
         if (!error) {
             setShowCreateModal(false);
             setShowCreateModal(false);
-            setFormData({ title: '', course_id: '', scheduled_at: '', duration_minutes: 60, thumbnail_url: '' });
+            setFormData({
+                title: '',
+                description: '',
+                course_id: '',
+                scheduled_at: '',
+                duration_minutes: 60,
+                max_participants: 100,
+                thumbnail_url: ''
+            });
             loadData();
         } else {
             alert('Error creating class: ' + error.message);
@@ -237,6 +249,30 @@ export default function AdminLiveClasses() {
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Description</label>
+                                <textarea
+                                    className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                                    rows={3}
+                                    placeholder="Agenda or details about the class..."
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Max Participants</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                                        value={formData.max_participants}
+                                        onChange={(e) => setFormData({ ...formData, max_participants: parseInt(e.target.value) })}
+                                    />
+                                </div>
                             </div>
 
                             <div>
