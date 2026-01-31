@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/ssr'
 import { Leaf, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react'
 
 export default function AdminLogin() {
@@ -11,6 +11,11 @@ export default function AdminLogin() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
+
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
