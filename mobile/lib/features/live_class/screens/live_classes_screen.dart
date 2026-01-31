@@ -167,15 +167,23 @@ class _LiveClassesScreenState extends State<LiveClassesScreen> {
                     )
                   : null,
             ),
-            child: course?['thumbnail_url'] == null
-                ? Center(
+            child: (classData['thumbnail_url'] != null || course?['thumbnail_url'] != null)
+                ? Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      image: DecorationImage(
+                        image: NetworkImage(classData['thumbnail_url'] ?? course['thumbnail_url']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : Center(
                     child: Icon(
                       Icons.videocam,
                       size: 48,
                       color: AppColors.primary.withOpacity(0.5),
                     ),
-                  )
-                : null,
+                  ),
           ),
           
           // Content

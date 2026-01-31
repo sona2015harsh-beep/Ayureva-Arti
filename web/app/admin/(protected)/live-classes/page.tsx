@@ -12,6 +12,7 @@ export default function AdminLiveClasses() {
     const [classes, setClasses] = useState<any[]>([]);
     const [courses, setCourses] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isUploading, setIsUploading] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
 
     // Form State
@@ -20,6 +21,7 @@ export default function AdminLiveClasses() {
         course_id: '',
         scheduled_at: '',
         duration_minutes: 60,
+        thumbnail_url: '',
     });
 
     useEffect(() => {
@@ -61,17 +63,19 @@ export default function AdminLiveClasses() {
 
         const { error } = await supabase.from('live_classes').insert({
             title: formData.title,
-            course_id: formData.course_id,
+            course_id: formData.course_id || null, // Handle empty string
             scheduled_at: new Date(formData.scheduled_at).toISOString(),
             duration_minutes: formData.duration_minutes,
             instructor_id: userData.user.id, // Current admin as instructor
             jitsi_room_id: roomName,
+            thumbnail_url: formData.thumbnail_url || null,
             is_active: false, // Not active yet
         });
 
         if (!error) {
             setShowCreateModal(false);
-            setFormData({ title: '', course_id: '', scheduled_at: '', duration_minutes: 60 });
+            setShowCreateModal(false);
+            setFormData({ title: '', course_id: '', scheduled_at: '', duration_minutes: 60, thumbnail_url: '' });
             loadData();
         } else {
             alert('Error creating class: ' + error.message);
@@ -153,7 +157,14 @@ export default function AdminLiveClasses() {
                             classes.map((cls) => (
                                 <tr key={cls.id} className="hover:bg-gray-50 dark:hover:bg-zinc-700/50">
                                     <td className="p-4 font-medium text-gray-900 dark:text-white">
-                                        {cls.title}
+                                        <div className="flex items-center gap-3">
+                                            {cls.thumbnail_url ? (
+                                                <img src={cls.thumbnail_url} className="w-12 h-12 rounded object-cover bg-gray-100" alt="" />
+                                            ) : (
+                                                <div className="w-12 h-12 rounded bg-purple-100 flex items-center justify-center text-lg">📹</div>
+                                            )}
+                                            {cls.title}
+                                        </div>
                                     </td>
                                     <td className="p-4 text-gray-600 dark:text-gray-300">
                                         {cls.course?.title || 'General'}
@@ -167,10 +178,10 @@ export default function AdminLiveClasses() {
                                     <td className="p-4">
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs font-medium ${cls.is_active
-                                                    ? 'bg-red-100 text-red-700 animate-pulse'
-                                                    : new Date(cls.scheduled_at) < new Date()
-                                                        ? 'bg-gray-100 text-gray-600'
-                                                        : 'bg-green-100 text-green-700'
+                                                ? 'bg-red-100 text-red-700 animate-pulse'
+                                                : new Date(cls.scheduled_at) < new Date()
+                                                    ? 'bg-gray-100 text-gray-600'
+                                                    : 'bg-green-100 text-green-700'
                                                 }`}
                                         >
                                             {cls.is_active
@@ -240,6 +251,46 @@ export default function AdminLiveClasses() {
                                         <option key={c.id} value={c.id}>{c.title}</option>
                                     ))}
                                 </select>
+                            </div>
+
+                            {/* Thumbnail Upload */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Class Thumbnail (Optional)</label>
+                                <div className="flex gap-4 items-center">
+                                    {formData.thumbnail_url && (
+                                        <img src={formData.thumbnail_url} className="w-16 h-10 object-cover rounded bg-gray-100" alt="Preview" />
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="block w-full text-sm text-gray-500
+                                            file:mr-4 file:py-2 file:px-4
+                                            file:rounded-full file:border-0
+                                            file:text-sm file:font-semibold
+                                            file:bg-gray-50 file:text-gray-700
+                                            hover:file:bg-gray-100 dark:file:bg-zinc-700 dark:file:text-gray-300"
+                                        onChange={async (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (!file) return;
+                                            setIsUploading(true);
+                                            try {
+                                                const res = await fetch('/api/upload', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ filename: file.name, filetype: file.type })
+                                                });
+                                                const { uploadUrl } = await res.json();
+                                                await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
+                                                setFormData(prev => ({ ...prev, thumbnail_url: uploadUrl.split('?')[0] }));
+                                            } catch (err) {
+                                                console.error(err);
+                                                alert('Upload failed');
+                                            } finally {
+                                                setIsUploading(false);
+                                            }
+                                        }}
+                                    />
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">

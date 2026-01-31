@@ -76,18 +76,36 @@ model videos {
   title           String
   duration        String?
   video_url       String?
+  thumbnail_url   String?
   is_free_preview Boolean? @default(false)
   order_index     Int
   unlock_at       DateTime? @db.Timestamptz(6) // Scheduled release time
+  video_library_id String?  @db.Uuid
   created_at      DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
   module modules @relation(fields: [module_id], references: [id])
+  library_video video_library? @relation(fields: [video_library_id], references: [id])
   
   // Phase 2 Relations
   questions      questions[]
   quiz_results   quiz_results[]
   video_progress video_progress[]
+}
+
+// VIDEO LIBRARY - Central repository
+model video_library {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title      String
+  filename   String
+  video_url  String
+  thumbnail_url String?
+  duration   Int?
+  size_bytes BigInt?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  linked_videos videos[]
 }
 
 // ENROLLMENTS
@@ -151,6 +169,7 @@ model live_classes {
   course_id        String?  @db.Uuid
   title            String
   description      String?
+  thumbnail_url    String?
   instructor_id    String?  @db.Uuid
   jitsi_room_id    String
   scheduled_at     DateTime @db.Timestamptz(6)

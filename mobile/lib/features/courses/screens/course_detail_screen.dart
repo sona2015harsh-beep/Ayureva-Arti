@@ -455,7 +455,23 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           final isAccessible = (_isEnrolled || isFreePreview) && !isLockedBySchedule;
           
           return ListTile(
-            leading: Container(
+            leading: video['thumbnail_url'] != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      video['thumbnail_url'],
+                      width: 60,
+                      height: 40,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 60,
+                        height: 40,
+                        color: Colors.grey[200],
+                        child: Icon(Icons.videocam_off, size: 20, color: Colors.grey[400]),
+                      ),
+                    ),
+                  )
+                : Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: isAccessible
