@@ -479,12 +479,12 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     : Colors.grey.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-                color: isAccessible
-                    ? AppColors.primary
-                    : Colors.grey,
-                size: 20,
-              ),
-            ),
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 20,
+                    color: isAccessible ? AppColors.primary : Colors.grey,
+                  ),
+                ),
             title: Text(
               video['title'] ?? 'Video',
               style: AppTypography.bodyMedium.copyWith(

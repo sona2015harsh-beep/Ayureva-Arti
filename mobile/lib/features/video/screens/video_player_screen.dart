@@ -19,6 +19,7 @@ class VideoPlayerScreen extends StatefulWidget {
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   // State
   bool _isPlaying = false;
   double _progress = 0.0;
@@ -30,6 +31,15 @@ class VideoPlayerScreen extends StatefulWidget {
   // Real Data
   Map<String, dynamic>? _videoData;
   Map<String, dynamic>? _courseData;
+  
+  // Mocks for UI compatibility until full implementation
+  final List<Map<String, dynamic>> _chapters = []; 
+  Map<String, dynamic> get _lesson => {
+    'title': _videoData?['title'] ?? 'Loading...',
+    'course': _courseData?['title'] ?? '',
+    'duration': _videoData?['duration'] ?? '00:00',
+    'description': 'Description not available',
+  };
 
   @override
   void initState() {

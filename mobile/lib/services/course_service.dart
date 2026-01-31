@@ -87,8 +87,6 @@ class CourseService {
         response['modules'] = modules;
       }
 
-      }
-
       // Fetch User Progress
       final userId = _supabase.auth.currentUser?.id;
       if (userId != null && response['modules'] != null) {

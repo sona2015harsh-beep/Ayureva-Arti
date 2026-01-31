@@ -180,7 +180,24 @@ export default function VideoLibraryPage() {
                                         {format(new Date(vid.created_at), 'MMM d, yyyy')}
                                     </td>
                                     <td className="p-4 text-right">
-                                        <button onClick={() => window.open(vid.video_url, '_blank')} className="text-blue-600 hover:underline mr-3">Preview</button>
+                                        <button
+                                            onClick={async () => {
+                                                try {
+                                                    const res = await fetch('/api/video/sign-url', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ key: vid.video_url })
+                                                    });
+                                                    const { url } = await res.json();
+                                                    window.open(url, '_blank');
+                                                } catch (e) {
+                                                    alert('Failed to load preview');
+                                                }
+                                            }}
+                                            className="text-blue-600 hover:underline mr-3"
+                                        >
+                                            Preview
+                                        </button>
                                     </td>
                                 </tr>
                             ))
