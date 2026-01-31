@@ -8,6 +8,7 @@ export interface BlogPost {
   category: string
   readTime: string
   image: string
+  tags?: string[]
 }
 
 export const blogPosts: BlogPost[] = [
@@ -21,6 +22,7 @@ export const blogPosts: BlogPost[] = [
     category: "Women's Health",
     readTime: "15 min read",
     image: "/blog/pcos-ayurveda-treatment.jpg",
+    tags: ["PCOS", "Hormones", "Women's Health", "Weight Loss", "Cysts"],
     content: `
       <div class="blog-content">
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
@@ -315,6 +317,7 @@ export const blogPosts: BlogPost[] = [
     category: "Women's Health",
     readTime: "10 min read",
     image: "/blog/pcod-vs-pcos-difference.jpg",
+    tags: ["PCOD", "PCOS", "Women's Health", "Hormones", "Lifestyle"],
     content: `
       <div class="blog-content">
         <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-r-lg">
@@ -671,6 +674,7 @@ export const blogPosts: BlogPost[] = [
     category: "Infertility & Pregnancy",
     readTime: "20 min read",
     image: "/blog/ayurveda-infertility-egg-quality.jpg",
+    tags: ["Infertility", "Pregnancy", "Egg Quality", "Conception", "Women's Health"],
     content: `
       <div class="blog-content">
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">

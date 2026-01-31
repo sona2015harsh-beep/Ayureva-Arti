@@ -5,6 +5,7 @@ import { blogPosts } from "@/lib/blog-data"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, Clock, ShieldCheck, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { AyurvedaSuggestionsCTA } from "@/components/blog/AyurvedaSuggestionsCTA"
 
 interface BlogPostPageProps {
     params: Promise<{
@@ -113,6 +114,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             className="prose prose-lg prose-green max-w-none text-gray-700"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
+
+                        {/* Ayurveda Suggestions CTA */}
+                        {/* Ayurveda Suggestions CTA */}
+                        <AyurvedaSuggestionsCTA category={post.category} tags={post.tags} />
 
                         {/* Author Bio Box */}
                         <div className="mt-16 bg-gray-50 rounded-2xl p-8 border border-gray-100 flex gap-6 items-start">

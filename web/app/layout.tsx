@@ -291,11 +291,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1200907614877581"
-          crossOrigin="anonymous"
-        ></script>
+
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <meta name="brand" content="Ayureva" />
         <meta name="clinic" content="Ayureva" />
@@ -318,6 +314,12 @@ html {
         `}</style>
       </head>
       <body>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1200907614877581"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Suspense fallback={null}>
           <AnalyticsProvider>
             <SmoothScroll />
