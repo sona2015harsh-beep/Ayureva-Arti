@@ -79,6 +79,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
+
+        
+          // Brand Logo (Top Center)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 20,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'assets/images/logo_full.png', 
+                height: 40, 
+                fit: BoxFit.contain
+              ),
+            ),
+          ),
+
           // Skip Button
           Positioned(
             top: MediaQuery.of(context).padding.top + 16,
