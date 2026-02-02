@@ -42,9 +42,11 @@ export default function AppLandingPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                                <Button size="lg" className="h-14 px-8 text-lg bg-green-700 hover:bg-green-800 shadow-lg shadow-green-900/20 w-full sm:w-auto">
-                                    <Download className="mr-2 h-5 w-5" /> Download App
-                                </Button>
+                                <Link href="/download">
+                                    <Button size="lg" className="h-14 px-8 text-lg bg-green-700 hover:bg-green-800 shadow-lg shadow-green-900/20 w-full sm:w-auto">
+                                        <Download className="mr-2 h-5 w-5" /> Download App
+                                    </Button>
+                                </Link>
 
                                 <CallbackModal>
                                     <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-2 w-full sm:w-auto">
@@ -127,9 +129,11 @@ export default function AppLandingPage() {
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Start Your Journey?</h2>
                     <p className="text-green-100 mb-8 max-w-2xl mx-auto">Join thousands of students and get access to the best Ayurveda content today.</p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button size="lg" variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto">
-                            <Download className="mr-2 h-5 w-5" /> Install Now
-                        </Button>
+                        <Link href="/download">
+                            <Button size="lg" variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto">
+                                <Download className="mr-2 h-5 w-5" /> Install Now
+                            </Button>
+                        </Link>
                         <CallbackModal>
                             <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-transparent text-white border-white hover:bg-white/10 w-full sm:w-auto">
                                 Talk to Counselor
