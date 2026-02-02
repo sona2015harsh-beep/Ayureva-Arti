@@ -19,7 +19,11 @@ export async function GET(request: Request) {
             orderBy: { title: 'asc' }
         });
 
-        return NextResponse.json(courses);
+        return NextResponse.json(courses, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30'
+            }
+        });
     } catch (error) {
         console.error('Failed to fetch courses:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

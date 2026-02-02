@@ -113,10 +113,11 @@ class AppRouter {
       
       // Quiz
       GoRoute(
-        path: '/quiz/:videoId',
+        path: '/quiz/:quizId',
         builder: (context, state) {
-          final videoId = state.pathParameters['videoId'] ?? '';
-          return QuizScreen(videoId: videoId);
+          final quizId = state.pathParameters['quizId'] ?? '';
+          final title = state.extra as String?;
+          return QuizScreen(quizId: quizId, title: title);
         },
       ),
       

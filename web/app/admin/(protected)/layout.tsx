@@ -39,6 +39,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                     <NavItem href="/admin/courses" label="Manage Courses" icon="📚" />
                     <NavItem href="/admin/live-classes" label="Live Classes" icon="🎥" />
                     <NavItem href="/admin/video-library" label="Video Library" icon="📼" />
+                    <NavItem href="/admin/quizzes" label="Quizzes & Tests" icon="📝" />
+                    <NavItem href="/admin/coupons" label="Coupons" icon="🎟️" />
                     <NavItem href="/admin/users" label="Manage Users" icon="👥" />
                     <NavItem href="/admin/notifications" label="Announcements" icon="🔔" />
                     <NavItem href="/admin/settings" label="Settings" icon="⚙️" />

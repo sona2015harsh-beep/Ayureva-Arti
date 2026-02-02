@@ -23,6 +23,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Map<String, dynamic>? _course;
   bool _isLoading = true;
   bool _isProcessing = false;
+  
+  // Coupon State
+  final TextEditingController _couponController = TextEditingController();
+  String? _couponError;
+  double _discountAmount = 0;
+  String? _appliedCouponCode;
+  bool _isVerifyingCoupon = false;
 
   @override
   void initState() {
@@ -118,12 +125,71 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  // Coupon Logic
+  Future<void> _applyCoupon() async {
+    final code = _couponController.text.trim();
+    if (code.isEmpty) return;
+
+    setState(() {
+      _isVerifyingCoupon = true;
+      _couponError = null;
+    });
+
+    final result = await _paymentService.verifyCoupon(code);
+
+    if (mounted) {
+      if (result != null && result['valid'] == true) {
+        final double value = (result['discountValue'] ?? 0).toDouble();
+        final type = result['discountType'];
+        final basePrice = (_course?['price'] ?? 0).toDouble();
+        
+        double discount = 0;
+        if (type == 'PERCENTAGE') {
+          discount = (basePrice * value) / 100;
+        } else {
+          discount = value;
+        }
+
+        // Cap discount
+        if (discount > basePrice) discount = basePrice;
+
+        setState(() {
+          _discountAmount = discount;
+          _appliedCouponCode = code;
+          _couponError = null;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Coupon applied successfully!'), backgroundColor: Colors.green),
+        );
+      } else {
+        setState(() {
+          _couponError = result?['error'] ?? 'Invalid coupon';
+          _discountAmount = 0;
+          _appliedCouponCode = null;
+        });
+      }
+      setState(() => _isVerifyingCoupon = false);
+    }
+  }
+
+  void _removeCoupon() {
+    setState(() {
+      _discountAmount = 0;
+      _appliedCouponCode = null;
+      _couponController.clear();
+      _couponError = null;
+    });
+  }
+
   void _startPayment() {
     if (_course == null) return;
 
-    final price = (_course!['price'] ?? 0).toDouble();
-    if (price <= 0) {
-      // Free course - direct enroll
+    final basePrice = (_course!['price'] ?? 0).toDouble();
+    final finalPrice = basePrice - _discountAmount;
+
+    if (finalPrice <= 0) {
+      // Free due to coupon - direct enroll
       _enrollFreeCourse();
       return;
     }
@@ -133,7 +199,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     // Razorpay options
     var options = {
       'key': dotenv.env['RAZORPAY_KEY_ID'] ?? 'rzp_test_xxxxxxxxxx',
-      'amount': (price * 100).toInt(), // Amount in paise
+      'amount': (finalPrice * 100).toInt(), // Amount in paise
       'name': 'Ayureva',
       'description': _course!['title'] ?? 'Course',
       'prefill': {
@@ -145,6 +211,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       },
       'notes': {
         'course_id': widget.courseId,
+        'coupon_code': _appliedCouponCode ?? '',
       },
     };
 
@@ -283,6 +350,88 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
             const SizedBox(height: 24),
 
+            // Coupon Section
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   const Text(
+                    'Promo Code',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  if (_appliedCouponCode != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.green),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.verified, color: Colors.green),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Code $_appliedCouponCode applied',
+                              style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.red),
+                            onPressed: _removeCoupon,
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _couponController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter Coupon Code',
+                              errorText: _couponError,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                            ),
+                            textCapitalization: TextCapitalization.characters,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        ElevatedButton(
+                          onPressed: _isVerifyingCoupon ? null : _applyCoupon,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: _isVerifyingCoupon 
+                              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) 
+                              : const Text('Apply'),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
             // Order Summary
             Container(
               padding: const EdgeInsets.all(20),
@@ -302,10 +451,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildSummaryRow('Course Price', isFree ? 'Free' : '₹${price.toInt()}'),
+                  
+                  if (_discountAmount > 0) ...[
+                    const SizedBox(height: 12),
+                    _buildSummaryRow(
+                      'Discount', 
+                      '- ₹${_discountAmount.toInt()}',
+                      color: Colors.green,
+                    ),
+                  ],
+
                   const Divider(height: 24),
                   _buildSummaryRow(
                     'Total',
-                    isFree ? 'Free' : '₹${price.toInt()}',
+                    (price - _discountAmount) <= 0 ? 'Free' : '₹${(price - _discountAmount).toInt()}',
                     isBold: true,
                   ),
                 ],
@@ -403,7 +562,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       )
                     : Text(
-                        isFree ? 'Enroll Now - Free' : 'Pay ₹${price.toInt()}',
+                        isFree 
+                          ? 'Enroll Now - Free' 
+                          : (price - _discountAmount) <= 0 
+                              ? 'Enroll Now - Free' 
+                              : 'Pay ₹${(price - _discountAmount).toInt()}',
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
               ),
@@ -414,7 +577,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value, {bool isBold = false}) {
+  Widget _buildSummaryRow(String label, String value, {bool isBold = false, Color? color}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -431,7 +594,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           style: TextStyle(
             fontSize: isBold ? 18 : 14,
             fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            color: isBold ? AppColors.primary : Colors.black,
+            color: color ?? (isBold ? AppColors.primary : Colors.black),
           ),
         ),
       ],

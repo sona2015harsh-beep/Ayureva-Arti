@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
@@ -377,7 +378,10 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     : null,
                 image: thumbnailUrl != null
                     ? DecorationImage(
-                        image: NetworkImage(thumbnailUrl),
+                        image: CachedNetworkImageProvider(
+                          thumbnailUrl,
+                          maxHeight: 400,
+                        ),
                         fit: BoxFit.cover,
                       )
                     : null,

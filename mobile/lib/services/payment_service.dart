@@ -1,12 +1,42 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // Note: For actual Razorpay integration, add razorpay_flutter package
 // This service handles the API calls for payment order creation and verification
 
 class PaymentService {
   final SupabaseClient _supabase = Supabase.instance.client;
+
+  // Verify Coupon Code
+  Future<Map<String, dynamic>?> verifyCoupon(String code) async {
+    try {
+      // TODO: Replace with your actual deployed API URL
+      // For Emulator use 'http://10.0.2.2:3000'
+      // For iOS Simulator use 'http://127.0.0.1:3000'
+      // For Physical Device use your computer's IP 'http://192.168.x.x:3000'
+      const String baseUrl = 'http://10.0.2.2:3000'; 
+      
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/coupons/verify'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'code': code}),
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        final error = json.decode(response.body);
+        throw Exception(error['error'] ?? 'Invalid coupon');
+      }
+    } catch (e) {
+      print('Error verifying coupon: $e');
+      return {'error': e.toString().replaceAll('Exception: ', '')};
+    }
+  }
+
   
   // Get Razorpay key from environment
   String get razorpayKey => dotenv.env['RAZORPAY_KEY_ID'] ?? '';

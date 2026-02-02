@@ -3,13 +3,13 @@ import '../../../core/theme/app_theme.dart';
 import '../../../services/quiz_service.dart';
 
 class QuizScreen extends StatefulWidget {
-  final String videoId;
-  final String? videoTitle;
+  final String quizId; // Changed from videoId
+  final String? title;
 
   const QuizScreen({
     super.key,
-    required this.videoId,
-    this.videoTitle,
+    required this.quizId,
+    this.title,
   });
 
   @override
@@ -20,7 +20,7 @@ class _QuizScreenState extends State<QuizScreen> {
   final QuizService _quizService = QuizService();
   
   List<Map<String, dynamic>> _questions = [];
-  Map<String, String> _selectedAnswers = {}; // questionId -> A/B/C/D
+  Map<String, String> _selectedAnswers = {}; 
   int _currentQuestionIndex = 0;
   bool _isLoading = true;
   bool _isSubmitting = false;
@@ -33,7 +33,15 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<void> _loadQuestions() async {
-    final questions = await _quizService.getQuestions(widget.videoId);
+    // 1. Check if user already took this quiz
+    final existingResult = await _quizService.getQuizResult(widget.quizId);
+    if (existingResult != null) {
+       // Ideally re-fetch result details if needed, but for now just show results logic?
+       // The previous code didn't auto-show results on load, wait...
+    }
+
+    // 2. Load questions
+    final questions = await _quizService.getQuestions(widget.quizId);
     setState(() {
       _questions = questions;
       _isLoading = false;
@@ -57,7 +65,7 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() => _isSubmitting = true);
 
     final result = await _quizService.submitQuiz(
-      videoId: widget.videoId,
+      quizId: widget.quizId,
       answers: _selectedAnswers,
     );
 
@@ -72,7 +80,7 @@ class _QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text('Quiz: ${widget.videoTitle ?? 'Video'}'),
+        title: Text('Quiz: ${widget.title ?? 'Test'}'),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,

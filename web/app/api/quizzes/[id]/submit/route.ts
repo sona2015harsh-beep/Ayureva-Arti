@@ -2,26 +2,28 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifySession } from '@/lib/auth';
 
-export async function POST(request: Request) {
+// POST /api/quizzes/[id]/submit - Submit answers
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
     try {
         const profile = await verifySession(request);
         if (!profile) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { videoId, answers } = await request.json();
+        const { id } = await context.params;
+        const { answers } = await request.json(); // Map { questionId: optionKey }
 
-        if (!videoId || !answers) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        if (!answers) {
+            return NextResponse.json({ error: 'Missing answers' }, { status: 400 });
         }
 
-        // Fetch correct answers (server side only)
+        // Fetch questions + correct answers
         const questions = await prisma.questions.findMany({
-            where: { video_id: videoId }
+            where: { quiz_id: id }
         });
 
         if (questions.length === 0) {
-            return NextResponse.json({ error: 'No quiz found for this video' }, { status: 404 });
+            return NextResponse.json({ error: 'Quiz has no questions' }, { status: 404 });
         }
 
         // Calculate Score
@@ -42,18 +44,28 @@ export async function POST(request: Request) {
             });
         });
 
-        // Save/Update Result
-        // Save/Update Result
+        const percentage = Math.round((score / totalQuestions) * 100);
+
+        // Fetch Quiz Pass Criteria
+        const quiz = await prisma.quizzes.findUnique({
+            where: { id },
+            select: { passing_percentage: true }
+        });
+        const passThreshold = quiz?.passing_percentage || 70;
+        const passed = percentage >= passThreshold;
+
+        // Manual Upsert Logic (Find existing result for user+quiz)
         const existingResult = await prisma.quiz_results.findFirst({
             where: {
                 user_id: profile.id,
-                video_id: videoId
+                quiz_id: id
             }
         });
 
-        let result;
+        let resultId;
+
         if (existingResult) {
-            result = await prisma.quiz_results.update({
+            const updated = await prisma.quiz_results.update({
                 where: { id: existingResult.id },
                 data: {
                     score,
@@ -61,27 +73,27 @@ export async function POST(request: Request) {
                     completed_at: new Date()
                 }
             });
+            resultId = updated.id;
         } else {
-            result = await prisma.quiz_results.create({
+            const created = await prisma.quiz_results.create({
                 data: {
                     user_id: profile.id,
-                    video_id: videoId,
+                    quiz_id: id,
                     score,
                     total_questions: totalQuestions
                 }
             });
+            resultId = created.id;
         }
-
-        const percentage = Math.round((score / totalQuestions) * 100);
 
         return NextResponse.json({
             message: 'Quiz submitted successfully',
             score,
             totalQuestions,
             percentage,
-            passed: percentage >= 70, // 70% pass threshold
+            passed,
             feedback,
-            resultId: result.id
+            resultId
         });
 
     } catch (error) {

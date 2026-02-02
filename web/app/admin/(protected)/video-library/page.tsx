@@ -87,19 +87,41 @@ export default function VideoLibraryPage() {
         }
     };
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredVideos = import('react').useMemo(() => {
+        if (!searchQuery) return videos;
+        const lower = searchQuery.toLowerCase();
+        return videos.filter(v =>
+            v.title.toLowerCase().includes(lower) ||
+            v.filename.toLowerCase().includes(lower)
+        );
+    }, [videos, searchQuery]);
+
+    // ... handleUpload ...
+
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Video Library</h1>
-                <button
-                    onClick={() => setShowUploadModal(true)}
-                    className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
-                >
-                    + Upload New Video
-                </button>
+                <div className="flex gap-3 w-full md:w-auto">
+                    <input
+                        type="text"
+                        placeholder="Search videos..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1 md:w-64 px-4 py-2 rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none"
+                    />
+                    <button
+                        onClick={() => setShowUploadModal(true)}
+                        className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition whitespace-nowrap"
+                    >
+                        + Upload New Video
+                    </button>
+                </div>
             </div>
 
-            {/* Upload Modal */}
+            {/* Upload Modal ... (kept same) */}
             {showUploadModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl w-full max-w-lg">
@@ -159,47 +181,11 @@ export default function VideoLibraryPage() {
                     <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
                         {isLoading ? (
                             <tr><td colSpan={5} className="p-8 text-center text-gray-500">Loading library...</td></tr>
-                        ) : videos.length === 0 ? (
-                            <tr><td colSpan={5} className="p-8 text-center text-gray-500">No videos in library yet.</td></tr>
+                        ) : filteredVideos.length === 0 ? (
+                            <tr><td colSpan={5} className="p-8 text-center text-gray-500">No videos found.</td></tr>
                         ) : (
-                            videos.map((vid) => (
-                                <tr key={vid.id} className="hover:bg-gray-50 dark:hover:bg-zinc-700/50">
-                                    <td className="p-4 font-medium text-gray-900 dark:text-white">
-                                        <div className="flex items-center gap-3">
-                                            {vid.thumbnail_url ? (
-                                                <img src={vid.thumbnail_url} alt="" className="w-16 h-10 object-cover rounded bg-gray-200" />
-                                            ) : (
-                                                <div className="w-16 h-10 bg-gray-100 dark:bg-zinc-600 rounded flex items-center justify-center text-xl">🎥</div>
-                                            )}
-                                            <span className="truncate max-w-[200px]">{vid.title}</span>
-                                        </div>
-                                    </td>
-                                    <td className="p-4 text-gray-600 dark:text-gray-300 text-sm font-mono">{vid.filename}</td>
-                                    <td className="p-4 text-gray-600 dark:text-gray-300">{(vid.size_bytes / (1024 * 1024)).toFixed(1)} MB</td>
-                                    <td className="p-4 text-gray-600 dark:text-gray-300">
-                                        {format(new Date(vid.created_at), 'MMM d, yyyy')}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <button
-                                            onClick={async () => {
-                                                try {
-                                                    const res = await fetch('/api/video/sign-url', {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify({ key: vid.video_url })
-                                                    });
-                                                    const { url } = await res.json();
-                                                    window.open(url, '_blank');
-                                                } catch (e) {
-                                                    alert('Failed to load preview');
-                                                }
-                                            }}
-                                            className="text-blue-600 hover:underline mr-3"
-                                        >
-                                            Preview
-                                        </button>
-                                    </td>
-                                </tr>
+                            filteredVideos.map((vid) => (
+                                <VideoRow key={vid.id} video={vid} />
                             ))
                         )}
                     </tbody>
@@ -208,3 +194,48 @@ export default function VideoLibraryPage() {
         </div>
     );
 }
+
+import { memo } from 'react';
+
+const VideoRow = memo(({ video }: { video: any }) => {
+    return (
+        <tr className="hover:bg-gray-50 dark:hover:bg-zinc-700/50">
+            <td className="p-4 font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center gap-3">
+                    {video.thumbnail_url ? (
+                        <img src={video.thumbnail_url} alt="" className="w-16 h-10 object-cover rounded bg-gray-200" />
+                    ) : (
+                        <div className="w-16 h-10 bg-gray-100 dark:bg-zinc-600 rounded flex items-center justify-center text-xl">🎥</div>
+                    )}
+                    <span className="truncate max-w-[200px]">{video.title}</span>
+                </div>
+            </td>
+            <td className="p-4 text-gray-600 dark:text-gray-300 text-sm font-mono">{video.filename}</td>
+            <td className="p-4 text-gray-600 dark:text-gray-300">{(video.size_bytes / (1024 * 1024)).toFixed(1)} MB</td>
+            <td className="p-4 text-gray-600 dark:text-gray-300">
+                {format(new Date(video.created_at), 'MMM d, yyyy')}
+            </td>
+            <td className="p-4 text-right">
+                <button
+                    onClick={async () => {
+                        try {
+                            const res = await fetch('/api/video/sign-url', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ key: video.video_url })
+                            });
+                            const { url } = await res.json();
+                            window.open(url, '_blank');
+                        } catch (e) {
+                            alert('Failed to load preview');
+                        }
+                    }}
+                    className="text-blue-600 hover:underline mr-3"
+                >
+                    Preview
+                </button>
+            </td>
+        </tr>
+    );
+});
+VideoRow.displayName = 'VideoRow';

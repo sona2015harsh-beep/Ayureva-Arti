@@ -54,6 +54,7 @@ model courses {
   
   // Phase 2 Relations
   live_classes live_classes[]
+  quizzes      quizzes[]
 }
 
 // MODULES / SECTIONS
@@ -67,6 +68,7 @@ model modules {
   // Relations
   course courses  @relation(fields: [course_id], references: [id])
   videos videos[]
+  quizzes quizzes[]
 }
 
 // VIDEOS / LESSONS
@@ -91,6 +93,7 @@ model videos {
   questions      questions[]
   quiz_results   quiz_results[]
   video_progress video_progress[]
+  quizzes        quizzes[]
 }
 
 // VIDEO LIBRARY - Central repository
@@ -125,12 +128,42 @@ model enrollments {
 }
 
 // ============================================
-// PHASE 2: QUIZ FEATURE
+// PHASE 2 & 9: QUIZ & MOCK TEST FEATURE
 // ============================================
+
+model quizzes {
+  id                 String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title              String
+  description        String?
+  type               String   // 'VIDEO', 'MODULE', 'SUBJECT', 'MOCK'
+  
+  // Context
+  video_id           String?  @db.Uuid
+  module_id          String?  @db.Uuid
+  course_id          String?  @db.Uuid
+  
+  // Config
+  time_limit_minutes Int?
+  passing_percentage Int?     @default(70)
+  
+  is_active          Boolean  @default(true)
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  video    videos?   @relation(fields: [video_id], references: [id], onDelete: SetNull)
+  module   modules?  @relation(fields: [module_id], references: [id], onDelete: SetNull)
+  course   courses?  @relation(fields: [course_id], references: [id], onDelete: SetNull)
+  
+  questions     questions[]
+  quiz_results  quiz_results[]
+}
 
 model questions {
   id              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  video_id        String   @db.Uuid
+  video_id        String?  @db.Uuid // kept for legacy reference, migrated to quiz_id
+  quiz_id         String?  @db.Uuid
+  
   question_text   String
   option_a        String
   option_b        String
@@ -142,22 +175,26 @@ model questions {
   created_at      DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
-  video videos @relation(fields: [video_id], references: [id], onDelete: Cascade)
+  video videos?  @relation(fields: [video_id], references: [id], onDelete: Cascade)
+  quiz  quizzes? @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
 }
 
 model quiz_results {
   id              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   user_id         String   @db.Uuid
-  video_id        String   @db.Uuid
+  video_id        String?  @db.Uuid // kept for legacy reference
+  quiz_id         String?  @db.Uuid
+  
   score           Int
   total_questions Int
   completed_at    DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
   user  profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  video videos   @relation(fields: [video_id], references: [id], onDelete: Cascade)
+  video videos?  @relation(fields: [video_id], references: [id], onDelete: Cascade)
+  quiz  quizzes? @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
 
-  @@unique([user_id, video_id])
+  // @@unique([user_id, video_id]) // Removed strict unique constraint on video_id for now
 }
 
 // ============================================
@@ -198,8 +235,29 @@ model video_progress {
   @@unique([user_id, video_id])
   @@index([user_id])
   @@index([video_id])
+
 }
 
+// ============================================
+// PHASE 11: COUPONS
+// ============================================
+
+model coupons {
+  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  code           String    @unique
+  discount_type  String    // 'PERCENTAGE' or 'FIXED'
+  discount_value Int
+  
+  start_date     DateTime? @default(now()) @db.Timestamptz(6)
+  expiry_date    DateTime? @db.Timestamptz(6)
+  
+  usage_limit    Int?
+  usage_count    Int?      @default(0)
+  
+  is_active      Boolean   @default(true)
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+}
 // ============================================
 // PHASE 2: NOTIFICATIONS
 // ============================================

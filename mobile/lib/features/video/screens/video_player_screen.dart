@@ -4,6 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/services/download_service.dart';
+import '../../../services/quiz_service.dart';
+import 'package:go_router/go_router.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String lessonId;
@@ -593,42 +595,71 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           const SizedBox(height: 12),
           _buildResourceItem(Icons.picture_as_pdf, 'Doshas Reference Guide.pdf', '2.4 MB'),
           _buildResourceItem(Icons.image, 'Dosha Chart.png', '1.1 MB'),
-          _buildResourceItem(Icons.quiz, 'Chapter Quiz', '10 Questions'),
+          _buildResourceItem(Icons.quiz, 'Chapter Quiz', 'Take Test', onTap: _navigateToQuiz),
         ],
       ),
     );
   }
 
-  Widget _buildResourceItem(IconData icon, String title, String subtitle) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+  Future<void> _navigateToQuiz() async {
+    setState(() => _isLoading = true);
+    try {
+      final quizService = QuizService(); // Instantiate here or keep instance
+      final quiz = await quizService.getQuizIdForVideo(widget.lessonId);
+      
+      if (mounted) {
+        setState(() => _isLoading = false);
+        if (quiz != null) {
+          context.push('/quiz/${quiz['id']}', extra: quiz['title']);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No quiz available for this video')),
+          );
+        }
+      }
+    } catch (e) {
+      print('Nav error: $e');
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Widget _buildResourceItem(IconData icon, String title, String subtitle, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceVariant,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 20),
             ),
-            child: Icon(icon, color: AppColors.primary, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTypography.labelLarge),
-                Text(subtitle, style: AppTypography.bodySmall),
-              ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTypography.labelLarge),
+                  Text(subtitle, style: AppTypography.bodySmall),
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.download_outlined, color: AppColors.primary),
-        ],
+            Icon(
+              onTap != null ? Icons.arrow_forward_ios : Icons.download_outlined, 
+              color: AppColors.primary, 
+              size: onTap != null ? 16 : 24
+            ),
+          ],
+        ),
       ),
     );
   }
