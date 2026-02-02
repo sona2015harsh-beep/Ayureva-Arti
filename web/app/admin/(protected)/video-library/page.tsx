@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 
 export default function VideoLibraryPage() {
@@ -89,7 +89,7 @@ export default function VideoLibraryPage() {
 
     const [searchQuery, setSearchQuery] = useState('');
 
-    const filteredVideos = import('react').useMemo(() => {
+    const filteredVideos = useMemo(() => {
         if (!searchQuery) return videos;
         const lower = searchQuery.toLowerCase();
         return videos.filter(v =>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/onboarding/screens/onboarding_screen.dart';
+import '../features/onboarding/screens/splash_screen.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/signup_screen.dart';
 import '../features/auth/screens/otp_screen.dart';
@@ -21,8 +22,14 @@ import '../features/downloads/screens/my_downloads_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: '/',
     routes: [
+      // Splash (Initial Logic)
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const SplashScreen(),
+      ),
+
       // Onboarding
       GoRoute(
         path: '/onboarding',

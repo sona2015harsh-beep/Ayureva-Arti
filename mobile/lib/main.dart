@@ -8,17 +8,32 @@ import 'core/config/env.dart';
 import 'core/services/supabase_service.dart';
 import 'core/services/download_service.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ),
-  );
+import 'dart:async';
 
-  runApp(const AppLaunchWrapper());
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+    // Prevent landscape mode for stability
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    runApp(const AppLaunchWrapper());
+  }, (error, stack) {
+    // Global Error Handler
+    // TODO: Connect to Sentry/Firebase Crashlytics in future
+    print("CRITICAL APP ERROR: $error");
+    print(stack);
+  });
 }
 
 class AppLaunchWrapper extends StatefulWidget {
