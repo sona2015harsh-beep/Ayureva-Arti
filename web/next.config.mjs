@@ -39,11 +39,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/app',
-        destination: '/app-release.apk',
-        permanent: false,
-      },
+
       {
         source: '/download',
         destination: '/app-release.apk',
