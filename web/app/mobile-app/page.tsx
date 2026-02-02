@@ -28,9 +28,8 @@ export default function AppLandingPage() {
                     <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
                         {/* Content Content */}
                         <div className="flex-1 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium mb-6">
-                                <Smartphone className="w-4 h-4" />
-                                <span>#1 App for Ayurveda Aspirants</span>
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-bold mb-6 border border-orange-200 shadow-sm">
+                                <span>🤔 Are you looking to prepare for AIAPGT & MO Exams?</span>
                             </div>
 
                             <h1 className="text-4xl md:text-6xl font-extrabold text-green-950 leading-tight mb-6">
@@ -123,6 +122,38 @@ export default function AppLandingPage() {
                 </div>
             </section>
 
+            {/* SEO & FAQ Section */}
+            <section className="py-20 bg-green-50">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Top Rankers Choose Ayureva?</h2>
+                        <p className="text-gray-600">Common questions from BAMS students and AIAPGT aspirants.</p>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Is this app sufficient for AIAPGT preparation?</h3>
+                            <p className="text-gray-600">Yes, Ayureva is a complete ecosystem. With 500+ hours of video lectures, 10,000+ MCQs, and detailed notes, you don't need to juggle multiple resources. We focus on high-yield topics repeated in AIAPGT and UPSC Ayurveda exams.</p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Can I use this for my BAMS college exams?</h3>
+                            <p className="text-gray-600">Absolutely. Identifying and strengthening weak subjects during your BAMS journey is crucial. Our subject-wise modules help you master difficult concepts (like Kriya Sharir or Charak Samhita) to excel in university exams while building a base for competitive exams.</p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Do you provide offline access?</h3>
+                            <p className="text-gray-600">Yes! We understand that internet connectivity can be an issue. You can download video lectures and notes inside the app to study offline without any interruptions.</p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">How do I clear my doubts?</h3>
+                            <p className="text-gray-600">Ayureva isn't just an app; it's a classroom. Join our Live Doubt Sessions with expert faculty or post your queries in the "Talk to Expert" section to get personalized guidance.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Final CTA */}
             <section className="bg-green-900 py-20">
                 <div className="container mx-auto px-4 text-center">
@@ -142,6 +173,29 @@ export default function AppLandingPage() {
                     </div>
                 </div>
             </section>
+            {/* JSON-LD Schema for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "SoftwareApplication",
+                        "name": "Ayureva",
+                        "operatingSystem": "ANDROID",
+                        "applicationCategory": "EducationalApplication",
+                        "aggregateRating": {
+                            "@type": "AggregateRating",
+                            "ratingValue": "4.9",
+                            "ratingCount": "10000"
+                        },
+                        "offers": {
+                            "@type": "Offer",
+                            "price": "0",
+                            "priceCurrency": "INR"
+                        }
+                    })
+                }}
+            />
         </div>
     );
 }
