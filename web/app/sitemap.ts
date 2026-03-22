@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { blogPosts } from "@/lib/blog-data"
+import { targetLocations } from "@/lib/locations"
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = "https://ayureva.in"
@@ -67,6 +68,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.9,
         },
+        {
+            url: `${baseUrl}/mobile-app`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}/ayurveda-suggestions`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.6,
+        },
     ]
 
     // 2. Dynamic Blog Routes
@@ -77,5 +90,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8,
     }))
 
-    return [...staticRoutes, ...blogRoutes]
+    // 3. Programmatic Location Pages (pSEO)
+    const locationRoutes: MetadataRoute.Sitemap = targetLocations.map((loc) => ({
+        url: `${baseUrl}/online-pcod-treatment/${loc.id}`,
+        lastModified: currentDate,
+        changeFrequency: "monthly",
+        priority: 0.7,
+    }))
+
+    return [...staticRoutes, ...blogRoutes, ...locationRoutes]
 }

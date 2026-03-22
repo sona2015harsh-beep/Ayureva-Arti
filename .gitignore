@@ -25,3 +25,5 @@ mobile/android/local.properties
 mobile/*.iml
 mobile/android/*.iml
 mobile/android/app/*.iml
+scripts/google-service-account.json
+web/scripts/google-service-account.json
