@@ -75,12 +75,28 @@ const BLOG_SLUGS = [
 ];
 
 const LOCATION_SLUGS = [
+  // India
   "mumbai", "delhi", "bangalore", "hyderabad", "chennai",
   "kolkata", "pune", "ahmedabad", "jaipur", "chandigarh",
-  "lucknow", "indore", "patna",
+  "lucknow", "indore", "patna", "bhopal", "nagpur",
+  "ranchi", "guwahati", "noida", "gurugram",
+  // USA
   "california", "new-york", "texas", "florida", "illinois",
-  "toronto", "vancouver", "london", "sydney", "melbourne",
-  "dubai", "singapore",
+  "new-jersey", "georgia", "virginia", "washington", "pennsylvania",
+  "michigan", "ohio", "massachusetts", "maryland", "arizona",
+  "north-carolina", "connecticut", "minnesota", "colorado",
+  // UK
+  "london", "birmingham", "manchester", "leicester", "leeds",
+  "bradford", "glasgow", "edinburgh",
+  // UAE & Gulf
+  "dubai", "abu-dhabi", "sharjah", "riyadh", "jeddah",
+  "doha", "muscat", "kuwait-city", "bahrain",
+  // Canada
+  "toronto", "vancouver", "brampton", "calgary", "edmonton", "mississauga",
+  // Australia
+  "sydney", "melbourne", "perth", "brisbane",
+  // Southeast Asia
+  "singapore", "kuala-lumpur",
 ];
 
 // ─── BUILD FULL URL LIST ──────────────────────────────────────────────

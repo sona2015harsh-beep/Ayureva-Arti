@@ -8,6 +8,7 @@ import SmoothScroll from "@/components/smooth-scroll"
 import ScrollToTop from "@/components/scroll-to-top"
 import AnalyticsProvider from "@/components/analytics-provider"
 import PopupManager from "@/components/popup-manager"
+import WhatsAppCTA from "@/components/whatsapp-cta"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
@@ -327,6 +328,7 @@ html {
             <Header />
             {children}
             <Footer />
+            <WhatsAppCTA />
           </AnalyticsProvider>
         </Suspense>
       </body>
