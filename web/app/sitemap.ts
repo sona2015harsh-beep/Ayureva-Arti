@@ -55,12 +55,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "yearly",
             priority: 0.3,
         },
+        {
+            url: `${baseUrl}/disclaimer`,
+            lastModified: currentDate,
+            changeFrequency: "yearly",
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/pcod-ayurvedic-treatment-online`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.9,
+        },
     ]
 
     // 2. Dynamic Blog Routes
     const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
         url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: currentDate, // or new Date(post.publishDate)
+        lastModified: post.publishDate ? new Date(post.publishDate) : currentDate,
         changeFrequency: "monthly",
         priority: 0.8,
     }))

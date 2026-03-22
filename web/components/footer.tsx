@@ -23,31 +23,31 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Services</h4>
+            <h4 className="font-semibold mb-4 text-green-400">Top Treatments</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <Link href="/services" className="hover:text-green-400">
-                  PCOS/PCOD Treatment
+                <Link href="/pcod-ayurvedic-treatment-online" className="hover:text-green-400 transition-colors">
+                  PCOD Treatment Online
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-green-400">
-                  Menstrual Health
+                <Link href="/blog/ayurvedic-management-pcos-guide" className="hover:text-green-400 transition-colors">
+                  Cure PCOS Permanently
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-green-400">
-                  Diet & Nutrition
+                <Link href="/blog/ayurvedic-diet-for-pcos" className="hover:text-green-400 transition-colors">
+                  Best Diet for PCOS
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-green-400">
-                  Fitness Guidance
+                <Link href="/blog/ayurvedic-thyroid-treatment" className="hover:text-green-400 transition-colors">
+                  Thyroid Management
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-green-400">
-                  Preventive Care
+                <Link href="/blog/ayurvedic-infertility-treatment-egg-quality" className="hover:text-green-400 transition-colors">
+                  Improve Egg Quality naturally
                 </Link>
               </li>
             </ul>
@@ -124,6 +124,10 @@ export default function Footer() {
             <span>•</span>
             <Link href="/refund-policy" className="hover:text-green-400">
               Refund Policy
+            </Link>
+            <span>•</span>
+            <Link href="/disclaimer" className="hover:text-green-400">
+              Disclaimer
             </Link>
             <span>•</span>
             <Link href="/admin" className="hover:text-green-400">

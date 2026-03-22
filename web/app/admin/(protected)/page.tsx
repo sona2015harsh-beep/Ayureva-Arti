@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { formatDistanceToNow } from 'date-fns';
+
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Plus, Video, FileText, BarChart3 } from 'lucide-react';
 

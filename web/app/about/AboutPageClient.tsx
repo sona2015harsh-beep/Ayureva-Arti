@@ -419,6 +419,121 @@ export default function AboutPageClient() {
         </div>
       </section>
 
+      {/* FAQs for AEO (Position #0) */}
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions About Dr. Arti Singh</h2>
+            <p className="text-gray-600">Common questions from our patients.</p>
+          </div>
+
+          <div className="space-y-4">
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer" open>
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What are Dr. Arti Singh's qualifications in Ayurveda?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Dr. Arti Singh holds a BAMS (Bachelor of Ayurvedic Medicine and Surgery) degree from a prestigious institution in India. She is a fully registered Ayurvedic Physician deeply specialized in women's holistic health, specifically targeting root causes of hormonal and metabolic disorders.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Does Dr. Arti Singh offer online Ayurvedic consultations?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Yes, Dr. Arti Singh provides detailed online Ayurvedic consultations worldwide. Through video/audio calls, she conducts in-depth Prakriti (body-type) Analysis and evaluates your symptoms to create personalized diet, lifestyle, and herbal protocols, shipping authentic medicines directly to your door.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What diseases does Dr. Arti Singh specialize in treating?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Dr. Arti Singh specializes in reversing women's health issues without synthetic hormones. Her primary areas of expertise include permanent relief from PCOS, PCOD, Endometriosis, Chronic UTIs, Heavy Bleeding (Menorrhagia), Thyroid disorders, unexplained Infertility, and hormonal acne using purely Ayurvedic principles.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Can Ayurveda permanently cure PCOS?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                While 'cure' is a strong medical term, Ayurveda can put PCOS into complete, long-term remission. Dr. Arti Singh's treatment removes the root cause (Kapha-Vata blockage and Ama) rather than just inducing periods artificially like OCPs do. Most patients regain natural ovulatory cycles within 3 to 6 months.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                How long does an Ayurvedic treatment plan take to show results?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Unlike painkillers, Ayurvedic medicines work on a cellular level. However, symptom relief begins early. For acute issues like gas or reflux, patients see results in 3-5 days. For chronic metabolic issues like PCOS or Hypothyroidism, visible improvement takes 4-6 weeks, while complete protocol completion requires 3-6 months.
+              </div>
+            </details>
+          </div>
+        </div>
+
+        {/* JSON-LD FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What are Dr. Arti Singh's qualifications in Ayurveda?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Dr. Arti Singh holds a BAMS (Bachelor of Ayurvedic Medicine and Surgery) degree from a prestigious institution in India. She is a fully registered Ayurvedic Physician deeply specialized in women's holistic health, specifically targeting root causes of hormonal and metabolic disorders."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Does Dr. Arti Singh offer online Ayurvedic consultations?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, Dr. Arti Singh provides detailed online Ayurvedic consultations worldwide. Through video/audio calls, she conducts in-depth Prakriti (body-type) Analysis and evaluates your symptoms to create personalized diet, lifestyle, and herbal protocols, shipping authentic medicines directly to your door."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What diseases does Dr. Arti Singh specialize in treating?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Dr. Arti Singh specializes in reversing women's health issues without synthetic hormones. Her primary areas of expertise include permanent relief from PCOS, PCOD, Endometriosis, Chronic UTIs, Heavy Bleeding (Menorrhagia), Thyroid disorders, unexplained Infertility, and hormonal acne using purely Ayurvedic principles."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can Ayurveda permanently cure PCOS?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "While 'cure' is a strong medical term, Ayurveda can put PCOS into complete, long-term remission. Dr. Arti Singh's treatment removes the root cause (Kapha-Vata blockage and Ama) rather than just inducing periods artificially. Most patients regain natural ovulatory cycles within 3 to 6 months."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How long does an Ayurvedic treatment plan take to show results?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Unlike painkillers, Ayurvedic medicines work on a cellular level. For acute issues like gas or reflux, patients see results in 3-5 days. For chronic metabolic issues like PCOS or Hypothyroidism, visible improvement takes 4-6 weeks, while complete protocol completion requires 3-6 months."
+                  }
+                }
+              ]
+            })
+          }}
+        />
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -435,7 +550,7 @@ export default function AboutPageClient() {
                 onClick={handleCTAConsultationClick}
               >
                 <Calendar className="w-5 h-5 mr-2" />
-                Book Free Consultation
+                Book Video Consultation
               </Button>
             </Link>
             <Link href="/services">

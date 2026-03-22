@@ -10,6 +10,7 @@ import { Mail, MapPin, Calendar, CheckCircle, AlertCircle } from "lucide-react"
 import { submitContactForm } from "@/actions/contact-form"
 import { submitContactFormFallback } from "@/actions/contact-form-fallback"
 import { useAnalytics } from "@/lib/analytics"
+import { useGeoPricing } from "@/hooks/use-geo-pricing"
 
 export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -20,6 +21,7 @@ export default function ContactSection() {
   } | null>(null)
 
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
+  const { pricing, isLoading } = useGeoPricing()
 
   async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
@@ -67,7 +69,7 @@ export default function ContactSection() {
           <div>
             <Card className="border-2">
               <CardHeader>
-                <CardTitle className="text-2xl">Book Your Free Consultation</CardTitle>
+                <CardTitle className="text-2xl">Book Your Video Consultation</CardTitle>
                 <CardDescription>
                   Fill out the form below and Dr. Arti Singh will contact you within 24 hours to schedule your
                   appointment. Online consultations available for international patients.
@@ -136,14 +138,48 @@ export default function ContactSection() {
                     </div>
                   )}
 
+                  {/* Dynamic Geo-Pricing Display */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mt-6 mb-4 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="text-sm font-semibold text-gray-700">Online Consultation Fee:</span>
+                       {isLoading ? (
+                         <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
+                       ) : (
+                         <span className="text-lg font-bold text-green-700 bg-green-100 px-3 py-1 rounded-md">
+                           {pricing.label}
+                         </span>
+                       )}
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Pricing is automatically adjusted based on your physical location to ensure fair global access.
+                    </p>
+                  </div>
+
+                  {/* Mandatory Payment Terms */}
+                  <div className="flex items-start mb-6 bg-yellow-50/50 p-3 rounded border border-yellow-100">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="payment-terms"
+                        name="payment_terms_accepted"
+                        type="checkbox"
+                        required
+                        className="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="payment-terms" className="ml-2 text-sm text-gray-700 cursor-pointer">
+                      I agree to pay the <span className="font-semibold">{isLoading ? 'consultation fee' : pricing.label}</span> consultation fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
+                    </label>
+                  </div>
+
                   <Button
                     type="submit"
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-lg h-14 rounded-xl shadow-lg transition-transform hover:-translate-y-1"
                     size="lg"
                     disabled={isSubmitting}
                   >
-                    <Calendar className="w-5 h-5 mr-2" />
-                    {isSubmitting ? "Submitting..." : "Book Free Consultation"}
+                    <Calendar className="w-5 h-5 mr-3" />
+                    {isSubmitting ? "Submitting Request..." : "Request Video Consultation"}
                   </Button>
                 </form>
 
@@ -247,6 +283,120 @@ export default function ContactSection() {
             </div>
           </div>
         </div>
+
+        {/* FAQs for AEO (Position #0) */}
+        <div className="mt-20 pt-12 border-t border-green-100 max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-gray-600">Important information before booking your consultation.</p>
+          </div>
+
+          <div className="space-y-4">
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer" open>
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                How quickly will Dr. Arti Singh review my consultation request?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or phone to confirm your appointment time and provide the next steps for your Ayurvedic treatment.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Where is Dr. Arti Singh's Ayurvedic clinic physically located?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women worldwide through our highly effective online Ayurvedic consultation platform.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                How do I book an online Ayurvedic consultation for PCOS?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Simply fill out the contact form on this page with your details and mention 'PCOS Online Consultation' in the health concern box. We will arrange a secure video call consultation where Dr. Arti Singh will diagnose your condition and prescribe targeted Ayurvedic protocols.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What should I prepare before my first Ayurvedic consultation?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Please gather your recent medical reports (like pelvic ultrasounds, thyroid panels, or hormone tests), a detailed summary of your current symptoms, your menstrual cycle history, and a list of any allopathic medicines or supplements you are currently taking.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What languages does Dr. Arti Singh speak during consultations?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Dr. Arti Singh is highly fluent in both English and Hindi. She conducts consultations comfortably in either language depending on the patient's preference, ensuring clear communication of complex Ayurvedic and medical concepts.
+              </div>
+            </details>
+          </div>
+        </div>
+
+        {/* JSON-LD FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "How quickly will Dr. Arti Singh review my consultation request?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or phone to confirm your appointment time and provide the next steps for your Ayurvedic treatment."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Where is Dr. Arti Singh's Ayurvedic clinic physically located?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women worldwide through our highly effective online Ayurvedic consultation platform."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How do I book an online Ayurvedic consultation for PCOS?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Simply fill out the contact form on this page with your details and mention 'PCOS Online Consultation' in the health concern box. We will arrange a secure video call consultation where Dr. Arti Singh will diagnose your condition and prescribe targeted Ayurvedic protocols."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What should I prepare before my first Ayurvedic consultation?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Please gather your recent medical reports (like pelvic ultrasounds, thyroid panels, or hormone tests), a detailed summary of your current symptoms, your menstrual cycle history, and a list of any allopathic medicines or supplements you are currently taking."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What languages does Dr. Arti Singh speak during consultations?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Dr. Arti Singh is highly fluent in both English and Hindi. She conducts consultations comfortably in either language depending on the patient's preference, ensuring clear communication of complex Ayurvedic and medical concepts."
+                  }
+                }
+              ]
+            })
+          }}
+        />
+
       </div>
     </section>
   )

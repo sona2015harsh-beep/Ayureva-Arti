@@ -1,19 +1,29 @@
 import { BlogPost } from "./blog-data"
 
 export function generateSchema(post: BlogPost) {
-    // 1. Base MedicalWebPage Schema
-    const medicalSchema = {
-        "@context": "https://schema.org",
+    // 1. Base MedicalWebPage Schema with Speakable & Abstract
+    const medicalSchema: Record<string, unknown> = {
         "@type": "MedicalWebPage",
         "name": post.title,
         "description": post.excerpt,
+        "abstract": post.quickAnswer,
         "image": post.image,
         "datePublished": post.publishDate,
+        "dateModified": post.publishDate,
         "author": {
             "@type": "Physician",
             "name": "Dr. Arti Singh",
             "jobTitle": "BAMS (Ayurvedic Physician)",
-            "url": "https://ayureva.com/about"
+            "url": "https://www.ayureva.in/about"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Ayureva",
+            "url": "https://www.ayureva.in",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.ayureva.in/logo.png"
+            }
         },
         "audience": {
             "@type": "Patient",
@@ -23,17 +33,73 @@ export function generateSchema(post: BlogPost) {
         "reviewedBy": {
             "@type": "Physician",
             "name": "Dr. Arti Singh"
+        },
+        // Speakable schema - tells Google what to read aloud / extract for AI Overview
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": ["#short-answer", "h1", "#faq-section"]
         }
     }
 
-    // 2. Extract FAQs
+    // 2. BreadcrumbList Schema
+    const breadcrumbSchema = {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.ayureva.in"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://www.ayureva.in/blog"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": post.title,
+                "item": `https://www.ayureva.in/blog/${post.slug}`
+            }
+        ]
+    }
+
+    // 3. Article Schema (for Google Discover & News)
+    const articleSchema = {
+        "@type": "Article",
+        "headline": post.title,
+        "description": post.excerpt,
+        "image": post.image ? `https://www.ayureva.in${post.image}` : undefined,
+        "datePublished": post.publishDate,
+        "dateModified": post.publishDate,
+        "author": {
+            "@type": "Person",
+            "name": "Dr. Arti Singh (BAMS)",
+            "url": "https://www.ayureva.in/about"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Ayureva",
+            "url": "https://www.ayureva.in"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://www.ayureva.in/blog/${post.slug}`
+        }
+    }
+
+    // 4. Extract FAQs
     const faqSchema = extractFAQs(post.content);
 
-    // 3. Combine into a Graph
+    // 5. Combine into a Graph
     const graph = {
         "@context": "https://schema.org",
         "@graph": [
             medicalSchema,
+            breadcrumbSchema,
+            articleSchema,
             ...(faqSchema ? [faqSchema] : [])
         ]
     }
@@ -54,7 +120,6 @@ function extractFAQs(htmlContent: string) {
         const answer = match[2].replace(/<[^>]*>/g, "").trim();
 
         // Filter: Include if it has a "?" or starts with a number (common pattern)
-        // or if the length is substantial enough to be a question.
         // Also ensuring the question text isn't "Medical Disclaimer" or similar.
 
         if ((question.includes("?") || match[1].match(/^\d+\./)) && !question.includes("Disclaimer")) {

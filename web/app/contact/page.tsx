@@ -3,11 +3,11 @@ import ContactSection from "@/components/contact-section"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contact Ayureva - Book Consultation with Dr. Arti Singh | Best Ayurveda Treatment Doctor",
+  title: "Contact Dr. Arti Singh | Book Ayurveda Treatment for PCOS Online",
   description:
     "Contact Dr. Arti Singh at Ayureva for PCOS treatment, PCOD treatment, UTI treatment, menstrual disorders treatment, fertility treatment, thyroid treatment. Book online consultation: Email: drartisingh1102@gmail.com | Ayureva.in",
   keywords: [
-    "contact ayurveda treatment doctor",
+    "contact ayurvedic doctor",
     "book consultation Dr. Arti Singh",
     "PCOS treatment doctor appointment",
     "PCOD treatment doctor appointment",

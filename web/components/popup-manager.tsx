@@ -29,14 +29,43 @@ export default function PopupManager() {
       }
     }
 
-    // Show popup after 45 seconds
+    // 1. Exit Intent Trigger
+    const handleMouseLeave = (e: MouseEvent) => {
+      // If mouse moves up towards the address bar (clientY < 10)
+      if (e.clientY < 10) {
+        if (localStorage.getItem("consultation-popup-last-shown")) return;
+        setShowPopup(true);
+        localStorage.setItem("consultation-popup-last-shown", Date.now().toString());
+        document.removeEventListener("mouseleave", handleMouseLeave);
+      }
+    };
+
+    // 2. Scroll Depth Trigger
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent > 60) {
+        if (localStorage.getItem("consultation-popup-last-shown")) return;
+        setShowPopup(true);
+        localStorage.setItem("consultation-popup-last-shown", Date.now().toString());
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+    // 3. Fallback Timer (90 seconds instead of 45 for better UX)
     const initialTimer = setTimeout(() => {
-      setShowPopup(true)
-      localStorage.setItem("consultation-popup-last-shown", Date.now().toString())
-    }, 45000) // 45 seconds
+      if (!localStorage.getItem("consultation-popup-last-shown")) {
+        setShowPopup(true)
+        localStorage.setItem("consultation-popup-last-shown", Date.now().toString())
+      }
+    }, 90000)
+
+    document.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      clearTimeout(initialTimer)
+      clearTimeout(initialTimer);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("scroll", handleScroll);
     }
   }, [])
 

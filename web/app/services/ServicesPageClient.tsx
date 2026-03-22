@@ -710,6 +710,121 @@ export default function ServicesPageClient() {
         </div>
       </section>
 
+      {/* FAQs for AEO (Position #0) */}
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions About Our Services</h2>
+            <p className="text-gray-600">Common questions about Ayureva treatments.</p>
+          </div>
+
+          <div className="space-y-4">
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer" open>
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What Ayurvedic treatments do you offer for PCOS and PCOD?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Our approach to PCOS/PCOD integrates customized herbal formulations (like Shatavari and Ashoka), Panchakarma detoxification, and a specifically tailored anti-inflammatory Ayurvedic diet. This holistic combination naturally regulates hormones and restores normal ovulatory cycles without relying on oral contraceptives.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Is Ayurvedic treatment safe for long-term health issues?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Yes, authentic Ayurvedic medicines prescribed by a qualified BAMS doctor like Dr. Arti Singh are 100% natural, remarkably safe, and designed for long-term root-cause resolution rather than short-term symptom suppression. They strengthen your body's innate healing mechanisms.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Can Ayurveda help with irregular periods?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Absolutely. Ayurveda views irregular periods as a Vata and Pitta imbalance. By utilizing potent emmenagogue herbs safely and making specific lifestyle corrections, Ayurvedic treatments naturally regulate the menstrual cycle, eliminate painful cramps (dysmenorrhea), and normalize blood flow.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Do you provide online Ayurvedic diet and lifestyle consultations?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Yes, Ayureva offers comprehensive online consultations globally. During an extensive video call, Dr. Arti evaluates your Prakriti (body constitution) and Vikriti (imbalance) to map out a precise, personalized, and actionable online Ayurvedic diet and lifestyle protocol.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                How does Ayurveda approach female infertility treatments?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Ayurveda treats female infertility by deeply nourishing the reproductive tissue (Shukra Dhatu). Our treatments focus on reducing systemic inflammation, significantly improving egg quality, clearing fallopian tube blockages natively, and preparing a healthy uterine environment for successful natural conception.
+              </div>
+            </details>
+          </div>
+        </div>
+
+        {/* JSON-LD FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What Ayurvedic treatments do you offer for PCOS and PCOD?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our approach to PCOS/PCOD integrates customized herbal formulations (like Shatavari and Ashoka), Panchakarma detoxification, and a specifically tailored anti-inflammatory Ayurvedic diet. This holistic combination naturally regulates hormones and restores normal ovulatory cycles without relying on oral contraceptives."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is Ayurvedic treatment safe for long-term health issues?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, authentic Ayurvedic medicines prescribed by a qualified BAMS doctor like Dr. Arti Singh are 100% natural, remarkably safe, and designed for long-term root-cause resolution rather than short-term symptom suppression. They strengthen your body's innate healing mechanisms."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can Ayurveda help with irregular periods?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolutely. Ayurveda views irregular periods as a Vata and Pitta imbalance. By utilizing potent emmenagogue herbs safely and making specific lifestyle corrections, Ayurvedic treatments naturally regulate the menstrual cycle, eliminate painful cramps (dysmenorrhea), and normalize blood flow."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do you provide online Ayurvedic diet and lifestyle consultations?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, Ayureva offers comprehensive online consultations globally. During an extensive video call, Dr. Arti evaluates your Prakriti (body constitution) and Vikriti (imbalance) to map out a precise, personalized, and actionable online Ayurvedic diet and lifestyle protocol."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How does Ayurveda approach female infertility treatments?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ayurveda treats female infertility by deeply nourishing the reproductive tissue (Shukra Dhatu). Our treatments focus on reducing systemic inflammation, significantly improving egg quality, clearing fallopian tube blockages natively, and preparing a healthy uterine environment for successful natural conception."
+                  }
+                }
+              ]
+            })
+          }}
+        />
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -722,7 +837,7 @@ export default function ServicesPageClient() {
             <Link href="/contact">
               <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100" onClick={handleConsultationClick}>
                 <Calendar className="w-5 h-5 mr-2" />
-                Book Free Consultation
+                Book Video Consultation
               </Button>
             </Link>
             <Link href="/about">

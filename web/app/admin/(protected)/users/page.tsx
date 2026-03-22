@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
 async function getUsers() {
     return await prisma.profiles.findMany({
         orderBy: { created_at: 'desc' }

@@ -2,11 +2,11 @@ import type { Metadata } from "next"
 import ServicesPageClient from "./ServicesPageClient"
 
 export const metadata: Metadata = {
-  title: "Ayurveda Treatment Services - PCOS PCOD UTI Treatment, Women's Health | Ayureva by Dr. Arti Singh",
+  title: "Ayurvedic Treatment Services for PCOS, PCOD & Women's Health | Ayureva",
   description:
     "Complete Ayurveda treatment services by Dr. Arti Singh: PCOS treatment, PCOD treatment, UTI treatment, menstrual disorders treatment, fertility treatment, thyroid treatment, endometriosis treatment, menopause treatment, diet & nutrition, yoga therapy. Natural & safe women's health solutions at Ayureva.",
   keywords: [
-    "Ayurveda treatment services",
+    "Ayurvedic treatment services",
     "PCOS treatment ayurveda",
     "PCOD ayurvedic treatment",
     "UTI treatment ayurveda",

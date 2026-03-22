@@ -324,7 +324,6 @@ html {
           <AnalyticsProvider>
             <SmoothScroll />
             <ScrollToTop />
-            <PopupManager />
             <Header />
             {children}
             <Footer />

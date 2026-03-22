@@ -1,6 +1,7 @@
 export interface BlogPost {
   slug: string
   title: string
+  quickAnswer: string
   excerpt: string
   content: string // HTML content
   publishDate: string
@@ -9,12 +10,17 @@ export interface BlogPost {
   readTime: string
   image: string
   tags?: string[]
+  citations?: string[]
 }
 
+import { newLongTailPosts } from "./new-blog-data"
+
 export const blogPosts: BlogPost[] = [
+  ...newLongTailPosts,
   {
     slug: "ayurvedic-management-pcos-guide",
-    title: "Ayurvedic Management of PCOS: A Comprehensive Holistic Guide",
+    title: "Can Ayurveda Cure PCOS Permanently? A Doctor Explains the Truth",
+    quickAnswer: "PCOS cannot be 'cured' but can be put into complete remission through Ayurveda. The key mechanism is correcting the Kapha-Vata Dosha imbalance that causes insulin resistance and anovulation. With 3-6 months of Agni correction (digestive fire optimization), Lekhana herbs like Kanchanar Guggulu, and strict Dinacharya (daily routine), most patients achieve regular ovulatory cycles without long-term medication.",
     excerpt:
       "A doctor's in-depth guide to understanding Polycystic Ovary Syndrome (PCOS) through the lens of Ayurveda. Learn about Dosha imbalances, root causes, and safe, natural approaches to restoring hormonal harmony.",
     publishDate: "January 6, 2026",
@@ -309,7 +315,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "pcod-vs-pcos-ayurvedic-difference",
-    title: "PCOD vs PCOS: Understanding the Key Differences & Ayurvedic Treatment",
+    title: "PCOD vs PCOS: What's the Real Difference? Ayurvedic Treatment for Both",
+    quickAnswer: "PCOD is a milder ovarian condition where immature eggs make the ovary bulky, often reversible with diet alone. PCOS is a serious metabolic syndrome involving high androgens, insulin resistance, and anovulation requiring deep Ayurvedic treatment. In Ayurveda, PCOD is early-stage Kapha blockage (Sanga) while PCOS is a Tridosha crisis affecting deep tissues. Both respond well to Ayurvedic protocols but PCOS needs 3-6 months of systematic treatment.",
     excerpt:
       "Are PCOD and PCOS the same? No. Discover the crucial differences between Polycystic Ovarian Disease and Syndrome, and how Ayurveda treats the root cause of each naturally.",
     publishDate: "January 8, 2026",
@@ -666,7 +673,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "ayurvedic-infertility-treatment-egg-quality",
-    title: "Ayurveda for Infertility: Improving Egg Quality Naturally (A Complete Guide)",
+    title: "Low AMH & Egg Quality: Can Ayurveda Help You Conceive Naturally?",
+    quickAnswer: "Yes. AMH indicates egg quantity, not quality — and Ayurveda specializes in quality. The Beeja Sanskara protocol uses Shodhana (detoxification via Virechana) to clear reproductive channels, Uttar Basti (womb therapy with Phala Ghrita) to directly nourish follicles, and Rasayana herbs like Shatavari and Putranjivak to rebuild egg vitality. Many patients with low AMH conceive naturally within 5-6 months without IVF.",
     excerpt:
       "Struggling to conceive? AMH levels low? Ayurveda views infertility not just as a hormonal issue but as a 'Beeja' (Seed) quality issue. Learn the 'Beeja Sanskara' protocol to nourish your eggs.",
     publishDate: "January 11, 2026",
@@ -970,7 +978,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "endometriosis-ayurvedic-treatment-chocolate-cysts",
-    title: "Endometriosis & Chocolate Cysts: Managing Pain Naturally with Ayurveda (A Complete Guide)",
+    title: "Endometriosis Pain Won't Stop? Ayurvedic Treatment Without Surgery",
+    quickAnswer: "Endometriosis occurs when uterine tissue grows outside the uterus, causing severe pain and infertility. Ayurveda treats it as Vata-Kapha imbalance where retrograde menstrual tissue adheres to organs due to sticky Ama (toxins). Treatment combines Kanchanar Guggulu to dissolve growths, Varunadi Kashayam for pelvic decongestion, and Virechana detox to clear the channels. Most patients see significant pain reduction within 2-3 months.",
     excerpt:
       "Is excruciating period pain normal? No. Learn how Ayurveda treats Endometriosis (Chocolate Cysts) by correcting 'Vata' flow and dissolving deep-seated toxins without surgery.",
     publishDate: "January 10, 2026",
@@ -1274,7 +1283,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "hypothyroidism-ayurvedic-treatment-diet",
-    title: "Hypothyroidism (Thyroid) Treatment: Reactivating Your Metabolism with Ayurveda (A Complete Guide)",
+    title: "Thyroid बढ़ गया है? Ayurvedic Diet & Treatment That Actually Works",
+    quickAnswer: "Hypothyroidism in Ayurveda is a Kapha-Meda disorder where sluggish Agni (digestive fire) fails to produce enough thyroid hormone. The treatment protocol combines Kanchanar Guggulu (the #1 Ayurvedic thyroid herb that decongest the gland), an iodine-rich diet with seaweed and coconut oil, and strict avoidance of raw cruciferous vegetables and soy. Most patients reduce their TSH levels within 3-4 months and many taper off synthetic thyroxine under supervision.",
     excerpt:
       "Taking Thyroxine but still feel tired and gaining weight? Discover the Ayurvedic view on Thyroid as 'Agni Mandya' and how to wake up your sluggish gland naturally.",
     publishDate: "January 11, 2026",
@@ -1585,7 +1595,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "heavy-period-bleeding-ayurvedic-treatment",
-    title: "Heavy Period Bleeding (Menorrhagia): How to Stop the Flow Naturally (A Complete Guide)",
+    title: "How to Stop Heavy Period Bleeding? Ayurvedic Home Remedies That Work",
+    quickAnswer: "Heavy bleeding (Raktapradar) in Ayurveda is caused by excess Pitta (heat) in the blood that thins vessel walls and prevents clotting. The immediate remedy is Ashoka bark decoction — the most powerful Ayurvedic uterine tonic — combined with Praval Pishti (coral calcium) to cool Pitta and Nagkesar to promote clotting. Dietary shifts like avoiding spicy food and adding pomegranate juice reduce bleeding by 40-60% within 2 cycles.",
     excerpt:
       "Tired of changing pads every hour? Heavy bleeding is not just inconvenient; it drains your life force (Ojas). Discover how 'Stambhana' herbs like Ashoka and Lodhra can stop the flow.",
     publishDate: "January 12, 2026",
@@ -1883,7 +1894,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "blocked-fallopian-tubes-ayurvedic-treatment",
-    title: "Blocked Fallopian Tubes: Can Ayurveda Open Them Without Surgery? (A Complete Guide)",
+    title: "Can Ayurveda Open Blocked Fallopian Tubes Without Surgery?",
+    quickAnswer: "In many cases, yes. Ayurveda treats tubal blockage as Vata-Kapha Sanga (channel obstruction) caused by inflammatory adhesions and mucus accumulation. Uttar Basti — a specialized uterine oil therapy using Kshar Taila — is the gold standard, directly dissolving mild-to-moderate adhesions. Combined with Triphala Guggulu to reduce inflammation and castor oil packs externally, partial blockages often clear within 3-5 months. Complete blockages may still require surgical evaluation.",
     excerpt:
       "Diagnosis: Tubal Blockage. Prescription: IVF? Not necessarily. Learn how 'Uttar Basti' therapy can mechanically and herbally unblock tubes and restore natural fertility.",
     publishDate: "January 14, 2026",
@@ -2178,7 +2190,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "ayurvedic-weight-loss-tips-agni",
-    title: "Ayurvedic Weight Loss: Why 'Agni' Matters More Than Calories (A Complete Guide)",
+    title: "What is the Best Ayurvedic Way to Lose Weight Without Dieting?",
+    quickAnswer: "Ayurveda treats obesity as a Meda Dhatu (fat tissue) excess caused by weak Agni (digestive fire), not excess calories. The solution targets your metabolic fire: Trikatu before meals ignites digestion, Triphala at night scrapes accumulated fat, and replacing wheat with millets like Barley and Jowar reduces the Kapha heaviness that stores fat. Avoid cold water, daytime sleeping, and sweet foods. Most patients lose 3-5 kg in the first month without calorie counting.",
     excerpt:
       "Counting calories but not losing weight? Ayurveda offers a different perspective. Learn how to ignite your digestive fire (Agni), remove toxins (Ama), and lose weight sustainably.",
     publishDate: "January 15, 2026",
@@ -2512,7 +2525,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "recurrent-uti-ayurvedic-treatment-home-remedies",
-    title: "Recurrent UTIs: Breaking the Antibiotic Cycle with Ayurveda (A Complete Guide)",
+    title: "Why Does My UTI Keep Coming Back? Ayurvedic Solution Without Antibiotics",
+    quickAnswer: "Recurrent UTIs happen because antibiotics kill bacteria but don't fix the underlying Pitta-Kapha imbalance creating a hospitable environment for reinfection. Ayurveda's approach: Chandraprabha Vati clears urinary channel inflammation, Gokshuradi Guggulu strengthens bladder tissue, and Punarnava flushes bacteria naturally while rebuilding the mucosal barrier. Drinking Coriander seed water and avoiding spicy food cools the Mutravaha Srotas (urinary channel). Most patients break the cycle within 2-3 months.",
     excerpt:
       "Do you get a UTI every few months? Antibiotics kill the bacteria but weaken your defense. Learn how to cool 'Pitta' in the bladder and stop recurrence forever.",
     publishDate: "January 16, 2026",
@@ -2810,7 +2824,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "white-discharge-leucorrhea-ayurvedic-treatment",
-    title: "White Discharge (Leucorrhea): When to Worry & Ayurvedic Home Remedies (A Complete Guide)",
+    title: "White Discharge Problem: Best Ayurvedic Treatment & Home Remedies",
+    quickAnswer: "White discharge (Shweta Pradar) in Ayurveda is caused by Kapha aggravation in the reproductive channels, creating excess mucus. Normal discharge is thin, clear, and odorless. Abnormal discharge — thick, yellow, itchy, or foul-smelling — signals infection or Kapha-Pitta imbalance. The Ayurvedic protocol uses Pradrantak Churna internally, Triphala Kashaya wash externally, and dietary changes like avoiding dairy, sugar, and cold foods. Most cases resolve within 4-6 weeks of consistent treatment.",
     excerpt:
       "Is your white discharge normal or an infection? Learn the difference between physiological discharge and 'Sweta Pradara', and how to manage it with basic kitchen herbs.",
     publishDate: "January 17, 2026",
@@ -3171,7 +3186,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "fatty-liver-ayurvedic-treatment-diet",
-    title: "Fatty Liver (Grade 1 & 2): Reversing Liver Damage Naturally (A Complete Guide)",
+    title: "Can Ayurveda Reverse Fatty Liver? Diet & Treatment for Grade 1-2",
+    quickAnswer: "Yes, Grade 1-2 fatty liver is fully reversible with Ayurveda. The liver is called 'Yakrit' and fatty liver is Meda Roga (fat accumulation). Ayurvedic treatment uses Arogyavardhini Vati as the primary liver-regenerating medicine, Kutki (Picrorhiza) to flush bile and dissolve fat deposits, and Triphala Guggulu to scrape Meda Dhatu. Avoid alcohol, refined oil, and sugar completely. Most patients see normal ultrasound within 4-6 months.",
     excerpt:
       "Diagnosed with Fatty Liver but don't drink alcohol? 'Non-Alcoholic Fatty Liver' is the new epidemic. Learn how herbs like Kutki and Bhumi Amla can detoxify your liver.",
     publishDate: "January 18, 2026",
@@ -3479,7 +3495,8 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "diabetes-ayurvedic-treatment-bloodsugar",
-    title: "Diabetes (Madhumeha): Managing Blood Sugar Without Weakness (A Complete Guide)",
+    title: "Ayurvedic Treatment for Diabetes: How to Control Blood Sugar Naturally?",
+    quickAnswer: "Diabetes (Madhumeha) in Ayurveda is a Kapha-Meda disorder where excess sweetness overflows into urine. The protocol uses Shilajit to improve insulin sensitivity, Gudmar (Gymnema) which literally means 'sugar destroyer' to reduce cravings, and Vijaysar wood tumbler water to lower fasting glucose. Combined with a millet-based diet replacing rice/wheat and 30 minutes of Surya Namaskar daily, most Type 2 patients reduce HbA1c by 1-2 points within 3 months.",
     excerpt:
       "Is your blood sugar controlled but your energy low? Ayurveda sees Diabetes not just as 'Sugar' but as a disease of 'Ojas' (Vitality). Treating it requires more than just Metformin.",
     publishDate: "January 19, 2026",
@@ -3802,7 +3819,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "chronic-fatigue-ayurvedic-treatment-ojas",
-    title: "Chronic Fatigue: Why You Feel Tired All the Time (Kapha vs Vata Fatigue)",
+    title: "Always Feeling Tired? Ayurvedic Cure for Chronic Fatigue & Low Energy",
+    quickAnswer: "Chronic fatigue has two Ayurvedic root causes: Kapha fatigue (heavy, sluggish, oversleeping) and Vata fatigue (wired-and-tired, anxious exhaustion). Kapha fatigue needs stimulation — Trikatu, dry ginger tea, and vigorous exercise. Vata fatigue needs nourishment — Ashwagandha, warm milk with ghee, and grounding foods. The key diagnostic clue: if you feel worse after sleeping MORE, it's Kapha. If you feel worse after sleeping LESS, it's Vata. Treatment differs completely based on the type.",
     excerpt:
       "Sleep 8 hours but wake up exhausted? You might be suffering from 'Ojo Kshaya' (Depletion of Vitality) or 'Ama' (Toxic Load). Find out your fatigue type and how to fix it.",
     publishDate: "January 20, 2026",
@@ -4145,7 +4163,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "ibs-ayurvedic-treatment-grahani",
-    title: "IBS & Bloating (Grahani): Stop the Gas & Indigestion Cycle",
+    title: "IBS & Bloating Ka Ayurvedic Ilaj: Stop Gas & Indigestion Permanently",
+    quickAnswer: "IBS (Grahani Roga) in Ayurveda is caused by weakened Agni (digestive fire) that alternates between hyperactive and sluggish states, causing the bloating-diarrhea-constipation cycle. The cornerstone treatment is Takrarishta (medicated buttermilk) to rebuild gut flora, Hingvashtaka Churna before meals to regulate Vata movement, and strict meal timing — eating only when the previous meal is fully digested. Most IBS patients see 70-80% symptom reduction within 6-8 weeks.",
     excerpt:
       "Alternating diarrhea and constipation? Unpredictable bloating? This is 'Grahani' - a weak digestive thermostat. Learn how buttermilk (Takra) can heal your gut lining.",
     publishDate: "January 21, 2026",
@@ -4445,7 +4464,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "acid-reflux-gerd-ayurvedic-treatment",
-    title: "Acid Reflux (GERD): Cooling the Fire of 'Amla Pitta'",
+    title: "Acid Reflux Won't Go Away? Ayurvedic Treatment for GERD That Works",
+    quickAnswer: "Acid reflux (Amlapitta) is caused by aggravated Pitta Dosha that overproduces stomach acid and pushes it upward due to disturbed Vata. Unlike antacids that suppress acid temporarily, Ayurveda cools Pitta at its root. Shatavari Ghrita coats and heals the esophageal lining, Praval Pishti (coral calcium) neutralizes acid naturally, and Avipattikar Churna regulates HCl production. Stop eating after 7 PM, avoid citrus and tomato, and sleep on your left side. Relief begins within 1-2 weeks.",
     excerpt:
       "Burning chest, sour burps, and reliance on antacids? Ayurveda calls this 'Amla Pitta' (Sour Fire). Learn how to heal your esophagus naturally with cooling herbs.",
     publishDate: "January 22, 2026",
@@ -4760,7 +4780,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "severe-constipation-ayurvedic-remedies",
-    title: "Severe Constipation: Safe Management Without Laxative Dependence",
+    title: "Ayurvedic Remedy for Severe Constipation Without Laxative Dependency",
+    quickAnswer: "Chronic constipation is a Vata disorder — dryness and irregular movement in the colon. Chemical laxatives worsen it long-term by making the gut lazy. Ayurveda's approach: Triphala at bedtime (the #1 bowel regulator that tones intestinal muscles without dependency), 1 tsp ghee in warm milk before sleep to lubricate the channel, and Abhyanga (oil massage) on the abdomen with sesame oil to stimulate peristalsis. Soaked raisins and figs in the morning work within 3-5 days for most patients.",
     excerpt:
       "Dependent on pills to poop? Chronic constipation (Vibandha) dries out your colon and causes toxicity. Discover safe oil-based remedies.",
     publishDate: "January 23, 2026",
@@ -5066,7 +5087,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "bloating-gas-ayurvedic-home-remedies",
-    title: "Bloating & Gas: 5 Spices to Fix Vata in the Gut",
+    title: "Pet Mein Gas Banta Hai? 5 Ayurvedic Kitchen Spices That Fix Bloating",
+    quickAnswer: "Bloating is trapped Vata (air) in the gut caused by weak Agni (digestive fire). The 5 Ayurvedic spice fixes: (1) Hing (Asafoetida) — the #1 anti-gas spice, add a pinch to dal; (2) Ajwain (Carom seeds) — chew 1/2 tsp with warm water after meals; (3) Jeera (Cumin) — dry roast and drink as tea; (4) Saunf (Fennel) — chew after meals to prevent gas formation; (5) Adrak (Ginger) — fresh ginger slice with rock salt before eating ignites Agni. Results within 24-48 hours.",
     excerpt:
       "Look 6 months pregnant after a meal? Gas (Adhmana) is a sign of poor digestion. Here are 5 carminative spices from your kitchen to deflate the balloon.",
     publishDate: "January 24, 2026",
@@ -5396,7 +5418,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "hemorrhoids-piles-ayurvedic-treatment-kshara",
-    title: "Hemorrhoids (Piles): Non-Surgical Ayurvedic Management",
+    title: "Piles Ka Ayurvedic Ilaj: Non-Surgical Treatment That Actually Works",
+    quickAnswer: "Hemorrhoids (Arsha) in Ayurveda are caused by chronic constipation (Vata) that creates pressure and swelling in rectal veins. For Grade 1-2 piles, Ayurveda offers excellent non-surgical options: Kshara Sutra (medicated thread) for external piles, Arshoghni Vati internally to shrink the mass, Triphala to prevent straining, and Jatyadi Oil application for pain relief. Sitz baths with Triphala decoction reduce inflammation within days. Surgery is only needed for Grade 3-4 prolapsed piles.",
     excerpt:
       "Bleeding, pain, and shame? You don't need surgery for Grade 1 & 2 Piles. Learn about 'Kshara Sutra' and the diet that shrinks hemorrhoids naturally.",
     publishDate: "January 25, 2026",
@@ -5791,7 +5814,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "hormonal-acne-ayurvedic-treatment-face-mapping",
-    title: "Hormonal Acne: Treating Cystic Breakouts from the Inside Out",
+    title: "Hormonal Acne Ka Ayurvedic Treatment: Clear Skin from Inside Out",
+    quickAnswer: "Hormonal acne is a Pitta-Rakta Dosha disorder — excess heat in the blood erupts through the skin as cystic, painful breakouts along the jawline and chin. Topical creams fail because the root is internal. Ayurveda's approach: Kaishore Guggulu purifies Rakta Dhatu (blood tissue), Manjistha cleanses deep-seated heat, and Kumkumadi Tailam applied externally heals scars. The critical dietary change: eliminate dairy and refined sugar which spike insulin and testosterone. Clear skin in 2-3 menstrual cycles.",
     excerpt:
       "Acne on the jawline? Painful cysts that leave scars? Creams won't fix 'Yauvan Pidika'. You need to purify your blood (Rakta Shodhana) and balance your hormones.",
     publishDate: "January 26, 2026",
@@ -6172,7 +6196,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "severe-hair-fall-ayurvedic-treatment-regrowth",
-    title: "Severe Hair Fall: Is it Pitta Heat or Vata Dryness?",
+    title: "Why is My Hair Falling So Much? Ayurvedic Treatment for Hair Regrowth",
+    quickAnswer: "Hair fall has two Ayurvedic causes: Pitta hair fall (premature greying, thinning at crown, oily scalp with dandruff) and Vata hair fall (dry, brittle, breaking hair with rough scalp). Pitta treatment uses Bhringraj Oil (the 'King of Hair Herbs') and blood-cooling herbs like Amalaki. Vata treatment uses Sesame oil massage and nourishing Rasayanas like Ashwagandha. The universal remedy: Nasya with Anu Taila (nasal oil drops) that directly nourishes hair roots via the sinuses. Results visible in 60-90 days.",
     excerpt:
       "Losing clumps of hair in the shower? Hair fall (Khalitya) is a sign of bone tissue weakness. Discover the Bhringraj oil secrets and 'Nasya' therapy for regrowth.",
     publishDate: "January 27, 2026",
@@ -6571,7 +6596,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "melasma-pigmentation-ayurvedic-treatment",
-    title: "Melasma & Pigmentation: Blood Purification Secrets for Clear Skin",
+    title: "Melasma & Dark Spots: Ayurvedic Blood Purification for Clear Skin",
+    quickAnswer: "Melasma is not just sun damage — it's a Bhrajaka Pitta disorder where impure blood deposits melanin unevenly under the skin. Sunscreen alone won't fix it because the root is internal liver heat and hormonal imbalance. Ayurveda's protocol: Manjistha and Sariva decoction for Rakta Shodhana (blood purification), Kumkumadi Tailam with real saffron applied nightly for depigmentation, and Aloe Vera pulp internally to cool the liver. Avoid direct sun, spicy food, and caffeine. Visible lightening in 8-12 weeks.",
     excerpt:
       "Dark patches on your cheeks? Melasma is often called the 'Mask of Pregnancy' but can affect anyone. Treat the root cause—Liver Heat (Pitta)—naturally.",
     publishDate: "January 28, 2026",
@@ -6887,7 +6913,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "anti-aging-ayurvedic-rasayana-herbs",
-    title: "Anti-Aging Ayurveda: Rasayana Herbs for Glowing Skin at 40+",
+    title: "Best Ayurvedic Anti-Aging Herbs for Glowing Skin After 40",
+    quickAnswer: "Aging in Ayurveda is governed by Rasayana therapy — the science of rejuvenation. The top 5 anti-aging herbs: (1) Amalaki (Indian Gooseberry) — the richest natural source of Vitamin C that rebuilds collagen; (2) Ashwagandha — reduces cortisol that accelerates aging; (3) Shatavari — estrogen-balancing herb for post-menopausal skin; (4) Guduchi (Giloy) — the 'Amrit' herb that regenerates cells; (5) Brahmi — prevents cognitive decline. Combined with Abhyanga (oil massage) and adequate sleep, visible results appear within 60 days.",
     excerpt:
       "Botox freezes your face, but Rasayana renews your life. Discover the ancient science of 'Vayasthapana' (Age Arresting) to maintain youthfulness naturally.",
     publishDate: "January 29, 2026",
@@ -7180,7 +7207,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "dinacharya-ayurvedic-daily-routine",
-    title: "Dinacharya: The Perfect Daily Routine for Hormonal Balance",
+    title: "What is the Best Ayurvedic Daily Routine (Dinacharya) for Hormonal Balance?",
+    quickAnswer: "Dinacharya is Ayurveda's precise daily routine aligned with your body's natural circadian rhythm. The non-negotiable steps for hormonal balance: wake before 6 AM (Brahma Muhurta), oil pull with sesame oil for 10 minutes, practice Abhyanga (self-massage), eat your largest meal at noon when Pitta digestive fire peaks, avoid screens after 8 PM, and sleep by 10 PM before the Pitta night cycle activates. Following this routine alone can regulate periods within 2-3 cycles for many women.",
     excerpt:
       "Waking up tired? Constipated? Anxious? You are fighting your biological clock. Align with the sun using this step-by-step Ayurvedic routine.",
     publishDate: "January 30, 2026",
@@ -7488,7 +7516,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "anxiety-ayurvedic-treatment-vata-mind",
-    title: "Anxiety & Overthinking: Calming the 'Vata' Mind",
+    title: "Ayurvedic Treatment for Anxiety & Overthinking: Calm the Vata Mind",
+    quickAnswer: "Anxiety is a Vata disorder — excess air element creates racing thoughts, worry spirals, and restless energy. Ayurveda's anti-anxiety protocol: Brahmi (Bacopa) calms neural hyperactivity, Ashwagandha reduces cortisol by 27% (clinically proven), Jatamansi (Spikenard) is Ayurveda's natural anxiolytic that regulates GABA. The lifestyle fix: warm sesame oil foot massage before bed grounds Vata instantly, and Nasya (nasal oil) with Brahmi Ghrita directly calms the mind. Most patients feel noticeably calmer within 2-3 weeks.",
     excerpt:
       "Can't switch off your brain at night? Heart racing for no reason? This is 'Vata' aggravation in the nervous system. Calm the storm with these grounding herbs.",
     publishDate: "January 31, 2026",
@@ -7793,7 +7822,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "sleep-hygiene-insomnia-ayurveda-nidra",
-    title: "Sleep Hygiene: Ayurvedic Secrets for Deep, Restorative Sleep",
+    title: "Can't Sleep at Night? Ayurvedic Remedies for Deep Sleep (No Pills)",
+    quickAnswer: "Insomnia in Ayurveda is a Tarpak Kapha deficiency — the nourishing fluid that cushions the brain dries up due to excess Vata or Pitta. The protocol: warm milk with Ashwagandha and nutmeg 30 minutes before bed (rebuilds Tarpak Kapha), Shirodhara (warm oil stream on forehead) for severe cases, and Jatamansi tablets as Ayurveda's natural melatonin. Critical lifestyle fixes: no screens after 8 PM, dinner before 7 PM, and foot massage with Brahmi oil. Deep sleep restored within 7-10 days.",
     excerpt:
       "Tossing and turning? Waking up between 2-4 AM? Sleep (Nidra) is one of the Three Pillars of Life. Learn to master your circadian rhythm.",
     publishDate: "February 1, 2026",
@@ -8093,7 +8123,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "vata-pitta-kapha-dosha-quiz-guide",
-    title: "Understanding Your Dosha: Are you Vata, Pitta, or Kapha? (Guide)",
+    title: "What is My Dosha Type? Ayurvedic Guide to Vata, Pitta & Kapha",
+    quickAnswer: "Your Dosha is your unique mind-body constitution determined at conception. Vata types are thin, creative, anxious, with dry skin and irregular digestion. Pitta types are medium-built, driven, irritable, with sensitive skin and strong appetite. Kapha types are sturdy, calm, slow, with oily skin and sluggish digestion. Most people are dual-Dosha (e.g., Vata-Pitta). Your Prakriti never changes but your Vikriti (current imbalance) does. Knowing your Dosha determines your ideal diet, exercise, sleep schedule, and herbal protocol.",
     excerpt:
       "Why does your friend eat twice as much as you but stay thin? Why do you get angry when hungry? It is all in your 'Prakriti'. Decode your body type now.",
     publishDate: "February 2, 2026",
@@ -8506,7 +8537,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "menopause-ayurvedic-treatment-hot-flashes",
-    title: "Menopause Transition: Hot Flashes & Hormonal Balance after 45",
+    title: "Hot Flashes After 45? Ayurvedic Treatment for Menopause Symptoms",
+    quickAnswer: "Menopause is not a disease — it's a natural transition from Pitta phase to Vata phase of life. Hot flashes occur when residual Pitta heat has no menstrual outlet. Ayurveda's protocol: Shatavari (the #1 menopausal herb) nourishes Rasa Dhatu and balances estrogen decline, Praval Pishti cools Pitta flashes, and Ashwagandha prevents bone density loss. Avoid spicy food, alcohol, and stress. Practicing Sheetali Pranayama (cooling breath) provides immediate relief from hot flashes. Most symptoms ease within 4-6 weeks.",
     excerpt:
       "Menopause is not a disease; it is a transition of power. Hot flashes (Pitta) and dryness (Vata) are signs of imbalance. Smooth your transition with Shatavari and cooling herbs.",
     publishDate: "February 3, 2026",
@@ -8801,7 +8833,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "post-partum-care-ayurveda-sutika-paricharya",
-    title: "Post-Partum Care: The First 40 Days (Sutika Paricharya)",
+    title: "Delivery Ke Baad Kya Kare? Ayurvedic Post-Partum Care (First 40 Days)",
+    quickAnswer: "The first 40 days post-delivery (Sutika Kala) are the most critical in Ayurveda — your body's Vata is maximally aggravated from the 'empty space' left by the baby. The protocol: Dashamoola Kwatha decoction cleans the uterus, Shatavari increases breast milk, warm sesame oil Abhyanga daily restores tissue, and a strict warm, liquid diet of Khichdi with ghee rebuilds Agni. Complete rest, no cold water, no raw foods, and belly binding. Following Sutika Paricharya prevents lifelong hormonal issues.",
     excerpt:
       "In Ayurveda, the 40 days after birth determine your health for the next 40 years. Why you must avoid cold water and why 'Gond Ladoo' is medicine.",
     publishDate: "February 4, 2026",
@@ -9072,7 +9105,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "milk-ghee-ayurveda-myths-facts",
-    title: "The Truth About Milk & Ghee: Harmful or Healing?",
+    title: "Is Milk & Ghee Good or Bad? The Ayurvedic Truth Nobody Tells You",
+    quickAnswer: "In Ayurveda, milk and ghee are NOT universally good or bad — it depends entirely on your Dosha and Agni strength. A2 cow milk (not packet milk) is Rasayana for Vata and Pitta types with strong digestion. Ghee is the only fat that strengthens Agni rather than suppressing it. But for Kapha types with weak digestion, milk creates Ama (toxins) and mucus. The rule: if milk causes bloating, gas, or mucus within 30 minutes, your Agni cannot digest it. Switch to warm spiced milk or avoid it entirely.",
     excerpt:
       "Vegans say dairy is poison. Ayurveda calls it 'Amrita' (Nectar). Who is right? Why A2 Cow Milk is different from supermarket milk.",
     publishDate: "February 5, 2026",
@@ -9353,7 +9387,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "seasonal-detox-ritucharya-immunity",
-    title: "Seasonal Detox (Ritucharya): How to Transition Your Diet for Immunity",
+    title: "Ayurvedic Seasonal Detox (Ritucharya): Change Your Diet, Boost Immunity",
+    quickAnswer: "Ritucharya is Ayurveda's seasonal regimen — eating wrong foods for the season is the #1 cause of disease. In summer (Grishma), eat cooling foods like cucumber, coconut water, and avoid spicy food to pacify Pitta. In monsoon (Varsha), drink ginger-lemon water and avoid raw salads to counter aggravated Vata. In winter (Hemanta), eat heavy, warm, oily foods and Chyawanprash to build immunity. The junction between seasons (Ritu Sandhi) is when you're most vulnerable — do a 3-day Khichdi detox at every seasonal change.",
     excerpt:
       "Why do you get sick when the seasons change? It's 'Ritu Sandhi'. Learn how to detox your body during Spring (Vasant) and Autumn (Sharad) to stay immune.",
     publishDate: "February 6, 2026",
@@ -9647,7 +9682,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "eczema-ayurvedic-treatment-vicharchika",
-    title: "Eczema (Vicharchika): The Kapha-Pitta Skin Detox",
+    title: "Eczema Ka Ayurvedic Ilaj: Permanent Cure for Itchy, Dry Skin",
+    quickAnswer: "Eczema (Vicharchika) in Ayurveda is a Kapha-Pitta Rakta Dosha disorder where toxins in the blood manifest as itchy, dry, cracking skin. Steroid creams suppress symptoms temporarily but thin the skin long-term. Ayurveda's approach: Panchatikta Ghrita (five-bitter ghee) is the gold standard that purifies blood from within, Neem and Manjistha cleanse Rakta Dhatu, and Jatyadi Oil applied externally heals cracked skin. Strict avoidance of dairy, fermented foods, and nightshades is essential. Significant improvement within 6-8 weeks.",
     excerpt:
       "Is your skin weeping, red, and intensely itchy? This is 'Vicharchika'. Creams only suppress it. Learn how to detoxify your blood (Rakta Shodhana) with Neem and Manjistha.",
     publishDate: "January 23, 2026",
@@ -9949,7 +9985,8 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "psoriasis-ayurvedic-treatment-kitibha",
-    title: "Psoriasis (Kitibha): Healing the Fish-Scale Skin",
+    title: "Psoriasis Ka Ayurvedic Treatment: Can It Be Cured Permanently?",
+    quickAnswer: "Psoriasis (Kitibha Kushtha) is one of the most stubborn skin diseases, but Ayurveda has the highest success rate among all systems of medicine for it. The root cause is Vata-Kapha vitiation creating thick, silvery, fish-scale patches. The protocol: Panchakarma detox (especially Vamana and Virechana) is mandatory as the first step, Guduchi Sattva rebuilds skin immunity, and Bakuchi (Psoralea) oil applied externally promotes repigmentation. Strict diet: no dairy, no nightshades, no red meat, no alcohol. 60-70% clearance achievable in 3-6 months.",
     excerpt:
       "Silver scales, dry patches, and joint pain? Psoriasis is an autoimmune condition triggered by stress ('Vata'). Learn why 'Takra Dhara' and stress management are the keys to remission.",
     publishDate: "January 24, 2026",
