@@ -11,12 +11,14 @@
  */
 
 import { google } from "googleapis";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const SUBMITTED_LOG_FILE = join(__dirname, "submitted-urls.json");
 
 const SITE_URL = "https://www.ayureva.in";
 
@@ -127,20 +129,39 @@ async function submitUrls() {
     process.exit(1);
   }
 
+  // Load previously submitted URLs
+  let submittedUrls = [];
+  if (existsSync(SUBMITTED_LOG_FILE)) {
+    try {
+      submittedUrls = JSON.parse(readFileSync(SUBMITTED_LOG_FILE, "utf8"));
+      console.log(`✅ Found ${submittedUrls.length} previously submitted URLs. Skipping them.`);
+    } catch {
+      console.error("Failed to read submitted-urls.json, starting fresh.");
+    }
+  }
+
   const auth = new google.auth.GoogleAuth({
     credentials: keyFile,
     scopes: ["https://www.googleapis.com/auth/indexing"],
   });
 
   const client = await auth.getClient();
-  const urls = getAllUrls();
+  const allUrls = getAllUrls();
+  
+  // Filter out already submitted URLs
+  const urlsToSubmit = allUrls.filter(url => !submittedUrls.includes(url));
 
-  console.log(`\n📋 Submitting ${urls.length} URLs to Google Indexing API...\n`);
+  if (urlsToSubmit.length === 0) {
+    console.log("\n🎉 All URLs have already been submitted successfully! Nothing to do.\n");
+    return;
+  }
 
-  let success = 0;
-  let failed = 0;
+  console.log(`\n📋 Submitting ${urlsToSubmit.length} NEW URLs to Google Indexing API...\n`);
 
-  for (const url of urls) {
+  let successCount = 0;
+  let failedCount = 0;
+
+  for (const url of urlsToSubmit) {
     try {
       const res = await client.request({
         url: "https://indexing.googleapis.com/v3/urlNotifications:publish",
@@ -153,28 +174,38 @@ async function submitUrls() {
 
       if (res.status === 200) {
         console.log(`  ✅ ${url}`);
-        success++;
+        submittedUrls.push(url); // Save to successful history
+        successCount++;
       } else {
         console.log(`  ⚠️  ${url} — Status: ${res.status}`);
-        failed++;
+        failedCount++;
       }
     } catch (error) {
       const msg = error?.response?.data?.error?.message || error.message;
-      console.log(`  ❌ ${url} — ${msg}`);
-      failed++;
+      
+      if (msg.includes("Quota exceeded")) {
+        console.log(`\n🛑 QUOTA REACHED: Stopping submission. You can resume tomorrow.`);
+        console.log(`  ❌ ${url} — ${msg}`);
+        break; // Stop loop immediately on quota error
+      } else {
+        console.log(`  ❌ ${url} — ${msg}`);
+        failedCount++;
+      }
     }
+
+    // Save progress after every request so we don't lose it on crash
+    writeFileSync(SUBMITTED_LOG_FILE, JSON.stringify(submittedUrls, null, 2));
 
     // Small delay to respect rate limits
     await new Promise((r) => setTimeout(r, 200));
   }
 
   console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-  console.log(`📊 RESULTS: ${success} submitted ✅ | ${failed} failed ❌`);
+  console.log(`📊 RESULTS: ${successCount} submitted ✅ | ${failedCount} failed ❌`);
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
 
-  if (success > 0) {
-    console.log("🚀 Google will now prioritize crawling these URLs!");
-    console.log("   Check indexing status in Search Console within 24-48h.\n");
+  if (urlsToSubmit.length > successCount) {
+    console.log(`⏳ ${urlsToSubmit.length - successCount} URLs remaining. Run this script again tomorrow!\n`);
   }
 }
 
