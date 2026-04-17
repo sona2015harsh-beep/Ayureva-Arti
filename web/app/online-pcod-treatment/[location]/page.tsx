@@ -33,12 +33,12 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
     title,
     description,
     alternates: {
-      canonical: `https://ayureva.in/online-pcod-treatment/${locData.id}`,
+      canonical: `https://www.ayureva.in/online-pcod-treatment/${locData.id}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://ayureva.in/online-pcod-treatment/${locData.id}`,
+      url: `https://www.ayureva.in/online-pcod-treatment/${locData.id}`,
       type: "website",
     },
   }
@@ -57,7 +57,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
     "@type": "MedicalOrganization",
     name: `Ayureva PCOD Clinic - Serving ${locData.name}`,
     description: `Online Ayurvedic PCOD/PCOS clinic offering specialized video consultations for patients in ${locData.name}, ${locData.state}.`,
-    url: `https://ayureva.in/online-pcod-treatment/${locData.id}`,
+    url: `https://www.ayureva.in/online-pcod-treatment/${locData.id}`,
     medicalSpecialty: "Ayurvedic Treatment for PCOD",
     availableService: {
       "@type": "MedicalTherapy",

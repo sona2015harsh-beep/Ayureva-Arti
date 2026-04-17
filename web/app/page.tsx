@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: "Ayureva - Best Ayurveda Treatment | PCOS PCOD UTI Treatment by Dr. Arti Singh",
     description:
       "Ayureva by Dr. Arti Singh offers specialized Ayurveda treatment for PCOS treatment, PCOD treatment, UTI treatment, menstrual disorders. Visit Ayureva.in for natural, safe & effective solutions.",
-    url: "https://ayureva.in",
+    url: "https://www.ayureva.in",
     siteName: "Ayureva",
     images: ["/ayurvedic-doctor.png"],
   },

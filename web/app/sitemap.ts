@@ -3,7 +3,7 @@ import { blogPosts } from "@/lib/blog-data"
 import { targetLocations } from "@/lib/locations"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = "https://ayureva.in"
+    const baseUrl = "https://www.ayureva.in"
     const currentDate = new Date()
 
     // 1. Static Routes

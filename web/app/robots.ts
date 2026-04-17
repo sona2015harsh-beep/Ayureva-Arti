@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: ["/api/", "/admin/"],
         },
-        sitemap: "https://ayureva.in/sitemap.xml",
+        sitemap: "https://www.ayureva.in/sitemap.xml",
     }
 }

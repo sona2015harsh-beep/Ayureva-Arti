@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "Holistic Health Consultation",
     "Ayurvedic Gynecologist Online",
   ],
-  authors: [{ name: "Dr. Arti Singh", url: "https://ayureva.in" }],
+  authors: [{ name: "Dr. Arti Singh", url: "https://www.ayureva.in" }],
   creator: "Ayureva by Dr. Arti Singh",
   publisher: "Ayureva",
   robots: {
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://ayureva.in",
+    url: "https://www.ayureva.in",
     siteName: "Ayureva - Best Ayurveda Treatment by Dr. Arti Singh",
     title: "Ayureva - Best Ayurveda Treatment | PCOS PCOD UTI Treatment Specialist",
     description:
@@ -106,8 +106,8 @@ const jsonLd = {
   alternateName: ["Ayureva Clinic", "Ayureva by Dr. Arti Singh", "Ayureva.in", "Ayurveda Treatment Center"],
   description:
     "Ayureva - Leading Ayurveda treatment clinic by Dr. Arti Singh offering natural PCOS treatment, PCOD treatment, UTI treatment, menstrual disorders treatment, fertility treatment, thyroid treatment, and comprehensive women's health solutions",
-  url: "https://ayureva.in",
-  sameAs: ["https://ayureva.in", "https://www.ayureva.in"],
+  url: "https://www.ayureva.in",
+  sameAs: ["https://www.ayureva.in"],
   telephone: "+919709968077",
   email: "drartisingh1102@gmail.com",
   address: {
@@ -125,8 +125,8 @@ const jsonLd = {
   },
   openingHours: ["Mo-Fr 09:00-18:00", "Sa 09:00-14:00"],
   priceRange: "$$",
-  image: "https://ayureva.in/ayurvedic-doctor.png",
-  logo: "https://ayureva.in/placeholder-logo.png",
+  image: "https://www.ayureva.in/ayurvedic-doctor.png",
+  logo: "https://www.ayureva.in/placeholder-logo.png",
   founder: {
     "@type": "Person",
     name: "Dr. Arti Singh",
@@ -238,7 +238,7 @@ const jsonLd = {
   parentOrganization: {
     "@type": "Organization",
     name: "Ayureva Healthcare",
-    url: "https://ayureva.in",
+    url: "https://www.ayureva.in",
   },
   mainEntity: {
     "@type": "FAQPage",
