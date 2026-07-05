@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, Search, Printer, Send, Activity, BookOpen, Calendar, HelpCircle, FileText, CheckCircle2, ChevronLeft, ArrowRight, Copy } from "lucide-react"
+import { Plus, Trash2, Search, Printer, Send, Activity, BookOpen, Calendar, HelpCircle, FileText, CheckCircle2, ChevronLeft, ArrowRight, Copy, Edit3 } from "lucide-react"
 
 interface MedicineRow {
   medicine_name: string
@@ -26,12 +26,18 @@ interface PrescriptionHistory {
   patient: {
     name: string
     phone: string
+    age: number | null
+    gender: string | null
+    allergies: string | null
+    address: string | null
+    blood_group: string | null
   }
   medicines: {
     medicine_name: string
     dosage: string
     timing: string
     duration: string
+    remarks: string | null
   }[]
 }
 
@@ -42,11 +48,12 @@ export default function PrescriptionClient() {
 
   // View state: 'list' | 'create'
   const [view, setView] = useState<"list" | "create">("list")
-  const [allPrescriptions, setAllPrescriptions] = useState<PrescriptionHistory[]>([])
+  const [allPrescriptions, setAllPrescriptions] = useState<any[]>([])
   const [listLoading, setListLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
 
   // Form State
+  const [editingPrescriptionId, setEditingPrescriptionId] = useState<string | null>(null)
   const [patientName, setPatientName] = useState("")
   const [patientPhone, setPatientPhone] = useState("")
   const [patientAge, setPatientAge] = useState("")
@@ -233,6 +240,7 @@ export default function PrescriptionClient() {
 
   // Reset form states
   const resetForm = () => {
+    setEditingPrescriptionId(null)
     setPatientName("")
     setPatientPhone("")
     setPatientAge("")
@@ -258,6 +266,38 @@ export default function PrescriptionClient() {
     setLastSavedPrescription(null)
   }
 
+  // Handle Edit Action
+  const handleEdit = (p: any) => {
+    setEditingPrescriptionId(p.id)
+    setPatientName(p.patient?.name || "")
+    setPatientPhone(p.patient?.phone || "")
+    setPatientAge(p.patient?.age ? p.patient.age.toString() : "")
+    setPatientGender(p.patient?.gender || "Female")
+    setPatientAllergies(p.patient?.allergies || "None")
+    setPatientAddress(p.patient?.address || "")
+    setBloodGroup(p.patient?.blood_group || "")
+    setVisitType(p.visit_type || "online")
+    setChiefComplaint(p.chief_complaint || "")
+    setDiagnosis(p.diagnosis || "")
+    setBloodPressure(p.blood_pressure || "")
+    setPulse(p.pulse || "")
+    setWeight(p.weight || "")
+    setTemperature(p.temperature || "")
+    setDoctorNotes(p.doctor_notes || "")
+    setTestsAdvised(p.tests_advised || "")
+    setNextFollowupDate(p.next_followup_date ? new Date(p.next_followup_date).toISOString().substring(0, 10) : "")
+    setMedicines(p.medicines && p.medicines.length > 0 ? p.medicines.map((m: any) => ({
+      medicine_name: m.medicine_name,
+      dosage: m.dosage,
+      timing: m.timing,
+      duration: m.duration,
+      remarks: m.remarks || ""
+    })) : [
+      { medicine_name: "", dosage: "1-0-1", timing: "After Food", duration: "15 days", remarks: "" }
+    ])
+    setView("create")
+  }
+
   // Trigger Print View
   const handlePrint = () => {
     window.print()
@@ -277,6 +317,7 @@ export default function PrescriptionClient() {
     setSubmitLoading(true)
 
     const payload = {
+      id: editingPrescriptionId,
       name: patientName,
       phone: patientPhone,
       age: patientAge,
@@ -298,8 +339,12 @@ export default function PrescriptionClient() {
     }
 
     try {
-      const res = await fetch("/api/prescriptions/create", {
-        method: "POST",
+      const isEditing = !!editingPrescriptionId
+      const endpoint = isEditing ? "/api/prescriptions/update" : "/api/prescriptions/create"
+      const method = isEditing ? "PUT" : "POST"
+
+      const res = await fetch(endpoint, {
+        method: method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
@@ -440,7 +485,15 @@ export default function PrescriptionClient() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="border-gray-200 text-gray-700 font-semibold text-xs px-3 h-8 rounded-lg"
+                              className="border-green-200 text-green-700 bg-green-50/50 hover:bg-green-100 font-semibold text-xs px-3 h-8 rounded-lg"
+                              onClick={() => handleEdit(p)}
+                            >
+                              <Edit3 className="w-3.5 h-3.5 mr-1" /> Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-200 text-gray-705 font-semibold text-xs px-3 h-8 rounded-lg"
                               onClick={() => window.open(`/prescription/${p.id}`, "_blank")}
                             >
                               <Printer className="w-3.5 h-3.5 mr-1" /> View/Print
@@ -482,9 +535,13 @@ export default function PrescriptionClient() {
               <ChevronLeft className="w-5 h-5 mr-1" /> Back to Dashboard
             </Button>
             <span className="text-gray-300">|</span>
-            <Badge className="bg-green-100 text-green-800 hover:bg-green-150">New Record</Badge>
+            <Badge className={editingPrescriptionId ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}>
+              {editingPrescriptionId ? "Editing Prescription" : "New Record"}
+            </Badge>
           </div>
-          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mt-2">Write Prescription</h2>
+          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mt-2">
+            {editingPrescriptionId ? "Edit Prescription" : "Write Prescription"}
+          </h2>
           <p className="text-gray-500 mt-1">Generate bilingual clinic prescriptions with database tracking and WhatsApp share.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -492,7 +549,7 @@ export default function PrescriptionClient() {
             <Printer className="w-5 h-5 mr-2" /> Print Preview
           </Button>
           <Button size="lg" className="h-12 bg-green-700 hover:bg-green-800 text-white" onClick={handleGenerateAndSend} disabled={submitLoading}>
-            <Send className="w-5 h-5 mr-2" /> {submitLoading ? "Saving..." : "Generate & WhatsApp"}
+            <Send className="w-5 h-5 mr-2" /> {submitLoading ? "Saving..." : editingPrescriptionId ? "Save & WhatsApp" : "Generate & WhatsApp"}
           </Button>
         </div>
       </div>
@@ -518,9 +575,10 @@ export default function PrescriptionClient() {
                     value={patientPhone}
                     onChange={(e) => setPatientPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                     className="pl-12 h-11"
+                    disabled={!!editingPrescriptionId}
                   />
                 </div>
-                <Button onClick={handlePatientSearch} variant="secondary" className="h-11 px-6 font-bold" disabled={searchLoading}>
+                <Button onClick={handlePatientSearch} variant="secondary" className="h-11 px-6 font-bold" disabled={searchLoading || !!editingPrescriptionId}>
                   {searchLoading ? "Searching..." : "Search / Load"}
                 </Button>
               </div>
@@ -905,7 +963,7 @@ export default function PrescriptionClient() {
               <div className="grid grid-cols-12 pb-3">
                 {/* Left Side: English */}
                 <div className="col-span-6 text-left text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">DR. ARTI KUMARI</p>
+                  <p className="font-bold text-sm text-green-955 uppercase tracking-wide">DR. ARTI KUMARI</p>
                   <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
                   <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
                   <p>C.R.I.T (N.M.C.H Patna)</p>
@@ -914,7 +972,7 @@ export default function PrescriptionClient() {
 
                 {/* Right Side: Hindi */}
                 <div className="col-span-6 text-right text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">डॉ. आरती कुमारी</p>
+                  <p className="font-bold text-sm text-green-955 uppercase tracking-wide">डॉ. आरती कुमारी</p>
                   <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
                   <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
                   <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
@@ -935,7 +993,7 @@ export default function PrescriptionClient() {
                 
                 <div className="col-span-6">Phone Number: <span className="text-gray-900 font-bold border-b border-gray-300 pb-0.5">{patientPhone || "__________"}</span></div>
                 <div className="col-span-3">Date: <span className="text-gray-900 font-bold border-b border-gray-300 pb-0.5">{new Date().toLocaleDateString("en-IN")}</span></div>
-                <div className="col-span-3">Allergies: <span className="text-red-600 font-bold border-b border-gray-300 pb-0.5">{patientAllergies}</span></div>
+                <div className="col-span-3">Allergies: <span className="text-red-650 font-bold border-b border-gray-300 pb-0.5">{patientAllergies}</span></div>
 
                 <div className="col-span-12 grid grid-cols-4 gap-2 border-t border-gray-100 pt-2 text-[10px] text-gray-600 font-medium">
                   <div>BP: <span className="text-gray-900 font-bold">{bloodPressure || "—"}</span></div>
@@ -979,12 +1037,12 @@ export default function PrescriptionClient() {
                 <div className="mt-4 border-t border-gray-100 pt-3 text-[11px] space-y-2">
                   {testsAdvised && (
                     <p className="text-gray-700">
-                      <span className="font-bold text-green-950">Advised Investigation/Tests:</span> {testsAdvised}
+                      <span className="font-bold text-green-955">Advised Investigation/Tests:</span> {testsAdvised}
                     </p>
                   )}
                   {doctorNotes && (
                     <div>
-                      <span className="font-bold text-green-950">Dietary & Lifestyle Advice:</span>
+                      <span className="font-bold text-green-955">Dietary & Lifestyle Advice:</span>
                       <p className="text-gray-600 whitespace-pre-line mt-0.5">{doctorNotes}</p>
                     </div>
                   )}
@@ -996,7 +1054,7 @@ export default function PrescriptionClient() {
             <div className="mt-8 pt-4 border-t border-green-800 flex flex-col justify-end gap-4">
               <div className="flex justify-between items-end">
                 {/* Dynamic Authenticity Verification QR Code */}
-                <div className="text-[10px] text-gray-500 flex items-center gap-2">
+                <div className="text-[10px] text-gray-505 flex items-center gap-2">
                   {lastSavedPrescription ? (
                     <img 
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`${typeof window !== 'undefined' ? window.location.origin : 'https://www.ayureva.in'}/prescription/${lastSavedPrescription.id}`)}`}
@@ -1010,7 +1068,7 @@ export default function PrescriptionClient() {
                   )}
                   <div>
                     <p className="font-bold text-gray-800 text-[9px]">PRESCRIPTION VERIFICATION</p>
-                    <p className="text-gray-400 text-[8px]">Scan to verify authenticity</p>
+                    <p className="text-gray-405 text-[8px]">Scan to verify authenticity</p>
                     <p className="font-semibold text-green-700 text-[8px]">
                       No: {lastSavedPrescription?.prescription_no || "AY-2026-XXXXXX"}
                     </p>
@@ -1027,7 +1085,7 @@ export default function PrescriptionClient() {
 
                 {/* Signature Placeholders */}
                 <div className="text-center text-[10px] text-gray-500 pr-2">
-                  <div className="w-24 h-8 bg-gray-50/50 rounded mb-1 flex items-center justify-center italic text-gray-400 text-[9px]">
+                  <div className="w-24 h-8 bg-gray-55/50 rounded mb-1 flex items-center justify-center italic text-gray-405 text-[9px]">
                     Signature (Stored)
                   </div>
                   <p className="font-bold text-gray-700">Dr. Arti Kumari</p>
