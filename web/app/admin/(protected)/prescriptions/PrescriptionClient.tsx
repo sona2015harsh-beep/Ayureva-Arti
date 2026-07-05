@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, Search, Printer, Send, Activity, BookOpen, Calendar, HelpCircle, FileText, CheckCircle2 } from "lucide-react"
+import { Plus, Trash2, Search, Printer, Send, Activity, BookOpen, Calendar, HelpCircle, FileText, CheckCircle2, ChevronLeft, ArrowRight, Copy } from "lucide-react"
 
 interface MedicineRow {
   medicine_name: string
@@ -23,6 +23,10 @@ interface PrescriptionHistory {
   consultation_date: string
   diagnosis: string
   doctor_notes: string
+  patient: {
+    name: string
+    phone: string
+  }
   medicines: {
     medicine_name: string
     dosage: string
@@ -35,6 +39,12 @@ export default function PrescriptionClient() {
   const searchParams = useSearchParams()
   const paramLeadId = searchParams.get("leadId")
   const paramPatientId = searchParams.get("patientId")
+
+  // View state: 'list' | 'create'
+  const [view, setView] = useState<"list" | "create">("list")
+  const [allPrescriptions, setAllPrescriptions] = useState<PrescriptionHistory[]>([])
+  const [listLoading, setListLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
   // Form State
   const [patientName, setPatientName] = useState("")
@@ -63,10 +73,30 @@ export default function PrescriptionClient() {
   // Search & Templates State
   const [searchLoading, setSearchLoading] = useState(false)
   const [searchMessage, setSearchMessage] = useState("")
-  const [patientHistory, setPatientHistory] = useState<PrescriptionHistory[]>([])
+  const [patientHistory, setPatientHistory] = useState<any[]>([])
   const [templates, setTemplates] = useState<{ name: string; description: string; medicines: MedicineRow[] }[]>([])
   const [submitLoading, setSubmitLoading] = useState(false)
   const [lastSavedPrescription, setLastSavedPrescription] = useState<any>(null)
+
+  // Fetch all prescriptions on mount or when switching to 'list' view
+  const fetchPrescriptionsList = async () => {
+    setListLoading(true)
+    try {
+      const res = await fetch("/api/prescriptions/list")
+      const data = await res.json()
+      if (data.success) {
+        setAllPrescriptions(data.prescriptions)
+      }
+    } catch (err) {
+      console.error("Error loading prescriptions list:", err)
+    } finally {
+      setListLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchPrescriptionsList()
+  }, [])
 
   // Load Templates on Mount
   useEffect(() => {
@@ -96,8 +126,7 @@ export default function PrescriptionClient() {
             // Clean phone format
             const cleanPhone = lead.phone_number.replace(/\D/g, "").slice(-10);
             setPatientPhone(cleanPhone);
-            
-            // Fetch patient history directly
+            setView("create")
             triggerAutoSearch(cleanPhone);
           }
         }
@@ -202,6 +231,33 @@ export default function PrescriptionClient() {
     setMedicines(newMedicines)
   }
 
+  // Reset form states
+  const resetForm = () => {
+    setPatientName("")
+    setPatientPhone("")
+    setPatientAge("")
+    setPatientGender("Female")
+    setPatientAllergies("None")
+    setPatientAddress("")
+    setBloodGroup("")
+    setVisitType("online")
+    setChiefComplaint("")
+    setDiagnosis("")
+    setBloodPressure("")
+    setPulse("")
+    setWeight("")
+    setTemperature("")
+    setDoctorNotes("")
+    setTestsAdvised("")
+    setNextFollowupDate("")
+    setMedicines([
+      { medicine_name: "", dosage: "1-0-1", timing: "After Food", duration: "15 days", remarks: "" }
+    ])
+    setPatientHistory([])
+    setSearchMessage("")
+    setLastSavedPrescription(null)
+  }
+
   // Trigger Print View
   const handlePrint = () => {
     window.print()
@@ -253,25 +309,10 @@ export default function PrescriptionClient() {
         const prescription = data.prescription
         setLastSavedPrescription(prescription)
 
-        // Refresh History
-        handlePatientSearch()
-
-        // Update CRM Lead status and timeline if linked
-        if (paramLeadId) {
-          try {
-            await fetch('/api/leads', {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                id: paramLeadId,
-                status: 'rx_sent',
-                timelineEvent: `Prescription generated & shared. Serial No: ${prescription.prescription_no}`
-              })
-            });
-          } catch (leadUpdateErr) {
-            console.error("Failed to update lead status:", leadUpdateErr);
-          }
-        }
+        // Refresh Lists
+        fetchPrescriptionsList()
+        resetForm()
+        setView("list")
 
         // Create Verification URL
         const verifyUrl = `https://www.ayureva.in/prescription/${prescription.id}`
@@ -294,19 +335,163 @@ export default function PrescriptionClient() {
     }
   }
 
+  // Filtered prescriptions list for searching
+  const filteredPrescriptions = allPrescriptions.filter((p) => {
+    const term = searchTerm.toLowerCase()
+    return (
+      p.prescription_no.toLowerCase().includes(term) ||
+      (p.patient?.name || "").toLowerCase().includes(term) ||
+      (p.patient?.phone || "").toLowerCase().includes(term) ||
+      (p.diagnosis || "").toLowerCase().includes(term)
+    )
+  })
+
+  // ================= VIEW: LIST OF PRESCRIPTIONS =================
+  if (view === "list") {
+    return (
+      <div className="space-y-6 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+          <div>
+            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Prescriptions Dashboard</h2>
+            <p className="text-gray-500 mt-1">Manage, search, and resend digital prescriptions for online and offline consultations.</p>
+          </div>
+          <Button 
+            size="lg" 
+            className="bg-green-700 hover:bg-green-800 text-white font-bold h-12 px-6 rounded-xl"
+            onClick={() => {
+              resetForm()
+              setView("create")
+            }}
+          >
+            <Plus className="w-5 h-5 mr-2" /> Write Prescription
+          </Button>
+        </div>
+
+        {/* Search controls */}
+        <div className="flex items-center gap-3 bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-gray-150 dark:border-zinc-800">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder="Search by patient name, phone, or Rx number..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-10 border-gray-200"
+            />
+          </div>
+        </div>
+
+        {/* Prescriptions Table */}
+        <Card className="rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-800 overflow-hidden">
+          <CardHeader className="bg-gray-50/50 dark:bg-zinc-800/20 pb-4">
+            <CardTitle className="text-lg font-bold">Consultation Log ({filteredPrescriptions.length} records)</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {listLoading ? (
+              <div className="p-12 text-center text-gray-400 italic">Loading prescriptions...</div>
+            ) : filteredPrescriptions.length === 0 ? (
+              <div className="p-12 text-center text-gray-400 italic">No prescriptions found. Click "+ Write Prescription" to generate one.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 dark:bg-zinc-800/40 text-gray-700 dark:text-zinc-300 font-bold border-b border-gray-150 dark:border-zinc-850">
+                      <th className="px-6 py-3.5">Date</th>
+                      <th className="px-6 py-3.5">Rx Number</th>
+                      <th className="px-6 py-3.5">Patient Details</th>
+                      <th className="px-6 py-3.5">Diagnosis</th>
+                      <th className="px-6 py-3.5">Medicines</th>
+                      <th className="px-6 py-3.5 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
+                    {filteredPrescriptions.map((p) => (
+                      <tr key={p.id} className="hover:bg-gray-50/30 dark:hover:bg-zinc-800/10 transition-colors">
+                        <td className="px-6 py-4 font-medium text-gray-500">
+                          {new Date(p.consultation_date).toLocaleDateString("en-IN")}
+                        </td>
+                        <td className="px-6 py-4 font-bold text-green-800 dark:text-green-450">{p.prescription_no}</td>
+                        <td className="px-6 py-4">
+                          <p className="font-bold text-gray-900 dark:text-white">{p.patient?.name || "—"}</p>
+                          <p className="text-xs text-gray-400 font-semibold">{p.patient?.phone || "—"}</p>
+                        </td>
+                        <td className="px-6 py-4 text-gray-650 dark:text-zinc-400 font-medium">
+                          {p.diagnosis || <span className="text-gray-300 italic">No Diagnosis</span>}
+                        </td>
+                        <td className="px-6 py-4">
+                          <Badge variant="secondary" className="bg-green-50 text-green-700 dark:bg-green-950/20 dark:text-green-300 border border-green-200">
+                            {p.medicines?.length || 0} items
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white font-semibold text-xs px-3 h-8 rounded-lg"
+                              onClick={() => {
+                                const verifyUrl = `https://www.ayureva.in/prescription/${p.id}`;
+                                const text = encodeURIComponent(
+                                  `Hello ${p.patient?.name || "Patient"}, this is your official digital prescription from Dr. Arti Kumari (Ayureva). \n\nPrescription No: ${p.prescription_no}\nDate: ${new Date(p.consultation_date).toLocaleDateString("en-IN")}\n\nYou can verify your prescription and download the verified copy here: ${verifyUrl}\n\nThank you for choosing Ayureva.`
+                                );
+                                window.open(`https://api.whatsapp.com/send?phone=91${p.patient?.phone}&text=${text}`, "_blank");
+                              }}
+                            >
+                              <Send className="w-3.5 h-3.5 mr-1" /> WhatsApp
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-200 text-gray-700 font-semibold text-xs px-3 h-8 rounded-lg"
+                              onClick={() => window.open(`/prescription/${p.id}`, "_blank")}
+                            >
+                              <Printer className="w-3.5 h-3.5 mr-1" /> View/Print
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="text-gray-500 font-semibold text-xs px-2 h-8 rounded-lg"
+                              onClick={() => {
+                                const verifyUrl = `${window.location.origin}/prescription/${p.id}`;
+                                navigator.clipboard.writeText(verifyUrl);
+                                alert("Prescription verification link copied!");
+                              }}
+                            >
+                              <Copy className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // ================= VIEW: PRESCRIPTION CREATOR =================
   return (
     <div className="space-y-8 max-w-7xl mx-auto print:p-0 print:m-0">
       {/* Header bar - Hidden in Print */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4 print:hidden">
         <div>
-          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Prescription Creator</h2>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="h-9 px-3 text-gray-500" onClick={() => setView("list")}>
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back to Dashboard
+            </Button>
+            <span className="text-gray-300">|</span>
+            <Badge className="bg-green-100 text-green-800 hover:bg-green-150">New Record</Badge>
+          </div>
+          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mt-2">Write Prescription</h2>
           <p className="text-gray-500 mt-1">Generate bilingual clinic prescriptions with database tracking and WhatsApp share.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" size="lg" className="h-12" onClick={handlePrint}>
-            <Printer className="w-5 h-5 mr-2" /> Print Prescription
+            <Printer className="w-5 h-5 mr-2" /> Print Preview
           </Button>
-          <Button size="lg" className="h-12 bg-green-600 hover:bg-green-700 text-white" onClick={handleGenerateAndSend} disabled={submitLoading}>
+          <Button size="lg" className="h-12 bg-green-700 hover:bg-green-800 text-white" onClick={handleGenerateAndSend} disabled={submitLoading}>
             <Send className="w-5 h-5 mr-2" /> {submitLoading ? "Saving..." : "Generate & WhatsApp"}
           </Button>
         </div>
@@ -326,219 +511,250 @@ export default function PrescriptionClient() {
             <CardContent>
               <div className="flex gap-2">
                 <div className="relative flex-1">
+                  <span className="absolute left-3 top-3 text-sm text-gray-400 font-semibold">+91</span>
                   <Input
-                    placeholder="Patient Mobile (10 Digits)"
+                    type="tel"
+                    placeholder="Enter 10-digit Mobile Number"
                     value={patientPhone}
                     onChange={(e) => setPatientPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    className="pl-4 h-11"
+                    className="pl-12 h-11"
                   />
                 </div>
-                <Button className="h-11 bg-green-700 hover:bg-green-800 text-white px-5" onClick={handlePatientSearch} disabled={searchLoading}>
-                  {searchLoading ? "Loading..." : "Search"}
+                <Button onClick={handlePatientSearch} variant="secondary" className="h-11 px-6 font-bold" disabled={searchLoading}>
+                  {searchLoading ? "Searching..." : "Search / Load"}
                 </Button>
               </div>
               {searchMessage && (
-                <p className={`text-sm mt-2 font-medium ${searchMessage.includes("loaded") ? "text-green-700" : "text-gray-500"}`}>
+                <p className={`mt-3 text-xs font-semibold px-3 py-1.5 rounded-lg ${searchMessage.includes("loaded") ? "bg-green-50 text-green-700" : "bg-orange-50 text-orange-700"}`}>
                   {searchMessage}
                 </p>
               )}
             </CardContent>
           </Card>
 
-          {/* Vitals & Clinical entries */}
+          {/* Patient Profile Details */}
           <Card>
             <CardHeader className="pb-4">
               <CardTitle className="text-lg font-bold flex items-center gap-2">
-                <Activity className="w-5 h-5 text-green-700" /> Patient Vitals & Consultation
+                <Activity className="w-5 h-5 text-green-700" /> Patient Demographics
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Vitals row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Blood Pressure</label>
-                  <Input placeholder="e.g. 120/80" value={bloodPressure} onChange={(e) => setBloodPressure(e.target.value)} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Full Name *</label>
+                  <Input
+                    placeholder="e.g. Arti Singh"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    className="h-10"
+                  />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Pulse (bpm)</label>
-                  <Input placeholder="e.g. 72" value={pulse} onChange={(e) => setPulse(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Weight (kg)</label>
-                  <Input placeholder="e.g. 64" value={weight} onChange={(e) => setWeight(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Temperature (°F)</label>
-                  <Input placeholder="e.g. 98.6" value={temperature} onChange={(e) => setTemperature(e.target.value)} />
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Age (Years)</label>
+                  <Input
+                    type="number"
+                    placeholder="e.g. 28"
+                    value={patientAge}
+                    onChange={(e) => setPatientAge(e.target.value)}
+                    className="h-10"
+                  />
                 </div>
               </div>
 
-              {/* Patient Profile row */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Patient Name *</label>
-                  <Input placeholder="Full Name" value={patientName} onChange={(e) => setPatientName(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Age *</label>
-                  <Input placeholder="Age" type="number" value={patientAge} onChange={(e) => setPatientAge(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Gender *</label>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Gender</label>
                   <select
-                    className="w-full h-10 px-3 border rounded-md text-sm text-gray-700 bg-white"
                     value={patientGender}
                     onChange={(e) => setPatientGender(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Allergies</label>
-                  <Input placeholder="e.g. Pollen, Penicillin" value={patientAllergies} onChange={(e) => setPatientAllergies(e.target.value)} />
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Blood Group</label>
+                  <Input
+                    placeholder="e.g. O+ve"
+                    value={bloodGroup}
+                    onChange={(e) => setBloodGroup(e.target.value)}
+                    className="h-10"
+                  />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Blood Group</label>
-                  <Input placeholder="e.g. O+ve" value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Consultation Mode</label>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Consultation Type</label>
                   <select
-                    className="w-full h-10 px-3 border rounded-md text-sm text-gray-700 bg-white"
                     value={visitType}
                     onChange={(e) => setVisitType(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2"
                   >
-                    <option value="online">Online Consultation</option>
-                    <option value="offline">Offline / Clinic Visit</option>
+                    <option value="online">Online Video</option>
+                    <option value="offline">Offline Clinic Visit</option>
                   </select>
                 </div>
               </div>
 
-              {/* Complaints & Diagnosis */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
+              <div>
+                <label className="text-xs font-bold text-gray-650 block mb-1">Known Allergies</label>
+                <Input
+                  placeholder="e.g. Sulfa drugs, Dust (default: None)"
+                  value={patientAllergies}
+                  onChange={(e) => setPatientAllergies(e.target.value)}
+                  className="h-10 border-red-150 focus:border-red-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-gray-650 block mb-1">Address</label>
+                <Input
+                  placeholder="e.g. Patna, Bihar"
+                  value={patientAddress}
+                  onChange={(e) => setPatientAddress(e.target.value)}
+                  className="h-10"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Vitals & Clinical Notes */}
+          <Card>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-green-700" /> Clinical Assessment
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Chief Complaints</label>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">BP (mmHg)</label>
+                  <Input placeholder="120/80" value={bloodPressure} onChange={(e) => setBloodPressure(e.target.value)} className="h-10" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Pulse (bpm)</label>
+                  <Input placeholder="72" value={pulse} onChange={(e) => setPulse(e.target.value)} className="h-10" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Weight (kg)</label>
+                  <Input placeholder="58" value={weight} onChange={(e) => setWeight(e.target.value)} className="h-10" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Temp (°F)</label>
+                  <Input placeholder="98.6" value={temperature} onChange={(e) => setTemperature(e.target.value)} className="h-10" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Chief Complaints</label>
                   <Textarea
-                    placeholder="Describe patient complaints (e.g. Irregular periods, acne, weight gain)"
+                    placeholder="e.g. Irregular periods, hair thinning"
                     value={chiefComplaint}
                     onChange={(e) => setChiefComplaint(e.target.value)}
-                    rows={3}
+                    className="min-h-[80px]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Diagnosis</label>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Diagnosis</label>
                   <Textarea
-                    placeholder="Clinical Diagnosis (e.g. PCOS/PCOD, Hypothyroidism)"
+                    placeholder="e.g. PCOS (Polycystic Ovary Syndrome)"
                     value={diagnosis}
                     onChange={(e) => setDiagnosis(e.target.value)}
-                    rows={3}
+                    className="min-h-[80px]"
                   />
-                </div>
-              </div>
-
-              {/* Advices */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t pt-4">
-                <div className="md:col-span-2">
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Lifestyle / Diet Advice</label>
-                  <Textarea
-                    placeholder="Diet notes, exercise, yoga, guidelines"
-                    value={doctorNotes}
-                    onChange={(e) => setDoctorNotes(e.target.value)}
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Investigations Advised</label>
-                  <Textarea
-                    placeholder="Lab tests, scans (e.g. CBC, TSH, USG)"
-                    value={testsAdvised}
-                    onChange={(e) => setTestsAdvised(e.target.value)}
-                    rows={3}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Next Follow-up Date</label>
-                  <Input type="date" value={nextFollowupDate} onChange={(e) => setNextFollowupDate(e.target.value)} />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 block mb-1">Patient Home Address</label>
-                  <Input placeholder="City, State" value={patientAddress} onChange={(e) => setPatientAddress(e.target.value)} />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Medicines Entry */}
+          {/* Rx / Medicines Prescribed */}
           <Card>
-            <CardHeader className="pb-4 flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-green-700" /> Prescribed Medicines
-                </CardTitle>
-                <CardDescription>Add medicines or load standard protocols.</CardDescription>
-              </div>
-              <div>
-                <select
-                  className="px-2 py-1.5 border rounded-md text-xs bg-white font-medium"
-                  onChange={(e) => handleLoadTemplate(e.target.value)}
-                  defaultValue=""
-                >
-                  <option value="" disabled>Load Protocol Template</option>
-                  {templates.map((t) => (
-                    <option key={t.name} value={t.name}>
-                      {t.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-bold flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-green-700" /> Medicines Prescription (Rx)
+                </span>
+                {templates.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-medium">Use Template:</span>
+                    <select
+                      onChange={(e) => handleLoadTemplate(e.target.value)}
+                      defaultValue=""
+                      className="text-xs bg-gray-50 border border-gray-200 rounded-md p-1 h-8 focus:outline-none"
+                    >
+                      <option value="" disabled>Select template...</option>
+                      {templates.map((t) => (
+                        <option key={t.name} value={t.name}>{t.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {medicines.map((med, index) => (
-                <div key={index} className="flex flex-col md:flex-row gap-2 border-b pb-4 md:border-0 md:pb-0 items-start md:items-center">
+                <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-3 bg-gray-50/50 p-4 rounded-xl border border-gray-150 relative">
+                  <span className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-green-700 text-white font-bold text-xs flex items-center justify-center">
+                    {index + 1}
+                  </span>
+                  
                   <div className="flex-1 w-full">
+                    <label className="text-[10px] font-bold text-gray-600 block mb-0.5">Medicine Name</label>
                     <Input
-                      placeholder="Medicine Name"
+                      placeholder="e.g. Kanchanar Guggulu"
                       value={med.medicine_name}
                       onChange={(e) => handleMedicineChange(index, "medicine_name", e.target.value)}
-                      className="font-medium"
+                      className="h-9"
                     />
                   </div>
-                  <div className="w-full md:w-32">
+                  
+                  <div className="w-full md:w-28">
+                    <label className="text-[10px] font-bold text-gray-600 block mb-0.5">Dosage</label>
                     <Input
-                      placeholder="Dosage (e.g. 1-0-1)"
+                      placeholder="e.g. 1-0-1"
                       value={med.dosage}
                       onChange={(e) => handleMedicineChange(index, "dosage", e.target.value)}
+                      className="h-9 text-center font-semibold"
                     />
                   </div>
+
                   <div className="w-full md:w-36">
-                    <Input
-                      placeholder="Timing (e.g. After Food)"
+                    <label className="text-[10px] font-bold text-gray-600 block mb-0.5">Timing</label>
+                    <select
                       value={med.timing}
                       onChange={(e) => handleMedicineChange(index, "timing", e.target.value)}
-                    />
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-2 py-1 text-xs focus-visible:outline-none"
+                    >
+                      <option value="Before Food">Before Food</option>
+                      <option value="After Food">After Food</option>
+                      <option value="Empty Stomach">Empty Stomach</option>
+                      <option value="At Bedtime">At Bedtime</option>
+                      <option value="As directed">As directed</option>
+                    </select>
                   </div>
+
                   <div className="w-full md:w-28">
+                    <label className="text-[10px] font-bold text-gray-600 block mb-0.5">Duration</label>
                     <Input
-                      placeholder="Duration"
+                      placeholder="e.g. 15 days"
                       value={med.duration}
                       onChange={(e) => handleMedicineChange(index, "duration", e.target.value)}
+                      className="h-9 text-center"
                     />
                   </div>
-                  <div className="w-full md:w-40">
+
+                  <div className="flex-1 w-full">
+                    <label className="text-[10px] font-bold text-gray-600 block mb-0.5">Special Remarks</label>
                     <Input
-                      placeholder="Remarks"
+                      placeholder="e.g. with lukewarm water"
                       value={med.remarks}
                       onChange={(e) => handleMedicineChange(index, "remarks", e.target.value)}
+                      className="h-9"
                     />
                   </div>
+
                   <Button variant="ghost" size="sm" onClick={() => handleRemoveMedicine(index)} className="text-red-500 hover:text-red-700 h-10 w-10 p-0 self-end md:self-auto">
                     <Trash2 className="w-5 h-5" />
                   </Button>
@@ -547,6 +763,48 @@ export default function PrescriptionClient() {
               <Button onClick={handleAddMedicine} variant="outline" className="w-full border-dashed border-2 hover:bg-gray-50 h-11">
                 <Plus className="w-4 h-4 mr-2" /> Add Medicine Row
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Advice & Diagnostics */}
+          <Card>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-green-700" /> Instructions & Advice
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-gray-650 block mb-1">Investigations / Tests Advised</label>
+                <Input
+                  placeholder="e.g. USG Pelvis, Thyroid Profile"
+                  value={testsAdvised}
+                  onChange={(e) => setTestsAdvised(e.target.value)}
+                  className="h-10"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-gray-650 block mb-1">Lifestyle & Diet Instructions (Pathyapathya)</label>
+                <Textarea
+                  placeholder="e.g. Avoid dairy, start 30 min morning walk, take tablets with warm water."
+                  value={doctorNotes}
+                  onChange={(e) => setDoctorNotes(e.target.value)}
+                  className="min-h-[100px]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-gray-650 block mb-1">Next Follow-up Date</label>
+                  <Input
+                    type="date"
+                    value={nextFollowupDate}
+                    onChange={(e) => setNextFollowupDate(e.target.value)}
+                    className="h-10"
+                  />
+                </div>
+              </div>
             </CardContent>
           </Card>
 
@@ -573,7 +831,7 @@ export default function PrescriptionClient() {
                     
                     {/* Medicines tags */}
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {hist.medicines.map((m, idx) => (
+                      {hist.medicines.map((m: any, idx: number) => (
                         <span key={idx} className="bg-gray-100 text-[10px] px-2 py-0.5 rounded-full font-medium text-gray-700">
                           {m.medicine_name} ({m.dosage})
                         </span>
@@ -606,7 +864,7 @@ export default function PrescriptionClient() {
                           navigator.clipboard.writeText(verifyUrl);
                           alert("Prescription link copied to clipboard!");
                         }}
-                        className="bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 text-[10px] px-2.5 py-1 rounded-md font-bold transition-colors cursor-pointer"
+                        className="bg-gray-50 hover:bg-gray-100 text-gray-650 border border-gray-200 text-[10px] px-2.5 py-1 rounded-md font-bold transition-colors cursor-pointer"
                       >
                         Copy Link
                       </button>
@@ -625,44 +883,44 @@ export default function PrescriptionClient() {
             <div>
               {/* Top Branding Bar */}
               <div className="flex flex-col items-center justify-center border-b-2 border-green-800 pb-3 mb-4 text-center">
-              <div className="flex items-center gap-2">
-                <svg className="w-8 h-8" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
-                  <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
-                  <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
-                  <path d="M50 25C62 15 78 22 80 29C78 36 62 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
-                  <rect x="48" y="22" width="4" height="88" rx="2" fill="#D4AF37" stroke="#1A2A3A" strokeWidth="1.2"/>
-                  <circle cx="50" cy="18" r="6" fill="#E5C158" stroke="#1A2A3A" strokeWidth="1.2"/>
-                  <path d="M50 32C55 32 62 38 62 44C62 50 48 52 38 56C28 60 28 66 38 72C48 78 62 80 62 86C62 92 48 94 38 98C28 102 28 108 38 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M50 32C45 32 38 38 38 44C38 50 52 52 62 56C72 60 72 66 62 72C52 78 38 80 38 86C38 92 52 94 62 98C72 102 72 108 62 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
-                  <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
-                </svg>
-                <span className="font-serif text-3xl font-black text-green-950 tracking-widest">AYUREVA</span>
-              </div>
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Authentic Ayurvedic Treatment & Consultation Center</p>
-              <span className="mt-1 text-[11px] text-green-700 font-bold tracking-wide border border-green-200 bg-green-50 px-2.5 py-0.5 rounded-full">www.ayureva.in</span>
-            </div>
-
-            <div className="grid grid-cols-12 pb-3">
-              {/* Left Side: English */}
-              <div className="col-span-6 text-left text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                <p className="font-bold text-sm text-green-950 uppercase tracking-wide">DR. ARTI KUMARI</p>
-                <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
-                <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
-                <p>C.R.I.T (N.M.C.H Patna)</p>
-                <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+                <div className="flex items-center gap-2">
+                  <svg className="w-8 h-8" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                    <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                    <path d="M50 25C62 15 78 22 80 29C78 36 62 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                    <rect x="48" y="22" width="4" height="88" rx="2" fill="#D4AF37" stroke="#1A2A3A" strokeWidth="1.2"/>
+                    <circle cx="50" cy="18" r="6" fill="#E5C158" stroke="#1A2A3A" strokeWidth="1.2"/>
+                    <path d="M50 32C55 32 62 38 62 44C62 50 48 52 38 56C28 60 28 66 38 72C48 78 62 80 62 86C62 92 48 94 38 98C28 102 28 108 38 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M50 32C45 32 38 38 38 44C38 50 52 52 62 56C72 60 72 66 62 72C52 78 38 80 38 86C38 92 52 94 62 98C72 102 72 108 62 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
+                    <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
+                  </svg>
+                  <span className="font-serif text-3xl font-black text-green-955 tracking-widest">AYUREVA</span>
+                </div>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Authentic Ayurvedic Treatment & Consultation Center</p>
+                <span className="mt-1 text-[11px] text-green-700 font-bold tracking-wide border border-green-200 bg-green-50 px-2.5 py-0.5 rounded-full">www.ayureva.in</span>
               </div>
 
-              {/* Right Side: Hindi */}
-              <div className="col-span-6 text-right text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                <p className="font-bold text-sm text-green-950 uppercase tracking-wide">डॉ. आरती कुमारी</p>
-                <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
-                <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
-                <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
-                <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
+              <div className="grid grid-cols-12 pb-3">
+                {/* Left Side: English */}
+                <div className="col-span-6 text-left text-[11px] leading-tight text-gray-700 font-medium font-sans">
+                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">DR. ARTI KUMARI</p>
+                  <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
+                  <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
+                  <p>C.R.I.T (N.M.C.H Patna)</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+                </div>
+
+                {/* Right Side: Hindi */}
+                <div className="col-span-6 text-right text-[11px] leading-tight text-gray-700 font-medium font-sans">
+                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">डॉ. आरती कुमारी</p>
+                  <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
+                  <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
+                  <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
+                </div>
               </div>
-            </div>
 
               {/* Specializations Red Sub-Note */}
               <div className="bg-red-50 text-red-700 border-b border-red-200 py-1.5 px-4 text-center text-[10px] font-bold tracking-wide">
@@ -687,68 +945,47 @@ export default function PrescriptionClient() {
                 </div>
               </div>
 
-              {/* Chief Complaints & Diagnosis */}
-              {(chiefComplaint || diagnosis) && (
-                <div className="grid grid-cols-2 gap-4 py-3.5 border-b border-gray-100 text-[11px] leading-relaxed">
-                  {chiefComplaint && (
-                    <div>
-                      <p className="font-bold text-green-900 uppercase text-[9px] tracking-wide mb-1">Chief Complaints:</p>
-                      <p className="text-gray-700 bg-gray-50 p-2 rounded-lg border border-gray-100">{chiefComplaint}</p>
-                    </div>
-                  )}
-                  {diagnosis && (
-                    <div>
-                      <p className="font-bold text-green-900 uppercase text-[9px] tracking-wide mb-1">Diagnosis:</p>
-                      <p className="text-gray-800 bg-green-50/30 p-2 rounded-lg border border-green-100 font-bold">{diagnosis}</p>
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Rx Title */}
+              <div className="text-xl font-serif font-black text-green-905 my-3">Rx</div>
 
-              {/* Prescription Body Rx */}
-              <div className="py-5 flex-1">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-bold font-serif text-green-900">Rx</span>
-                  <div className="h-0.5 bg-green-800 flex-1"></div>
-                </div>
-
-                <table className="w-full text-left text-[11px] font-sans">
+              {/* Medicines List Preview */}
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <table className="w-full text-left text-[11px] border-collapse">
                   <thead>
-                    <tr className="border-b border-gray-200 text-green-900 font-bold uppercase text-[9px] tracking-wide">
-                      <th className="pb-2 w-[40%]">Medicine Name</th>
-                      <th className="pb-2 text-center w-[15%]">Dosage</th>
-                      <th className="pb-2 text-center w-[20%]">Timing</th>
-                      <th className="pb-2 text-center w-[12%]">Duration</th>
-                      <th className="pb-2 text-right w-[13%]">Remarks</th>
+                    <tr className="bg-green-50/50 text-green-950 font-bold border-b border-gray-200">
+                      <th className="px-3 py-1.5 w-8 text-center">S.No</th>
+                      <th className="px-3 py-1.5">Medicine Name</th>
+                      <th className="px-3 py-1.5">Dosage</th>
+                      <th className="px-3 py-1.5">Timing</th>
+                      <th className="px-3 py-1.5 w-16">Duration</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-gray-100">
                     {medicines.map((med, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50/50">
-                        <td className="py-2.5 font-bold text-gray-900">{med.medicine_name || "__________________"}</td>
-                        <td className="py-2.5 text-center text-gray-700 font-semibold">{med.dosage || "—"}</td>
-                        <td className="py-2.5 text-center text-gray-700 font-semibold">{med.timing || "—"}</td>
-                        <td className="py-2.5 text-center text-gray-700 font-semibold">{med.duration || "—"}</td>
-                        <td className="py-2.5 text-right text-gray-500 font-medium">{med.remarks || "—"}</td>
+                      <tr key={index}>
+                        <td className="px-3 py-1.5 text-center text-gray-400 font-semibold">{index + 1}</td>
+                        <td className="px-3 py-1.5 font-bold text-gray-800">{med.medicine_name || <span className="text-gray-300 italic font-normal">Enter name</span>}</td>
+                        <td className="px-3 py-1.5 font-medium">{med.dosage}</td>
+                        <td className="px-3 py-1.5 font-medium">{med.timing}</td>
+                        <td className="px-3 py-1.5 font-semibold">{med.duration}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              {/* Doctor notes & Investigations */}
-              {(doctorNotes || testsAdvised) && (
-                <div className="grid grid-cols-12 gap-4 py-4 border-t border-gray-100 text-[11px] mt-4">
-                  {doctorNotes && (
-                    <div className="col-span-8">
-                      <p className="font-bold text-green-900 uppercase text-[9px] tracking-wide mb-1">Lifestyle & Diet Advice:</p>
-                      <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{doctorNotes}</p>
-                    </div>
-                  )}
+              {/* Notes & Advised Tests Preview */}
+              {(testsAdvised || doctorNotes) && (
+                <div className="mt-4 border-t border-gray-100 pt-3 text-[11px] space-y-2">
                   {testsAdvised && (
-                    <div className="col-span-4 border-l border-gray-100 pl-4">
-                      <p className="font-bold text-green-900 uppercase text-[9px] tracking-wide mb-1">Tests Advised:</p>
-                      <p className="text-gray-700 font-bold whitespace-pre-wrap leading-relaxed">{testsAdvised}</p>
+                    <p className="text-gray-700">
+                      <span className="font-bold text-green-950">Advised Investigation/Tests:</span> {testsAdvised}
+                    </p>
+                  )}
+                  {doctorNotes && (
+                    <div>
+                      <span className="font-bold text-green-950">Dietary & Lifestyle Advice:</span>
+                      <p className="text-gray-600 whitespace-pre-line mt-0.5">{doctorNotes}</p>
                     </div>
                   )}
                 </div>
