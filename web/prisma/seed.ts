@@ -93,8 +93,69 @@ async function main() {
         }
     })
 
+    // 2. Seed Doctor
+    const doctor = await prisma.doctors.upsert({
+        where: { email: 'drartisingh1102@gmail.com' },
+        update: {
+            name: 'Dr. Arti Kumari',
+            registration: 'Reg. No. 42',
+            specialization: 'Ayurvedic Medical Officer',
+        },
+        create: {
+            id: 'd16c5b96-6e27-4a0b-85fa-7f8976f92026',
+            name: 'Dr. Arti Kumari',
+            registration: 'Reg. No. 42',
+            specialization: 'Ayurvedic Medical Officer',
+            email: 'drartisingh1102@gmail.com',
+        }
+    })
+
+    // 3. Seed Medicine Templates
+    const t1 = await prisma.medicine_templates.upsert({
+        where: { name: 'PCOS Standard Protocol' },
+        update: {},
+        create: {
+            name: 'PCOS Standard Protocol',
+            description: 'Standard protocol for regulating ovulation, dissolving cysts, and improving hormonal balance.',
+            medicines: [
+                { medicine_name: 'Arogyavardhini Vati', dosage: '1-0-1', timing: 'After Food', duration: '30 days' },
+                { medicine_name: 'Kanchanar Guggulu', dosage: '1-0-1', timing: 'After Food', duration: '30 days' },
+                { medicine_name: 'Rajapravartini Vati', dosage: '1-0-1', timing: 'After Food', duration: '15 days' },
+                { medicine_name: 'Shatavari Churna', dosage: '0-0-1', timing: 'Night with Warm Water/Milk', duration: '30 days' },
+            ]
+        }
+    })
+
+    const t2 = await prisma.medicine_templates.upsert({
+        where: { name: 'Thyroid / Hormonal Balance' },
+        update: {},
+        create: {
+            name: 'Thyroid / Hormonal Balance',
+            description: 'Helps regulate metabolic fire (Agni) and support thyroid health.',
+            medicines: [
+                { medicine_name: 'Kanchanar Guggulu', dosage: '1-0-1', timing: 'After Food', duration: '30 days' },
+                { medicine_name: 'Triphala Churna', dosage: '0-0-1', timing: 'Night with Warm Water', duration: '30 days' },
+                { medicine_name: 'Varunadi Kwath', dosage: '2-0-2', timing: 'Before Food (with equal warm water)', duration: '30 days' },
+            ]
+        }
+    })
+
+    const t3 = await prisma.medicine_templates.upsert({
+        where: { name: 'UTI & Detox Protocol' },
+        update: {},
+        create: {
+            name: 'UTI & Detox Protocol',
+            description: 'For cooling Pitta dosha and flushing toxins from the urinary tract.',
+            medicines: [
+                { medicine_name: 'Chandraprabha Vati', dosage: '1-0-1', timing: 'After Food', duration: '15 days' },
+                { medicine_name: 'Gokshuradi Guggulu', dosage: '1-0-1', timing: 'After Food', duration: '15 days' },
+                { medicine_name: 'Punarnavarishta', dosage: '2-0-2', timing: 'After Food (with equal warm water)', duration: '15 days' },
+            ]
+        }
+    })
+
     console.log('Seeding complete!')
-    console.log({ bams1, bams2, pg1 })
+    console.log({ bams1, bams2, pg1, doctor, t1, t2, t3 })
 }
 
 main()

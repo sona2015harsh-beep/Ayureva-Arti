@@ -43,6 +43,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                     <NavItem href="/admin/coupons" label="Coupons" icon="🎟️" />
                     <NavItem href="/admin/users" label="Manage Users" icon="👥" />
                     <NavItem href="/admin/leads" label="Leads / Inquiries" icon="📞" />
+                    <NavItem href="/admin/prescriptions" label="Prescriptions" icon="✍️" />
                     <NavItem href="/admin/notifications" label="Announcements" icon="🔔" />
                     <NavItem href="/admin/settings" label="Settings" icon="⚙️" />
                 </nav>
