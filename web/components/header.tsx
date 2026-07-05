@@ -81,13 +81,6 @@ export default function Header() {
               >
                 Contact
               </Link>
-              <Link
-                href="/mobile-app"
-                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-                onClick={(e) => handleNavClick("/mobile-app", e)}
-              >
-                Download App
-              </Link>
             </nav>
 
             <Link href="/contact" onClick={handleConsultationClick}>
