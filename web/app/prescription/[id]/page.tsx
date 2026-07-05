@@ -138,20 +138,10 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
 
         {/* Prescription Paper Layout */}
         <div className="p-8 md:p-12 print:p-0 font-sans text-gray-800 dark:text-zinc-200">
-          {/* Clinic Header */}
-          <div className="grid grid-cols-12 gap-4 border-b border-green-800 pb-4 text-[11px] leading-tight text-gray-700 dark:text-zinc-350 font-medium">
-            {/* Left Side: English */}
-            <div className="col-span-5">
-              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
-              <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
-              <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
-              <p>C.R.I.T (N.M.C.H Patna)</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
-            </div>
-
-            {/* Center: Medical Symbol */}
-            <div className="col-span-2 flex justify-center">
-              <svg className="w-14 h-14" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Top Branding Bar */}
+          <div className="flex flex-col items-center justify-center border-b-2 border-green-800 pb-3 mb-4 text-center">
+            <div className="flex items-center gap-2">
+              <svg className="w-8 h-8" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
                 <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
                 <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
@@ -163,15 +153,29 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
                 <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
                 <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
               </svg>
+              <span className="font-serif text-3xl font-black text-green-905 tracking-widest">AYUREVA</span>
+            </div>
+            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Authentic Ayurvedic Treatment & Consultation Center</p>
+            <span className="mt-1 text-[11px] text-green-700 font-bold tracking-wide border border-green-200 bg-green-50 px-2.5 py-0.5 rounded-full">www.ayureva.in</span>
+          </div>
+
+          {/* Clinic Header */}
+          <div className="grid grid-cols-12 gap-4 pb-3 text-[11px] leading-tight text-gray-700 dark:text-zinc-355 font-medium">
+            {/* Left Side: English */}
+            <div className="col-span-6">
+              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
+              <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
+              <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
+              <p>C.R.I.T (N.M.C.H Patna)</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
             </div>
 
             {/* Right Side: Hindi */}
-            <div className="col-span-5 text-right">
+            <div className="col-span-6 text-right">
               <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">डॉ. आरती कुमारी</p>
               <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
               <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
               <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
             </div>
           </div>
 
@@ -276,7 +280,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
             {/* Dynamic QR Code */}
             <div className="text-[10px] text-gray-500 flex items-center gap-2.5">
               <img 
-                src={`https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=${encodeURIComponent(`https://www.ayureva.in/prescription/${prescription.id}`)}&choe=UTF-8`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://www.ayureva.in/prescription/${prescription.id}`)}`}
                 alt="Verification QR Code" 
                 className="w-14 h-14 border border-gray-200 dark:border-zinc-800 p-0.5 rounded bg-white object-contain"
               />

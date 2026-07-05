@@ -587,54 +587,47 @@ export default function PrescriptionClient() {
         {/* Right Live Letterhead Preview Column */}
         <div className="lg:col-span-5 relative print:block print:p-0">
           <div className="sticky top-28 bg-white border border-gray-200 rounded-3xl p-8 shadow-md print:shadow-none print:border-none print:p-0 max-w-[800px] mx-auto min-h-[1100px] flex flex-col justify-between">
-            {/* Bilingual Header */}
             <div>
-              <div className="grid grid-cols-12 items-center border-b-2 border-green-800 pb-4">
-                {/* Left Side: English */}
-                <div className="col-span-5 text-left text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">DR. ARTI KUMARI</p>
-                  <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
-                  <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
-                  <p>C.R.I.T (N.M.C.H Patna)</p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
-                </div>
-
-                {/* Center: Medical Symbol */}
-                <div className="col-span-2 flex justify-center">
-                  <svg className="w-14 h-14" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Left Wing Outer (Red/Pinkish) */}
-                    <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
-                    {/* Left Wing Inner (Light Blue) */}
-                    <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
-                    
-                    {/* Right Wing Outer (Red/Pinkish) */}
-                    <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
-                    {/* Right Wing Inner (Light Blue) */}
-                    <path d="M50 25C62 15 78 22 80 29C78 36 62 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
-                    
-                    {/* Golden Rod / Staff */}
-                    <rect x="48" y="22" width="4" height="88" rx="2" fill="#D4AF37" stroke="#1A2A3A" strokeWidth="1.2"/>
-                    <circle cx="50" cy="18" r="6" fill="#E5C158" stroke="#1A2A3A" strokeWidth="1.2"/>
-                    
-                    {/* Green Snakes (Coiled around the golden rod) */}
-                    <path d="M50 32C55 32 62 38 62 44C62 50 48 52 38 56C28 60 28 66 38 72C48 78 62 80 62 86C62 92 48 94 38 98C28 102 28 108 38 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M50 32C45 32 38 38 38 44C38 50 52 52 62 56C72 60 72 66 62 72C52 78 38 80 38 86C38 92 52 94 62 98C72 102 72 108 62 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    
-                    {/* Snake Heads */}
-                    <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
-                    <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
-                  </svg>
-                </div>
-
-                {/* Right Side: Hindi */}
-                <div className="col-span-5 text-right text-[11px] leading-tight text-gray-700 font-medium font-sans">
-                  <p className="font-bold text-sm text-green-950 uppercase tracking-wide">डॉ. आरती कुमारी</p>
-                  <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
-                  <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
-                  <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
-                </div>
+              {/* Top Branding Bar */}
+              <div className="flex flex-col items-center justify-center border-b-2 border-green-800 pb-3 mb-4 text-center">
+              <div className="flex items-center gap-2">
+                <svg className="w-8 h-8" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                  <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M50 25C62 15 78 22 80 29C78 36 62 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                  <rect x="48" y="22" width="4" height="88" rx="2" fill="#D4AF37" stroke="#1A2A3A" strokeWidth="1.2"/>
+                  <circle cx="50" cy="18" r="6" fill="#E5C158" stroke="#1A2A3A" strokeWidth="1.2"/>
+                  <path d="M50 32C55 32 62 38 62 44C62 50 48 52 38 56C28 60 28 66 38 72C48 78 62 80 62 86C62 92 48 94 38 98C28 102 28 108 38 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M50 32C45 32 38 38 38 44C38 50 52 52 62 56C72 60 72 66 62 72C52 78 38 80 38 86C38 92 52 94 62 98C72 102 72 108 62 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
+                  <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
+                </svg>
+                <span className="font-serif text-3xl font-black text-green-950 tracking-widest">AYUREVA</span>
               </div>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Authentic Ayurvedic Treatment & Consultation Center</p>
+              <span className="mt-1 text-[11px] text-green-700 font-bold tracking-wide border border-green-200 bg-green-50 px-2.5 py-0.5 rounded-full">www.ayureva.in</span>
+            </div>
+
+            <div className="grid grid-cols-12 pb-3">
+              {/* Left Side: English */}
+              <div className="col-span-6 text-left text-[11px] leading-tight text-gray-700 font-medium font-sans">
+                <p className="font-bold text-sm text-green-950 uppercase tracking-wide">DR. ARTI KUMARI</p>
+                <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
+                <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
+                <p>C.R.I.T (N.M.C.H Patna)</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+              </div>
+
+              {/* Right Side: Hindi */}
+              <div className="col-span-6 text-right text-[11px] leading-tight text-gray-700 font-medium font-sans">
+                <p className="font-bold text-sm text-green-950 uppercase tracking-wide">डॉ. आरती कुमारी</p>
+                <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
+                <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
+                <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
+              </div>
+            </div>
 
               {/* Specializations Red Sub-Note */}
               <div className="bg-red-50 text-red-700 border-b border-red-200 py-1.5 px-4 text-center text-[10px] font-bold tracking-wide">
@@ -734,7 +727,7 @@ export default function PrescriptionClient() {
                 <div className="text-[10px] text-gray-500 flex items-center gap-2">
                   {lastSavedPrescription ? (
                     <img 
-                      src={`https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=${encodeURIComponent(`${typeof window !== 'undefined' ? window.location.origin : 'https://www.ayureva.in'}/prescription/${lastSavedPrescription.id}`)}&choe=UTF-8`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`${typeof window !== 'undefined' ? window.location.origin : 'https://www.ayureva.in'}/prescription/${lastSavedPrescription.id}`)}`}
                       alt="Verification QR Code" 
                       className="w-12 h-12 border border-gray-200 rounded p-0.5 object-contain"
                     />
