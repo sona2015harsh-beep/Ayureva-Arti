@@ -75,7 +75,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           /* Remove browser headers and footers */
           @page {
             size: A4;
-            margin: 15mm;
+            margin: 10mm 12mm 10mm 12mm;
           }
           /* Hide header, footer, WhatsApp floating button, and scroll elements */
           header, footer, nav, aside, button[aria-label="Chat on WhatsApp"], .print\\:hidden {
@@ -85,6 +85,25 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           body, html {
             background: #fff !important;
             color: #000 !important;
+          }
+          /* Compress container paddings/margins exclusively in print */
+          #prescription-print-container .p-8 {
+            padding: 1.5rem !important; /* Scale down outer margins to save vertical height */
+          }
+          #prescription-print-container table th,
+          #prescription-print-container table td {
+            padding-top: 0.35rem !important; /* Scale down table rows to save height */
+            padding-bottom: 0.35rem !important;
+          }
+          #prescription-print-container .mt-10 {
+            margin-top: 1.25rem !important; /* Scale down footer spacing */
+          }
+          #prescription-print-container .my-4 {
+            margin-top: 0.5rem !important; /* Scale down assessment dividers */
+            margin-bottom: 0.5rem !important;
+          }
+          #prescription-print-container .h-10 {
+            height: 1.5rem !important; /* Shrink signature spacing */
           }
         }
       `}} />
