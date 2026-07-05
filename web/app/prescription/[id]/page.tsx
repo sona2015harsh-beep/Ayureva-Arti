@@ -68,7 +68,64 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
   // Render Page
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 py-10 px-4 print:py-0 print:px-0">
-      <div className="max-w-3xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-lg rounded-3xl overflow-hidden print:shadow-none print:border-none print:rounded-none">
+      <style dangerouslySetInnerHTML={{__html: `
+        @media print {
+          /* Remove browser headers/footers */
+          @page {
+            size: A4;
+            margin: 8mm 12mm 8mm 12mm;
+          }
+          /* Hide the entire website header, footer, background elements, and floating CTAs */
+          body * {
+            visibility: hidden;
+            background: none !important;
+          }
+          /* Show only the prescription paper container and its children */
+          #prescription-print-container, #prescription-print-container * {
+            visibility: visible;
+          }
+          #prescription-print-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100% !important;
+            max-width: 100% !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #fff !important;
+            color: #000 !important;
+          }
+          /* Hide print action CTAs */
+          .print\\:hidden {
+            display: none !important;
+          }
+          /* Compact print spacing to ensure everything fits on a single A4 page */
+          .py-10 { padding-top: 0 !important; padding-bottom: 0 !important; }
+          .p-8 { padding: 4px !important; }
+          .pb-4 { padding-bottom: 6px !important; }
+          .py-4 { padding-top: 6px !important; padding-bottom: 6px !important; }
+          .mt-10 { margin-top: 10px !important; }
+          .my-4 { margin-top: 6px !important; margin-bottom: 6px !important; }
+          .mt-6 { margin-top: 8px !important; }
+          .mb-6 { margin-bottom: 8px !important; }
+          .h-10 { height: 16px !important; }
+          
+          /* Compact font and table sizes */
+          table th, table td {
+            padding: 5px 8px !important;
+            font-size: 10px !important;
+          }
+          .text-xs { font-size: 10px !important; }
+          .text-sm { font-size: 11px !important; }
+          .text-[11px] { font-size: 10px !important; }
+          .text-[10px] { font-size: 9px !important; }
+          .text-[8px] { font-size: 7px !important; }
+          .text-2xl { font-size: 16px !important; }
+        }
+      `}} />
+      <div id="prescription-print-container" className="max-w-3xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-lg rounded-3xl overflow-hidden print:shadow-none print:border-none print:rounded-none">
         
         {/* Verification banner (Hidden during print) */}
         <div className="bg-emerald-600 text-white px-6 py-3 flex items-center justify-between text-xs font-bold print:hidden">
@@ -80,7 +137,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
         </div>
 
         {/* Prescription Paper Layout */}
-        <div className="p-8 md:p-12 font-sans text-gray-800 dark:text-zinc-200">
+        <div className="p-8 md:p-12 print:p-0 font-sans text-gray-800 dark:text-zinc-200">
           {/* Clinic Header */}
           <div className="grid grid-cols-12 gap-4 border-b border-green-800 pb-4 text-[11px] leading-tight text-gray-700 dark:text-zinc-350 font-medium">
             {/* Left Side: English */}
@@ -214,7 +271,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           )}
 
           {/* Footer & QR Code Section */}
-          <div className="mt-10 pt-4 border-t border-green-800 flex justify-between items-end">
+          <div className="mt-10 print:mt-6 pt-4 border-t border-green-800 flex justify-between items-end">
             
             {/* Dynamic QR Code */}
             <div className="text-[10px] text-gray-500 flex items-center gap-2.5">
@@ -240,7 +297,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
                   <span>Next Consultation: {new Date(prescription.next_followup_date).toLocaleDateString("en-IN")}</span>
                 </div>
               )}
-              <div className="h-10"></div> {/* Space for signature */}
+              <div className="h-10 print:h-4"></div> {/* Space for signature */}
               <p className="border-t border-gray-200 dark:border-zinc-800 pt-1.5 w-40 ml-auto text-center font-bold text-gray-800 dark:text-zinc-350">
                 Dr. Arti Kumari
               </p>
