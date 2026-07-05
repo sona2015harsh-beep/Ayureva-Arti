@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { CheckCircle2, AlertTriangle, Printer, Calendar, ShieldCheck, Heart } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Calendar, ShieldCheck, Heart } from 'lucide-react';
+import PrintButton from './PrintButton';
 
 interface VerificationPageProps {
   params: Promise<{
@@ -75,12 +76,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
             <ShieldCheck className="w-4 h-4" />
             <span>AUTHENTIC DIGITAL PRESCRIPTION</span>
           </div>
-          <button 
-            onClick={() => typeof window !== 'undefined' && window.print()}
-            className="flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full transition-all cursor-pointer border-none font-bold"
-          >
-            <Printer className="w-3.5 h-3.5" /> Print / Save PDF
-          </button>
+          <PrintButton variant="header" label="Print / Save PDF" />
         </div>
 
         {/* Prescription Paper Layout */}
@@ -256,12 +252,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
         
         {/* Floating Print CTA for Mobile Users */}
         <div className="bg-gray-50 dark:bg-zinc-900 border-t border-gray-150 dark:border-zinc-800 px-6 py-4 flex justify-center print:hidden">
-          <button 
-            onClick={() => typeof window !== 'undefined' && window.print()}
-            className="flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white px-8 py-3 rounded-full font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer border-none"
-          >
-            <Printer className="w-4 h-4" /> Download / Print PDF Copy
-          </button>
+          <PrintButton variant="floating" label="Download / Print PDF Copy" />
         </div>
 
       </div>
