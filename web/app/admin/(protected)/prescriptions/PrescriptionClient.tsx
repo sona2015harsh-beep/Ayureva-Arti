@@ -601,8 +601,28 @@ export default function PrescriptionClient() {
 
                 {/* Center: Medical Symbol */}
                 <div className="col-span-2 flex justify-center">
-                  <svg className="w-12 h-12 text-green-800" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12,2A3,3 0 0,0 9,5C9,6.23 9.75,7.29 10.83,7.71C10.2,8.4 9.42,9.33 8.78,10.37C8.75,10.32 8.71,10.28 8.67,10.24C7.58,9.15 5.82,9.15 4.73,10.24C3.64,11.33 3.64,13.09 4.73,14.18L4.93,14.38C5.7,15.15 6.84,15.35 7.82,14.97C8.16,14.65 8.44,14.31 8.72,13.92C8.74,14.34 8.77,14.78 8.79,15.24C7.81,15.53 6.94,16.2 6.44,17.15C6.11,16.82 5.67,16.62 5.17,16.62A2,2 0 0,0 3.17,18.62A2,2 0 0,0 5.17,20.62C5.97,20.62 6.64,20.08 6.84,19.33C7.63,18.47 8.75,18.06 9.87,18.04C10.15,19.06 10.74,20.03 11.6,20.73L12,21.05L12.4,20.73C13.26,20.03 13.85,19.06 14.13,18.04C15.25,18.06 16.37,18.47 17.16,19.33C17.36,20.08 18.03,20.62 18.83,20.62A2,2 0 0,0 20.83,18.62A2,2 0 0,0 18.83,16.62C18.33,16.62 17.89,16.82 17.56,17.15C17.06,16.2 16.19,15.53 15.21,15.24C15.23,14.78 15.26,14.34 15.28,13.92C15.56,14.31 15.84,14.65 16.18,14.97C17.16,15.35 18.3,15.15 19.07,14.38L19.27,14.18C20.36,13.09 20.36,11.33 19.27,10.24C18.18,9.15 16.42,9.15 15.33,10.24C15.29,10.28 15.25,10.32 15.22,10.37C14.58,9.33 13.8,8.4 13.17,7.71C14.25,7.29 15,6.23 15,5A3,3 0 0,0 12,2M12,4A1,1 0 0,1 13,5A1,1 0 0,1 12,6A1,1 0 0,1 11,5A1,1 0 0,1 12,4Z" />
+                  <svg className="w-14 h-14" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Left Wing Outer (Red/Pinkish) */}
+                    <path d="M50 25C30 8 10 18 6 30C12 40 38 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                    {/* Left Wing Inner (Light Blue) */}
+                    <path d="M50 25C38 15 22 22 20 29C22 36 38 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                    
+                    {/* Right Wing Outer (Red/Pinkish) */}
+                    <path d="M50 25C70 8 90 18 94 30C88 40 62 38 50 34Z" fill="#C87A82" stroke="#1A2A3A" strokeWidth="1.5" strokeLinejoin="round"/>
+                    {/* Right Wing Inner (Light Blue) */}
+                    <path d="M50 25C62 15 78 22 80 29C78 36 62 34 50 34Z" fill="#D3ECEF" stroke="#1A2A3A" strokeWidth="1" strokeLinejoin="round"/>
+                    
+                    {/* Golden Rod / Staff */}
+                    <rect x="48" y="22" width="4" height="88" rx="2" fill="#D4AF37" stroke="#1A2A3A" strokeWidth="1.2"/>
+                    <circle cx="50" cy="18" r="6" fill="#E5C158" stroke="#1A2A3A" strokeWidth="1.2"/>
+                    
+                    {/* Green Snakes (Coiled around the golden rod) */}
+                    <path d="M50 32C55 32 62 38 62 44C62 50 48 52 38 56C28 60 28 66 38 72C48 78 62 80 62 86C62 92 48 94 38 98C28 102 28 108 38 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M50 32C45 32 38 38 38 44C38 50 52 52 62 56C72 60 72 66 62 72C52 78 38 80 38 86C38 92 52 94 62 98C72 102 72 108 62 114" stroke="#10633B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    
+                    {/* Snake Heads */}
+                    <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
+                    <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
                   </svg>
                 </div>
 
@@ -710,11 +730,19 @@ export default function PrescriptionClient() {
             {/* Print Footer */}
             <div className="mt-8 pt-4 border-t border-green-800 flex flex-col justify-end gap-4">
               <div className="flex justify-between items-end">
-                {/* QR Code Validation Mock */}
+                {/* Dynamic Authenticity Verification QR Code */}
                 <div className="text-[10px] text-gray-500 flex items-center gap-2">
-                  <div className="w-12 h-12 bg-gray-100 border border-gray-200 rounded p-1 flex items-center justify-center font-bold text-[8px] uppercase text-gray-400 text-center">
-                    QR Verify
-                  </div>
+                  {lastSavedPrescription ? (
+                    <img 
+                      src={`https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=${encodeURIComponent(`${typeof window !== 'undefined' ? window.location.origin : 'https://www.ayureva.in'}/prescription/${lastSavedPrescription.id}`)}&choe=UTF-8`}
+                      alt="Verification QR Code" 
+                      className="w-12 h-12 border border-gray-200 rounded p-0.5 object-contain"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 bg-gray-100 border border-gray-200 rounded p-1 flex items-center justify-center font-bold text-[8px] uppercase text-gray-400 text-center">
+                      QR Verify
+                    </div>
+                  )}
                   <div>
                     <p className="font-bold text-gray-800 text-[9px]">PRESCRIPTION VERIFICATION</p>
                     <p className="text-gray-400 text-[8px]">Scan to verify authenticity</p>
