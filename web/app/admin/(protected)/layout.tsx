@@ -15,12 +15,20 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
     const { data: profile } = await supabase
         .from('profiles')
-        .select('role')
+        .select('role, email')
         .eq('id', user.id)
         .single();
 
+    console.log("Admin verification check:", {
+        userId: user.id,
+        email: user.email,
+        dbProfileRole: profile?.role,
+        dbProfileEmail: profile?.email
+    });
+
     if (profile?.role !== 'admin') {
-        redirect('/');
+        console.warn(`Access denied for ${user.email}. Role is not admin:`, profile?.role);
+        redirect('/admin/login?error=not-admin');
     }
 
     return (
