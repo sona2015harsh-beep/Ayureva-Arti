@@ -570,6 +570,8 @@ export default function PrescriptionClient() {
                       </span>
                     </div>
                     <p className="text-xs font-semibold text-gray-600 mt-1">Diagnosis: {hist.diagnosis || "N/A"}</p>
+                    
+                    {/* Medicines tags */}
                     <div className="flex flex-wrap gap-2 mt-2">
                       {hist.medicines.map((m, idx) => (
                         <span key={idx} className="bg-gray-100 text-[10px] px-2 py-0.5 rounded-full font-medium text-gray-700">
@@ -577,6 +579,39 @@ export default function PrescriptionClient() {
                         </span>
                       ))}
                     </div>
+
+                    {/* Resend and View Actions */}
+                    <div className="flex flex-wrap gap-2 mt-3 pt-2 border-t border-gray-100">
+                      <button
+                        onClick={() => {
+                          const verifyUrl = `${window.location.origin}/prescription/${hist.id}`;
+                          const text = encodeURIComponent(
+                            `Hello ${patientName || "Patient"}, this is your official digital prescription from Dr. Arti Kumari (Ayureva). \n\nPrescription No: ${hist.prescription_no}\nDate: ${new Date(hist.consultation_date).toLocaleDateString("en-IN")}\n\nYou can verify your prescription and download the verified copy here: ${verifyUrl}\n\nThank you for choosing Ayureva.`
+                          );
+                          window.open(`https://api.whatsapp.com/send?phone=91${patientPhone}&text=${text}`, "_blank");
+                        }}
+                        className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-2.5 py-1 rounded-md font-bold transition-colors cursor-pointer border-none"
+                      >
+                        Send WhatsApp
+                      </button>
+                      <button
+                        onClick={() => window.open(`/prescription/${hist.id}`, "_blank")}
+                        className="bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 text-[10px] px-2.5 py-1 rounded-md font-bold transition-colors cursor-pointer"
+                      >
+                        View / Print
+                      </button>
+                      <button
+                        onClick={() => {
+                          const verifyUrl = `${window.location.origin}/prescription/${hist.id}`;
+                          navigator.clipboard.writeText(verifyUrl);
+                          alert("Prescription link copied to clipboard!");
+                        }}
+                        className="bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 text-[10px] px-2.5 py-1 rounded-md font-bold transition-colors cursor-pointer"
+                      >
+                        Copy Link
+                      </button>
+                    </div>
+
                   </div>
                 ))}
               </CardContent>
