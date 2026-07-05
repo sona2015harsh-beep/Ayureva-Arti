@@ -297,13 +297,21 @@ model device_tokens {
 // ============================================
 
 model leads {
-  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  full_name    String
-  phone_number String
-  message      String?
-  status       String?  @default("pending") // pending, contacted, converted, rejected
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  full_name        String
+  phone_number     String
+  message          String?
+  status           String?  @default("new") // new, contacted, scheduled, completed, rx_sent, converted, follow_up, closed
+  source           String?  @default("google") // google, instagram, facebook, referral, direct, whatsapp
+  notes            String?
+  patient_id       String?  @db.Uuid
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  timeline           lead_timeline[]
+  communication_logs communication_logs[]
+  appointments       appointments[]
 }
 
 // ============================================
@@ -323,6 +331,7 @@ model doctors {
 
   // Relations
   prescriptions prescriptions[]
+  appointments  appointments[]
 }
 
 model patients {
@@ -339,7 +348,9 @@ model patients {
   updated_at   DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 
   // Relations
-  prescriptions prescriptions[]
+  prescriptions      prescriptions[]
+  appointments        appointments[]
+  communication_logs communication_logs[]
 }
 
 model prescriptions {
@@ -396,5 +407,53 @@ model medicine_templates {
   description String?
   medicines   Json
   created_at  DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model lead_timeline {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  lead_id     String   @db.Uuid
+  status      String
+  note        String
+  created_by  String?  @default("System")
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  lead        leads    @relation(fields: [lead_id], references: [id], onDelete: Cascade)
+}
+
+model communication_logs {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  lead_id     String?  @db.Uuid
+  patient_id  String?  @db.Uuid
+  type        String   // whatsapp, sms, email, call
+  log_type    String   // prescription_sent, lead_reply, reminder
+  message     String
+  status      String   @default("sent") // sent, failed, pending
+  created_by  String?  @default("System")
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  lead        leads?    @relation(fields: [lead_id], references: [id], onDelete: Cascade)
+  patient     patients? @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+}
+
+model appointments {
+  id                 String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  patient_id         String?  @db.Uuid
+  lead_id            String?  @db.Uuid
+  doctor_id          String   @db.Uuid
+  appointment_date   DateTime @db.Date
+  appointment_time   String   // e.g. "10:30 AM"
+  mode               String   @default("online") // online, offline
+  duration_minutes   Int      @default(30)
+  status             String   @default("scheduled") // scheduled, completed, cancelled, missed
+  notes              String?
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  patient            patients? @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  lead               leads?    @relation(fields: [lead_id], references: [id], onDelete: Cascade)
+  doctor             doctors   @relation(fields: [doctor_id], references: [id], onDelete: Cascade)
 }
 

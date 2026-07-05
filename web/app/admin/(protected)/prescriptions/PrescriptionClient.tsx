@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -31,6 +32,10 @@ interface PrescriptionHistory {
 }
 
 export default function PrescriptionClient() {
+  const searchParams = useSearchParams()
+  const paramLeadId = searchParams.get("leadId")
+  const paramPatientId = searchParams.get("patientId")
+
   // Form State
   const [patientName, setPatientName] = useState("")
   const [patientPhone, setPatientPhone] = useState("")
@@ -74,6 +79,65 @@ export default function PrescriptionClient() {
       })
       .catch((err) => console.error("Error loading templates:", err))
   }, [])
+
+  // Auto-fill from leadId/patientId URL params
+  useEffect(() => {
+    if (!paramLeadId) return;
+
+    const fetchLeadInfo = async () => {
+      try {
+        const res = await fetch(`/api/leads/${paramLeadId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.lead) {
+            const lead = data.lead;
+            setPatientName(lead.full_name || "");
+            
+            // Clean phone format
+            const cleanPhone = lead.phone_number.replace(/\D/g, "").slice(-10);
+            setPatientPhone(cleanPhone);
+            
+            // Fetch patient history directly
+            triggerAutoSearch(cleanPhone);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load lead:", err);
+      }
+    };
+
+    fetchLeadInfo();
+  }, [paramLeadId]);
+
+  const triggerAutoSearch = async (phoneToSearch: string) => {
+    if (!phoneToSearch || phoneToSearch.length < 10) return;
+    setSearchLoading(true);
+    setSearchMessage("");
+    setPatientHistory([]);
+    try {
+      const res = await fetch(`/api/patients/search?phone=${phoneToSearch}`);
+      const data = await res.json();
+      if (data.success && data.found) {
+        const p = data.patient;
+        setPatientName(p.name || "");
+        setPatientAge(p.age ? p.age.toString() : "");
+        setPatientGender(p.gender || "Female");
+        setPatientAllergies(p.allergies || "None");
+        setPatientAddress(p.address || "");
+        setBloodGroup(p.blood_group || "");
+        setSearchMessage("Patient profile loaded successfully!");
+        if (p.prescriptions && p.prescriptions.length > 0) {
+          setPatientHistory(p.prescriptions);
+        }
+      } else {
+        setSearchMessage("Linked lead. Ready to register patient.");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
 
   // Lookup Patient by Phone
   const handlePatientSearch = async () => {
@@ -191,6 +255,23 @@ export default function PrescriptionClient() {
 
         // Refresh History
         handlePatientSearch()
+
+        // Update CRM Lead status and timeline if linked
+        if (paramLeadId) {
+          try {
+            await fetch('/api/leads', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                id: paramLeadId,
+                status: 'rx_sent',
+                timelineEvent: `Prescription generated & shared. Serial No: ${prescription.prescription_no}`
+              })
+            });
+          } catch (leadUpdateErr) {
+            console.error("Failed to update lead status:", leadUpdateErr);
+          }
+        }
 
         // Create Verification URL
         const verifyUrl = `https://www.ayureva.in/prescription/${prescription.id}`
