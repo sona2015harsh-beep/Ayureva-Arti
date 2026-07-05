@@ -1,6 +1,7 @@
 "use server"
 
 import { z } from "zod"
+import { prisma } from "@/lib/prisma"
 
 const contactFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -59,6 +60,16 @@ export async function submitContactForm(formData: FormData) {
     }
 
     const { firstName, lastName, email, phone, healthConcern } = validatedFields.data
+
+    // Save lead to database
+    await prisma.leads.create({
+      data: {
+        full_name: `${firstName} ${lastName}`,
+        phone_number: phone,
+        message: healthConcern,
+        status: "pending",
+      },
+    })
 
     // Simplified email content to avoid parsing issues
     const emailContent = `New Consultation Request - Ayureva

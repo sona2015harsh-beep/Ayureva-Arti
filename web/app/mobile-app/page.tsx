@@ -8,6 +8,9 @@ import { CheckCircle2, Download, Smartphone, Star } from 'lucide-react';
 export const metadata: Metadata = {
     title: 'Download Ayureva App | Best AIAPGT & BAMS Prep App',
     description: 'Master Ayurveda with Dr. Arti Singh. Access video lectures, mock tests, and live classes on your mobile. Download the Ayureva App now.',
+    alternates: {
+        canonical: "/mobile-app",
+    },
 };
 
 export default function AppLandingPage() {

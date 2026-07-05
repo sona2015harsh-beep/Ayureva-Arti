@@ -4,7 +4,7 @@ import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, Video, CheckCircle, Shield, Award, MapPin } from "lucide-react"
+import { Calendar, Video, CheckCircle, Shield, Award, MapPin, ChevronRight, Activity } from "lucide-react"
 
 interface LocationPageProps {
   params: Promise<{
@@ -44,6 +44,57 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   }
 }
 
+function getRegionalContent(region: string) {
+  const isCold = region.includes("USA") || region.includes("UK") || region.includes("Canada") || region.includes("United Kingdom") || region.includes("Northeast") || region.includes("Midwest") || region.includes("Coast");
+  const isMiddleEast = region.includes("Middle East");
+  const isIndia = region.includes("India");
+
+  if (isCold) {
+    return {
+      title: `Ayurvedic Care for Cold & Temperate Climates (${region})`,
+      content: "Living in colder regions often leads to Vitamin D deficiency, which is directly linked to insulin resistance and worsening PCOS/PCOD symptoms. In cold climates, bodily Agni (metabolic fire) gets sluggish. Dr. Arti's customized protocol for this region includes specific warming herbs (like Ginger, Cinnamon, and Pippali) and a strict recommendation to avoid cold/iced beverages, which deplete your metabolic fire.",
+      insight: "Focus: Boosting Agni & correcting Vitamin D absorption naturally."
+    }
+  }
+
+  if (isMiddleEast) {
+    return {
+      title: `Ayurvedic Strategy for Hot Climates & Indoor Lifestyles (${region})`,
+      content: "In extremely hot climates where daily life is spent mostly indoors under constant air conditioning, Kapha dosha can easily accumulate. This leads to water retention, slow metabolism, and sluggish ovulation. Our treatment for Middle Eastern patients emphasizes dry-brushing (Udvarthanam), specific warming spices to clear channels (Srotas), and strict guidelines to avoid ice-cold drinks and high-glycemic dates.",
+      insight: "Focus: Clearing water retention and stimulating Kapha-blocked metabolism."
+    }
+  }
+
+  if (isIndia) {
+    return {
+      title: `Ayurvedic Guidelines for Traditional Indian Diets (${region})`,
+      content: "Modern Indian dietary habits have shifted toward highly refined carbohydrates (polished white rice, refined wheat flour/maida), leading to a high prevalence of insulin resistance (the root driver of PCOD weight gain). Dr. Arti's protocol focuses on correcting your Agni by replacing refined grains with local millets (Jowar, Bajra, Ragi) and integrating insulin-sensitizing herbs like Methi (Fenugreek) and Haridra (Turmeric).",
+      insight: "Focus: Reversing insulin resistance through native grain optimization."
+    }
+  }
+
+  return {
+    title: `Localized Ayurvedic Protocol for ${region}`,
+    content: "Ayurveda is a science of relativity. The local climate, water, and regional dietary habits (Desha) heavily influence your bodily Doshas. Dr. Arti Singh customizes your Ayurvedic formulations, herbal teas, and daily dinacharya (routine) specifically to match the season, temperature, and lifestyle patterns of your local geographical region.",
+    insight: "Focus: Climate-compatible dosha balancing (Desha Satmya)."
+  }
+}
+
+function getAdjacentLocations(currentLocId: string, currentCountry: string, currentRegion: string) {
+  let matches = targetLocations.filter(
+    (loc) => loc.region === currentRegion && loc.id !== currentLocId
+  );
+
+  if (matches.length < 4) {
+    const countryMatches = targetLocations.filter(
+      (loc) => loc.country === currentCountry && loc.id !== currentLocId && !matches.find((m) => m.id === loc.id)
+    );
+    matches = [...matches, ...countryMatches];
+  }
+
+  return matches.slice(0, 4);
+}
+
 export default async function PcodLocationPage({ params }: LocationPageProps) {
   const { location } = await params
   const locData = getLocationBySlug(location)
@@ -51,6 +102,9 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
   if (!locData) {
     notFound()
   }
+
+  const regional = getRegionalContent(locData.region)
+  const adjacent = getAdjacentLocations(locData.id, locData.country, locData.region)
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -147,6 +201,27 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
         </div>
       </section>
 
+      {/* Localized Health Insights Section */}
+      <section className="py-12 bg-green-50/20 border-b border-gray-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-white p-8 md:p-10 rounded-3xl border border-green-100 shadow-xs">
+            <div className="flex items-center gap-2.5 text-green-700 mb-3 font-semibold text-sm uppercase tracking-wider">
+              <Activity className="w-5 h-5" />
+              <span>Ayurvedic Regional Assessment</span>
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
+              {regional.title}
+            </h3>
+            <p className="text-gray-700 leading-relaxed mb-4 text-sm md:text-base">
+              {regional.content}
+            </p>
+            <div className="bg-green-50 border-l-4 border-green-600 p-3.5 rounded-r-xl text-sm font-semibold text-green-950">
+              💡 {regional.insight}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* The Protocol */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">
@@ -171,6 +246,41 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
               <h3 className="text-lg font-bold text-gray-900 mb-2">Artava Janana (Cycle Regulation)</h3>
               <p className="text-gray-600 text-sm">Once the channels are clear, we nourish the reproductive system to trigger painless, timely, and natural ovulation every month.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sideways Internal Linking (Crawl Graph) */}
+      <section className="py-12 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-green-700 mb-6 text-center">
+            Other Online Consultations in {locData.country}
+          </h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {adjacent.map((adj) => (
+              <Link
+                key={adj.id}
+                href={`/online-pcod-treatment/${adj.id}`}
+                className="flex items-center justify-between p-3.5 rounded-xl border border-gray-100 hover:border-green-300 hover:bg-green-50/20 transition-all text-center"
+              >
+                <div className="w-full text-center">
+                  <span className="font-semibold text-gray-800 text-sm block">
+                    {adj.name}
+                  </span>
+                  <span className="text-xs text-gray-400 block mt-0.5">
+                    {adj.state}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link
+              href="/online-pcod-treatment"
+              className="inline-flex items-center text-sm font-bold text-green-600 hover:underline animate-pulse-subtle"
+            >
+              View All Serviced Areas <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
           </div>
         </div>
       </section>

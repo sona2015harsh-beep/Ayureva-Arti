@@ -67,6 +67,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/online-pcod-treatment" className="hover:text-green-400">
+                  Our Locations
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-green-400">
                   Contact Us
                 </Link>

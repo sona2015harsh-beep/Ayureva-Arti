@@ -1,6 +1,7 @@
 "use server"
 
 import { z } from "zod"
+import { prisma } from "@/lib/prisma"
 
 const contactFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -33,13 +34,20 @@ export async function submitContactFormFallback(formData: FormData) {
 
     const { firstName, lastName, email, phone, healthConcern } = validatedFields.data
 
-    // In production, this should be replaced with actual email sending or database storage
-    // For now, we log to server console as a fallback
-    console.error("CONSULTATION REQUEST RECEIVED - Email service unavailable")
+    // Save lead to database (Fallback insurance)
+    await prisma.leads.create({
+      data: {
+        full_name: `${firstName} ${lastName}`,
+        phone_number: phone,
+        message: healthConcern,
+        status: "pending",
+      },
+    })
 
-    // You can also store this in a database or send to a webhook
-    // For now, we'll simulate success
-    await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate processing time
+    console.error("CONSULTATION REQUEST RECEIVED - Saved to database, but email service failed")
+
+    // Simulate processing time
+    await new Promise((resolve) => setTimeout(resolve, 500))
 
     return {
       success: true,

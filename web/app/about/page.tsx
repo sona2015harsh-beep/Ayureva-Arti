@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     "menstrual disorders doctor",
     "online ayurvedic consultation",
   ],
+  alternates: {
+    canonical: "/about",
+  },
 }
 
 export default function AboutPage() {

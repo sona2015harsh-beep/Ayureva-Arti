@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Calendar, Shield, Activity, Leaf, Heart, ArrowRight, User } from "lucide-react"
+import { CheckCircle, Calendar, Shield, Activity, Leaf, Heart, ArrowRight, User, MapPin } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import PcodSymptomChecker from "./PcodSymptomChecker"
@@ -206,6 +206,24 @@ export default function PcodLandingClient() {
                   </div>
               </div>
           </div>
+      </section>
+
+      {/* Global Reach / Locations Section */}
+      <section className="py-16 bg-gray-50 border-y border-gray-100">
+         <div className="container mx-auto px-4 max-w-4xl text-center">
+             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-600 mb-4">
+                 <MapPin className="w-6 h-6" />
+             </div>
+             <h2 className="text-3xl font-bold text-gray-900 mb-4">Serving Patients in 60+ Cities Globally</h2>
+             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+                 Get customized, root-cause Ayurvedic treatment for PCOS/PCOD securely from the comfort of your home. We consult and ship medicines globally to locations across India, USA, UK, UAE, Canada, and Australia.
+             </p>
+             <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8" asChild>
+                 <Link href="/online-pcod-treatment">
+                     View All Serviced Areas <ArrowRight className="w-4 h-4 ml-2" />
+                 </Link>
+             </Button>
+         </div>
       </section>
 
       {/* SEO FAQs */}

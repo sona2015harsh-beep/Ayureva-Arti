@@ -5,6 +5,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Best Ayurveda Medicines & Recommendations | Ayurveda Suggestions",
     description: "Explore our curated list of top-rated Ayurveda medicines, supplements, and wellness products for immunity, digestion, and stress relief.",
+    alternates: {
+        canonical: "/ayurveda-suggestions",
+    },
 };
 
 export default function AyurvedaSuggestionsPage() {
