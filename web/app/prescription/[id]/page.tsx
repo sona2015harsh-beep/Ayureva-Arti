@@ -63,69 +63,33 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
     );
   }
 
-  const { patient, doctor, medicines } = prescription;
+  const { patient, medicines } = prescription;
 
   // Render Page
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 py-10 px-4 print:py-0 print:px-0">
+      
+      {/* Dynamic styles to remove header/footer during print without breaking image loading */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
-          /* Remove browser headers/footers */
+          /* Remove browser headers and footers */
           @page {
             size: A4;
-            margin: 8mm 12mm 8mm 12mm;
+            margin: 10mm 12mm 10mm 12mm;
           }
-          /* Hide the entire website header, footer, background elements, and floating CTAs */
-          body * {
-            visibility: hidden;
-            background: none !important;
+          /* Hide header, footer, WhatsApp floating button, and scroll elements */
+          header, footer, nav, aside, button[aria-label="Chat on WhatsApp"], .print\\:hidden {
+            display: none !important;
           }
-          /* Show only the prescription paper container and its children */
-          #prescription-print-container, #prescription-print-container * {
-            visibility: visible;
-          }
-          #prescription-print-container {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100% !important;
-            max-width: 100% !important;
-            border: none !important;
-            box-shadow: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
+          /* Make body backgrounds print cleanly */
+          body, html {
             background: #fff !important;
             color: #000 !important;
           }
-          /* Hide print action CTAs */
-          .print\\:hidden {
-            display: none !important;
-          }
-          /* Compact print spacing to ensure everything fits on a single A4 page */
-          .py-10 { padding-top: 0 !important; padding-bottom: 0 !important; }
-          .p-8 { padding: 4px !important; }
-          .pb-4 { padding-bottom: 6px !important; }
-          .py-4 { padding-top: 6px !important; padding-bottom: 6px !important; }
-          .mt-10 { margin-top: 10px !important; }
-          .my-4 { margin-top: 6px !important; margin-bottom: 6px !important; }
-          .mt-6 { margin-top: 8px !important; }
-          .mb-6 { margin-bottom: 8px !important; }
-          .h-10 { height: 16px !important; }
-          
-          /* Compact font and table sizes */
-          table th, table td {
-            padding: 5px 8px !important;
-            font-size: 10px !important;
-          }
-          .text-xs { font-size: 10px !important; }
-          .text-sm { font-size: 11px !important; }
-          .text-[11px] { font-size: 10px !important; }
-          .text-[10px] { font-size: 9px !important; }
-          .text-[8px] { font-size: 7px !important; }
-          .text-2xl { font-size: 16px !important; }
         }
       `}} />
-      <div id="prescription-print-container" className="max-w-3xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-lg rounded-3xl overflow-hidden print:shadow-none print:border-none print:rounded-none">
+
+      <div id="prescription-print-container" className="max-w-3xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-lg rounded-3xl overflow-hidden print:shadow-none print:border-none print:rounded-none print:max-w-full print:w-full">
         
         {/* Verification banner (Hidden during print) */}
         <div className="bg-emerald-600 text-white px-6 py-3 flex items-center justify-between text-xs font-bold print:hidden">
@@ -138,6 +102,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
 
         {/* Prescription Paper Layout */}
         <div className="p-8 md:p-12 print:p-0 font-sans text-gray-800 dark:text-zinc-200">
+          
           {/* Top Branding Bar */}
           <div className="flex flex-col items-center justify-center border-b-2 border-green-800 pb-3 mb-4 text-center">
             <div className="flex items-center gap-2">
@@ -153,39 +118,40 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
                 <circle cx="36" cy="42" r="2.5" fill="#10633B"/>
                 <circle cx="64" cy="42" r="2.5" fill="#10633B"/>
               </svg>
-              <span className="font-serif text-3xl font-black text-green-905 tracking-widest">AYUREVA</span>
+              <span className="font-serif text-3xl font-black text-green-955 dark:text-green-400 tracking-widest">AYUREVA</span>
             </div>
             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Authentic Ayurvedic Treatment & Consultation Center</p>
             <span className="mt-1 text-[11px] text-green-700 font-bold tracking-wide border border-green-200 bg-green-50 px-2.5 py-0.5 rounded-full">www.ayureva.in</span>
           </div>
 
           {/* Clinic Header */}
-          <div className="grid grid-cols-12 gap-4 pb-3 text-[11px] leading-tight text-gray-700 dark:text-zinc-355 font-medium">
+          <div className="grid grid-cols-12 gap-4 pb-3 text-[11px] print:text-[10px] leading-tight text-gray-700 dark:text-zinc-355 font-medium">
             {/* Left Side: English */}
             <div className="col-span-6">
-              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
-              <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
+              <p className="font-bold text-sm print:text-xs text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
+              <p className="font-semibold italic text-gray-500 text-[10px] print:text-[9px]">(Medical officer)</p>
               <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
               <p>C.R.I.T (N.M.C.H Patna)</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+              <p className="text-[10px] print:text-[9px] text-gray-400 mt-0.5">Reg. No.- 42</p>
             </div>
 
             {/* Right Side: Hindi */}
             <div className="col-span-6 text-right">
-              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">डॉ. आरती कुमारी</p>
-              <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
+              <p className="font-bold text-sm print:text-xs text-green-950 dark:text-green-400 uppercase tracking-wide">डॉ. आरती कुमारी</p>
+              <p className="font-semibold italic text-gray-500 text-[10px] print:text-[9px]">(चिकित्सा पदाधिकारी)</p>
               <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
               <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
+              <p className="text-[10px] print:text-[9px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
             </div>
           </div>
 
           {/* Specializations Band */}
-          <div className="bg-red-50 dark:bg-red-950/20 text-red-750 dark:text-red-300 border-b border-red-200 dark:border-red-900/50 py-1.5 px-4 text-center text-[10px] font-bold tracking-wide">
+          <div className="bg-red-50 dark:bg-red-950/20 text-red-750 dark:text-red-300 border-b border-red-200 dark:border-red-900/50 py-1.5 print:py-1 px-4 text-center text-[10px] print:text-[8px] font-bold tracking-wide">
             नोट: पेट, लीवर, फेफड़ा, किडनी, चर्म रोग, हड्डी रोग एवं स्त्री रोग संबंधित परामर्श
           </div>
 
           {/* Patient Info Grid */}
-          <div className="grid grid-cols-12 gap-y-2.5 border-b border-green-800 py-4 text-[11px] text-gray-800 dark:text-zinc-300 font-semibold bg-gray-50/50 dark:bg-zinc-800/30 px-3 mt-3 rounded-xl">
+          <div className="grid grid-cols-12 gap-y-2.5 print:gap-y-1.5 border-b border-green-800 py-4 print:py-2 text-[11px] print:text-[9px] text-gray-800 dark:text-zinc-300 font-semibold bg-gray-50/50 dark:bg-zinc-800/30 px-3 mt-3 rounded-xl">
             <div className="col-span-6">Patient Name: <span className="text-gray-900 dark:text-white font-bold">{patient.name}</span></div>
             <div className="col-span-3">Age: <span className="text-gray-900 dark:text-white font-bold">{patient.age || "—"} Years</span></div>
             <div className="col-span-3">Gender: <span className="text-gray-900 dark:text-white font-bold capitalize">{patient.gender || "—"}</span></div>
@@ -194,17 +160,17 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
             <div className="col-span-3">Date: <span className="text-gray-900 dark:text-white font-bold">{new Date(prescription.consultation_date).toLocaleDateString("en-IN")}</span></div>
             <div className="col-span-3">Allergies: <span className="text-red-650 font-bold">{patient.allergies || "None"}</span></div>
 
-            <div className="col-span-12 grid grid-cols-4 gap-2 border-t border-gray-100 dark:border-zinc-800 pt-2 text-[10px] text-gray-500 font-medium">
+            <div className="col-span-12 grid grid-cols-4 gap-2 border-t border-gray-100 dark:border-zinc-800 pt-2 text-[10px] print:text-[8px] text-gray-500 font-medium">
               <div>BP: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.blood_pressure || "—"}</span></div>
               <div>Pulse: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.pulse || "—"}</span></div>
-              <div>Weight: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.weight || "—"}</span></div>
-              <div>Temp: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.temperature || "—"}</span></div>
+              <div>Weight: <span className="text-gray-900 dark:text-zinc-350 font-bold">{prescription.weight || "—"}</span></div>
+              <div>Temp: <span className="text-gray-900 dark:text-zinc-355 font-bold">{prescription.temperature || "—"}</span></div>
             </div>
           </div>
 
           {/* Chief Complaint & Diagnosis */}
           {(prescription.chief_complaint || prescription.diagnosis) && (
-            <div className="grid grid-cols-2 gap-4 border-b border-gray-100 dark:border-zinc-800 py-3 text-xs leading-relaxed">
+            <div className="grid grid-cols-2 gap-4 border-b border-gray-150 py-3 print:py-1.5 text-xs print:text-[10px] leading-relaxed">
               {prescription.chief_complaint && (
                 <div>
                   <span className="font-bold text-green-950 dark:text-green-400">Chief Complaints:</span>
@@ -221,30 +187,30 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           )}
 
           {/* Rx Icon */}
-          <div className="text-2xl font-serif font-black text-green-900 dark:text-green-500 my-4 select-none">Rx</div>
+          <div className="text-2xl print:text-lg font-serif font-black text-green-900 dark:text-green-500 my-4 print:my-2 select-none">Rx</div>
 
           {/* Medicines List Table */}
           <div className="border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-green-50 dark:bg-zinc-800 text-green-950 dark:text-zinc-300 font-bold border-b border-gray-200 dark:border-zinc-850">
-                  <th className="px-4 py-2.5 w-12 text-center">S.No</th>
-                  <th className="px-4 py-2.5">Medicine Name</th>
-                  <th className="px-4 py-2.5">Dosage</th>
-                  <th className="px-4 py-2.5">Timing</th>
-                  <th className="px-4 py-2.5 w-24">Duration</th>
-                  <th className="px-4 py-2.5">Instructions</th>
+                  <th className="px-4 py-2.5 print:py-1.5 w-12 text-center">S.No</th>
+                  <th className="px-4 py-2.5 print:py-1.5">Medicine Name</th>
+                  <th className="px-4 py-2.5 print:py-1.5">Dosage</th>
+                  <th className="px-4 py-2.5 print:py-1.5">Timing</th>
+                  <th className="px-4 py-2.5 print:py-1.5 w-24">Duration</th>
+                  <th className="px-4 py-2.5 print:py-1.5">Instructions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
                 {medicines.map((med, index) => (
                   <tr key={med.id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/10 transition-colors">
-                    <td className="px-4 py-3 text-center text-gray-500 font-bold">{index + 1}</td>
-                    <td className="px-4 py-3 font-bold text-gray-900 dark:text-white">{med.medicine_name}</td>
-                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-medium">{med.dosage}</td>
-                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-medium">{med.timing}</td>
-                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-semibold">{med.duration}</td>
-                    <td className="px-4 py-3 text-[11px] text-gray-500 dark:text-zinc-400 italic font-medium">{med.remarks || "As directed"}</td>
+                    <td className="px-4 py-3 print:py-1.5 text-center text-gray-500 font-bold">{index + 1}</td>
+                    <td className="px-4 py-3 print:py-1.5 font-bold text-gray-900 dark:text-white">{med.medicine_name}</td>
+                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-medium">{med.dosage}</td>
+                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-medium">{med.timing}</td>
+                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-semibold">{med.duration}</td>
+                    <td className="px-4 py-3 print:py-1.5 text-[11px] print:text-[10px] text-gray-500 dark:text-zinc-400 italic font-medium">{med.remarks || "As directed"}</td>
                   </tr>
                 ))}
                 {medicines.length === 0 && (
@@ -258,7 +224,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
 
           {/* Extra Notes & Tests Advice */}
           {(prescription.doctor_notes || prescription.tests_advised) && (
-            <div className="mt-6 space-y-4 border-t border-gray-100 dark:border-zinc-800 pt-4 text-xs">
+            <div className="mt-6 print:mt-3 space-y-4 print:space-y-2 border-t border-gray-100 dark:border-zinc-800 pt-4 print:pt-2 text-xs print:text-[10px]">
               {prescription.tests_advised && (
                 <div>
                   <span className="font-bold text-green-950 dark:text-green-400">Advised Investigation / Tests:</span>
@@ -275,7 +241,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           )}
 
           {/* Footer & QR Code Section */}
-          <div className="mt-10 print:mt-6 pt-4 border-t border-green-800 flex justify-between items-end">
+          <div className="mt-10 print:mt-4 pt-4 border-t border-green-800 flex justify-between items-end">
             
             {/* Dynamic QR Code */}
             <div className="text-[10px] text-gray-500 flex items-center gap-2.5">
@@ -287,7 +253,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
               <div>
                 <p className="font-bold text-gray-800 dark:text-zinc-300 text-[9px] tracking-wide">VERIFIED CLINICAL RECORD</p>
                 <p className="text-gray-400 text-[8px]">Scan to verify authenticity online</p>
-                <p className="font-semibold text-green-700 dark:text-green-450 text-[8px] mt-0.5">
+                <p className="font-semibold text-green-700 dark:text-green-455 text-[8px] mt-0.5">
                   No: {prescription.prescription_no}
                 </p>
               </div>
