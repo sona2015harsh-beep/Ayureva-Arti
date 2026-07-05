@@ -75,7 +75,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           /* Remove browser headers and footers */
           @page {
             size: A4;
-            margin: 10mm 12mm 10mm 12mm;
+            margin: 15mm;
           }
           /* Hide header, footer, WhatsApp floating button, and scroll elements */
           header, footer, nav, aside, button[aria-label="Chat on WhatsApp"], .print\\:hidden {
@@ -101,7 +101,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
         </div>
 
         {/* Prescription Paper Layout */}
-        <div className="p-8 md:p-12 print:p-0 font-sans text-gray-800 dark:text-zinc-200">
+        <div className="p-8 md:p-12 font-sans text-gray-800 dark:text-zinc-200">
           
           {/* Top Branding Bar */}
           <div className="flex flex-col items-center justify-center border-b-2 border-green-800 pb-3 mb-4 text-center">
@@ -125,33 +125,33 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           </div>
 
           {/* Clinic Header */}
-          <div className="grid grid-cols-12 gap-4 pb-3 text-[11px] print:text-[10px] leading-tight text-gray-700 dark:text-zinc-355 font-medium">
+          <div className="grid grid-cols-12 gap-4 pb-3 text-[11px] leading-tight text-gray-700 dark:text-zinc-355 font-medium">
             {/* Left Side: English */}
             <div className="col-span-6">
-              <p className="font-bold text-sm print:text-xs text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
-              <p className="font-semibold italic text-gray-500 text-[10px] print:text-[9px]">(Medical officer)</p>
+              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">DR. ARTI KUMARI</p>
+              <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
               <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
               <p>C.R.I.T (N.M.C.H Patna)</p>
-              <p className="text-[10px] print:text-[9px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
             </div>
 
             {/* Right Side: Hindi */}
             <div className="col-span-6 text-right">
-              <p className="font-bold text-sm print:text-xs text-green-950 dark:text-green-400 uppercase tracking-wide">डॉ. आरती कुमारी</p>
-              <p className="font-semibold italic text-gray-500 text-[10px] print:text-[9px]">(चिकित्सा पदाधिकारी)</p>
+              <p className="font-bold text-sm text-green-950 dark:text-green-400 uppercase tracking-wide">डॉ. आरती कुमारी</p>
+              <p className="font-semibold italic text-gray-500 text-[10px]">(चिकित्सा पदाधिकारी)</p>
               <p className="mt-1">बी.ए.एम.एस (जी.ए.सी.एच पटना)</p>
               <p>सी.आर.आई.टी (एन.एम.सी.एच पटना)</p>
-              <p className="text-[10px] print:text-[9px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">Mob. No.- 9608855210</p>
             </div>
           </div>
 
           {/* Specializations Band */}
-          <div className="bg-red-50 dark:bg-red-950/20 text-red-750 dark:text-red-300 border-b border-red-200 dark:border-red-900/50 py-1.5 print:py-1 px-4 text-center text-[10px] print:text-[8px] font-bold tracking-wide">
+          <div className="bg-red-50 dark:bg-red-950/20 text-red-750 dark:text-red-300 border-b border-red-200 dark:border-red-900/50 py-1.5 px-4 text-center text-[10px] font-bold tracking-wide">
             नोट: पेट, लीवर, फेफड़ा, किडनी, चर्म रोग, हड्डी रोग एवं स्त्री रोग संबंधित परामर्श
           </div>
 
           {/* Patient Info Grid */}
-          <div className="grid grid-cols-12 gap-y-2.5 print:gap-y-1.5 border-b border-green-800 py-4 print:py-2 text-[11px] print:text-[9px] text-gray-800 dark:text-zinc-300 font-semibold bg-gray-50/50 dark:bg-zinc-800/30 px-3 mt-3 rounded-xl">
+          <div className="grid grid-cols-12 gap-y-2.5 border-b border-green-800 py-4 text-[11px] text-gray-800 dark:text-zinc-300 font-semibold bg-gray-50/50 dark:bg-zinc-800/30 px-3 mt-3 rounded-xl">
             <div className="col-span-6">Patient Name: <span className="text-gray-900 dark:text-white font-bold">{patient.name}</span></div>
             <div className="col-span-3">Age: <span className="text-gray-900 dark:text-white font-bold">{patient.age || "—"} Years</span></div>
             <div className="col-span-3">Gender: <span className="text-gray-900 dark:text-white font-bold capitalize">{patient.gender || "—"}</span></div>
@@ -160,57 +160,57 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
             <div className="col-span-3">Date: <span className="text-gray-900 dark:text-white font-bold">{new Date(prescription.consultation_date).toLocaleDateString("en-IN")}</span></div>
             <div className="col-span-3">Allergies: <span className="text-red-650 font-bold">{patient.allergies || "None"}</span></div>
 
-            <div className="col-span-12 grid grid-cols-4 gap-2 border-t border-gray-100 dark:border-zinc-800 pt-2 text-[10px] print:text-[8px] text-gray-500 font-medium">
+            <div className="col-span-12 grid grid-cols-4 gap-2 border-t border-gray-100 dark:border-zinc-800 pt-2 text-[10px] text-gray-500 font-medium">
               <div>BP: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.blood_pressure || "—"}</span></div>
               <div>Pulse: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.pulse || "—"}</span></div>
-              <div>Weight: <span className="text-gray-900 dark:text-zinc-350 font-bold">{prescription.weight || "—"}</span></div>
-              <div>Temp: <span className="text-gray-900 dark:text-zinc-355 font-bold">{prescription.temperature || "—"}</span></div>
+              <div>Weight: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.weight || "—"}</span></div>
+              <div>Temp: <span className="text-gray-900 dark:text-zinc-300 font-bold">{prescription.temperature || "—"}</span></div>
             </div>
           </div>
 
           {/* Chief Complaint & Diagnosis */}
           {(prescription.chief_complaint || prescription.diagnosis) && (
-            <div className="grid grid-cols-2 gap-4 border-b border-gray-150 py-3 print:py-1.5 text-xs print:text-[10px] leading-relaxed">
+            <div className="grid grid-cols-2 gap-4 border-b border-gray-150 py-3 text-xs leading-relaxed">
               {prescription.chief_complaint && (
                 <div>
                   <span className="font-bold text-green-950 dark:text-green-400">Chief Complaints:</span>
-                  <p className="text-gray-600 dark:text-zinc-400 mt-0.5">{prescription.chief_complaint}</p>
+                  <p className="text-gray-650 dark:text-zinc-450 mt-0.5">{prescription.chief_complaint}</p>
                 </div>
               )}
               {prescription.diagnosis && (
                 <div>
                   <span className="font-bold text-green-950 dark:text-green-400">Diagnosis:</span>
-                  <p className="text-gray-600 dark:text-zinc-400 mt-0.5">{prescription.diagnosis}</p>
+                  <p className="text-gray-650 dark:text-zinc-450 mt-0.5">{prescription.diagnosis}</p>
                 </div>
               )}
             </div>
           )}
 
           {/* Rx Icon */}
-          <div className="text-2xl print:text-lg font-serif font-black text-green-900 dark:text-green-500 my-4 print:my-2 select-none">Rx</div>
+          <div className="text-2xl font-serif font-black text-green-900 dark:text-green-500 my-4 select-none">Rx</div>
 
           {/* Medicines List Table */}
           <div className="border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-green-50 dark:bg-zinc-800 text-green-950 dark:text-zinc-300 font-bold border-b border-gray-200 dark:border-zinc-850">
-                  <th className="px-4 py-2.5 print:py-1.5 w-12 text-center">S.No</th>
-                  <th className="px-4 py-2.5 print:py-1.5">Medicine Name</th>
-                  <th className="px-4 py-2.5 print:py-1.5">Dosage</th>
-                  <th className="px-4 py-2.5 print:py-1.5">Timing</th>
-                  <th className="px-4 py-2.5 print:py-1.5 w-24">Duration</th>
-                  <th className="px-4 py-2.5 print:py-1.5">Instructions</th>
+                  <th className="px-4 py-2.5 w-12 text-center">S.No</th>
+                  <th className="px-4 py-2.5">Medicine Name</th>
+                  <th className="px-4 py-2.5">Dosage</th>
+                  <th className="px-4 py-2.5">Timing</th>
+                  <th className="px-4 py-2.5 w-24">Duration</th>
+                  <th className="px-4 py-2.5">Instructions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
                 {medicines.map((med, index) => (
                   <tr key={med.id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/10 transition-colors">
-                    <td className="px-4 py-3 print:py-1.5 text-center text-gray-500 font-bold">{index + 1}</td>
-                    <td className="px-4 py-3 print:py-1.5 font-bold text-gray-900 dark:text-white">{med.medicine_name}</td>
-                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-medium">{med.dosage}</td>
-                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-medium">{med.timing}</td>
-                    <td className="px-4 py-3 print:py-1.5 text-gray-700 dark:text-zinc-300 font-semibold">{med.duration}</td>
-                    <td className="px-4 py-3 print:py-1.5 text-[11px] print:text-[10px] text-gray-500 dark:text-zinc-400 italic font-medium">{med.remarks || "As directed"}</td>
+                    <td className="px-4 py-3 text-center text-gray-500 font-bold">{index + 1}</td>
+                    <td className="px-4 py-3 font-bold text-gray-900 dark:text-white">{med.medicine_name}</td>
+                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-medium">{med.dosage}</td>
+                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-medium">{med.timing}</td>
+                    <td className="px-4 py-3 text-gray-700 dark:text-zinc-300 font-semibold">{med.duration}</td>
+                    <td className="px-4 py-3 text-[11px] text-gray-505 dark:text-zinc-400 italic font-medium">{med.remarks || "As directed"}</td>
                   </tr>
                 ))}
                 {medicines.length === 0 && (
@@ -224,7 +224,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
 
           {/* Extra Notes & Tests Advice */}
           {(prescription.doctor_notes || prescription.tests_advised) && (
-            <div className="mt-6 print:mt-3 space-y-4 print:space-y-2 border-t border-gray-100 dark:border-zinc-800 pt-4 print:pt-2 text-xs print:text-[10px]">
+            <div className="mt-6 space-y-4 border-t border-gray-100 dark:border-zinc-800 pt-4 text-xs">
               {prescription.tests_advised && (
                 <div>
                   <span className="font-bold text-green-950 dark:text-green-400">Advised Investigation / Tests:</span>
@@ -241,7 +241,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
           )}
 
           {/* Footer & QR Code Section */}
-          <div className="mt-10 print:mt-4 pt-4 border-t border-green-800 flex justify-between items-end">
+          <div className="mt-10 pt-4 border-t border-green-800 flex justify-between items-end">
             
             {/* Dynamic QR Code */}
             <div className="text-[10px] text-gray-500 flex items-center gap-2.5">
@@ -267,7 +267,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
                   <span>Next Consultation: {new Date(prescription.next_followup_date).toLocaleDateString("en-IN")}</span>
                 </div>
               )}
-              <div className="h-10 print:h-4"></div> {/* Space for signature */}
+              <div className="h-10"></div> {/* Space for signature */}
               <p className="border-t border-gray-200 dark:border-zinc-800 pt-1.5 w-40 ml-auto text-center font-bold text-gray-800 dark:text-zinc-350">
                 Dr. Arti Kumari
               </p>
