@@ -34,7 +34,7 @@ export default function ContactSection() {
 
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
   const { pricing, isLoading } = useGeoPricing()
-  const CALENDLY_BASE_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/drartisingh1102/30min"
+  const CALENDLY_BASE_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/dr-arti-ayureva/1-to-1-private-consultation"
 
   // Helper to load Razorpay Checkout SDK dynamically on demand
   const loadRazorpayScript = () => {
