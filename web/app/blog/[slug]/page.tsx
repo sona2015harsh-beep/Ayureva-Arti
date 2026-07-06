@@ -4,7 +4,7 @@ import Image from "next/image"
 import { blogPosts } from "@/lib/blog-data"
 import { ArrowLeft, Calendar, Clock, ShieldCheck, User, ChevronRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { AyurvedaSuggestionsCTA } from "@/components/blog/AyurvedaSuggestionsCTA"
+
 import { generateSchema } from "@/lib/schema-generator"
 import { injectInternalLinks } from "@/lib/internal-linking"
 import InlineCTA from "@/components/inline-cta"
@@ -156,8 +156,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </Button>
                     </div>
 
-                    {/* Ayurveda Suggestions CTA */}
-                    <AyurvedaSuggestionsCTA category={post.category} tags={post.tags} />
+
 
                         {/* GEO: Scientific Citations Section for AI Extraction */}
                         {post.citations && post.citations.length > 0 && (

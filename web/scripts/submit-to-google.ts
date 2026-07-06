@@ -37,7 +37,7 @@ function getAllUrls(): string[] {
   urls.push(`${SITE_URL}/blog`)
   urls.push(`${SITE_URL}/pcod-ayurvedic-treatment-online`)
   urls.push(`${SITE_URL}/mobile-app`)
-  urls.push(`${SITE_URL}/ayurveda-suggestions`)
+
 
   // All 33+ blog posts
   for (const post of blogPosts) {

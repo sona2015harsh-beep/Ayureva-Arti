@@ -74,12 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.6,
         },
-        {
-            url: `${baseUrl}/ayurveda-suggestions`,
-            lastModified: currentDate,
-            changeFrequency: "monthly",
-            priority: 0.6,
-        },
+
     ]
 
     // 2. Dynamic Blog Routes

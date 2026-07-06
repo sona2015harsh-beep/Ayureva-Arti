@@ -32,7 +32,7 @@ const STATIC_PAGES = [
   "/disclaimer",
   "/pcod-ayurvedic-treatment-online",
   "/mobile-app",
-  "/ayurveda-suggestions",
+
   "/privacy-policy",
   "/terms-conditions",
   "/refund-policy",
