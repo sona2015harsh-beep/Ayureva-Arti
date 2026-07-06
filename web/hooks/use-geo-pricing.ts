@@ -12,9 +12,9 @@ export interface PricingData {
 export function useGeoPricing() {
   const [pricing, setPricing] = useState<PricingData>({
     currency: "USD",
-    amount: 39,
+    amount: 99,
     symbol: "$",
-    label: "$39 USD",
+    label: "$99 USD",
   })
   
   const [isLoading, setIsLoading] = useState(true)
@@ -29,15 +29,15 @@ export function useGeoPricing() {
 
         if (countryCode === "IN") {
           setPricing({ currency: "INR", amount: 500, symbol: "₹", label: "₹500 INR" })
-        } else if (["US", "CA", "GB", "AU", "NZ", "IE"].includes(countryCode)) {
-          setPricing({ currency: "USD", amount: 49, symbol: "$", label: "$49 USD" })
+        } else if (countryCode === "GB") {
+          setPricing({ currency: "GBP", amount: 79, symbol: "£", label: "£79 GBP" })
+        } else if (["IE", "DE", "FR", "NL", "BE", "AT", "ES", "IT", "CH", "SE", "DK", "NO", "FI", "PL", "PT"].includes(countryCode)) {
+          setPricing({ currency: "EUR", amount: 89, symbol: "€", label: "€89 EUR" })
         } else if (["AE", "SA", "QA", "OM", "KW", "BH"].includes(countryCode)) {
-          setPricing({ currency: "AED", amount: 149, symbol: "AED ", label: "149 AED" })
-        } else if (["SG", "MY"].includes(countryCode)) {
-          setPricing({ currency: "SGD", amount: 49, symbol: "S$", label: "S$49" })
+          setPricing({ currency: "AED", amount: 249, symbol: "AED ", label: "249 AED" })
         } else {
-          // Rest of world default
-          setPricing({ currency: "USD", amount: 39, symbol: "$", label: "$39 USD" })
+          // USA, Canada, Australia, New Zealand, Singapore, Malaysia, and Rest of World default
+          setPricing({ currency: "USD", amount: 99, symbol: "$", label: "$99 USD" })
         }
       } catch (error) {
         console.error("Geo-pricing fallback triggered.", error)
