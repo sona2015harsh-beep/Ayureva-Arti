@@ -123,20 +123,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                     <span>Medically Reviewed</span>
                                 </div>
                             </div>
-                        </header>
+                        {/* E-E-A-T Medical Review & Educational Intent Header Banner */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mt-6 mb-8 text-xs text-gray-600 leading-relaxed shadow-sm">
+                            <p className="mb-2 flex items-center gap-1.5 font-semibold text-gray-800">
+                                <ShieldCheck className="w-4.5 h-4.5 text-green-600" />
+                                Medically Reviewed by Dr. Arti Singh (B.A.M.S.) | Last Updated: {post.publishDate}
+                            </p>
+                            <p>
+                                <strong>Educational Purpose:</strong> The information in this article is written for educational and general information purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always consult a certified B.A.M.S. Ayurvedic physician or your primary healthcare provider before starting any herbal regimen, especially if you are currently taking hormonal or prescription medication.
+                            </p>
+                        </div>
+                    </header>
 
-                        {/* Content Body */}
-                        <div
-                            className="prose prose-lg prose-green max-w-none text-gray-700 internal-links-styled"
-                            dangerouslySetInnerHTML={{ __html: injectInternalLinks(post.content) }}
-                        />
+                    {/* Content Body */}
+                    <div
+                        className="prose prose-lg prose-green max-w-none text-gray-700 internal-links-styled"
+                        dangerouslySetInnerHTML={{ __html: injectInternalLinks(post.content) }}
+                    />
 
-                        {/* Ayurveda Suggestions CTA */}
-                        {/* Ayurveda Suggestions CTA */}
-                        <AyurvedaSuggestionsCTA category={post.category} tags={post.tags} />
+                    {/* Natural, Non-Pushy Consultation CTA */}
+                    <div className="my-12 p-8 bg-green-50/50 rounded-2xl border border-green-100 text-center shadow-sm">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">Looking for Individualized Guidance?</h3>
+                        <p className="text-gray-600 text-sm mb-6 max-w-xl mx-auto leading-relaxed">
+                            Because Ayurveda is highly personalized to your unique body type (Prakriti) and specific Dosha imbalance, generic advice can only go so far. If you want a tailored protocol, you can schedule a private video consultation with Dr. Arti Singh.
+                        </p>
+                        <Button className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 h-12 rounded-lg" asChild>
+                            <Link href="/contact">Book Video Consultation</Link>
+                        </Button>
+                    </div>
 
-                        {/* Ayurveda Suggestions CTA */}
-                        <AyurvedaSuggestionsCTA category={post.category} tags={post.tags} />
+                    {/* Ayurveda Suggestions CTA */}
+                    <AyurvedaSuggestionsCTA category={post.category} tags={post.tags} />
 
                         {/* GEO: Scientific Citations Section for AI Extraction */}
                         {post.citations && post.citations.length > 0 && (

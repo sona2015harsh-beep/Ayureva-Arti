@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, MapPin, Calendar, CheckCircle, AlertCircle } from "lucide-react"
+import { Mail, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Clock, FileText } from "lucide-react"
 import { submitContactForm } from "@/actions/contact-form"
 import { submitContactFormFallback } from "@/actions/contact-form-fallback"
 import { useAnalytics } from "@/lib/analytics"
@@ -202,6 +202,19 @@ export default function ContactSection() {
           </div>
 
           <div className="space-y-8">
+            {/* Worldwide Shipping Banner */}
+            <div className="bg-emerald-800 text-white p-6 rounded-2xl shadow-md border-l-8 border-green-400 relative overflow-hidden flex items-start space-x-4">
+              <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <Truck className="w-6 h-6 text-green-300 animate-pulse" />
+              </div>
+              <div>
+                <h4 className="font-bold text-lg mb-1">📦 Worldwide Medicine Delivery</h4>
+                <p className="text-green-100 text-sm leading-relaxed">
+                  We safely ship certified Ayurvedic herbal formulations directly to your doorstep in the <strong>USA, UK, Europe, UAE, Canada, and Australia</strong>. Customs clearance and tracking are fully managed by our international logistics partner.
+                </p>
+              </div>
+            </div>
+
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
 
@@ -242,6 +255,37 @@ export default function ContactSection() {
               </div>
             </div>
 
+            {/* Prepare for Consultation checklist */}
+            <div className="bg-yellow-50/50 p-6 rounded-2xl border border-yellow-200">
+              <h4 className="font-bold text-yellow-950 text-base mb-3 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-yellow-800" />
+                What to Prepare Before Your Consultation
+              </h4>
+              <p className="text-gray-700 text-xs mb-4">
+                To help Dr. Arti Singh understand the exact root cause of your condition, please keep the following ready:
+              </p>
+              <ul className="space-y-3 text-xs text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold">✓</span>
+                  <div>
+                    <strong>Recent Diagnostic Reports:</strong> Pelvic ultrasound (USG), thyroid panels, or hormone profiles (if done in the last 6 months).
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold">✓</span>
+                  <div>
+                    <strong>Menstrual Cycle Details:</strong> Date of last period, cycle length regularity, and symptoms.
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold">✓</span>
+                  <div>
+                    <strong>Active Medications:</strong> A list of any active prescriptions (like birth control pills, metformin, or thyroid tablets).
+                  </div>
+                </li>
+              </ul>
+            </div>
+
             <div className="bg-white p-6 rounded-xl border-2 border-green-100">
               <h4 className="font-semibold text-gray-900 mb-3">Consultation Hours</h4>
               <div className="space-y-2 text-sm">
@@ -256,6 +300,52 @@ export default function ContactSection() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Sunday</span>
                   <span className="font-medium text-red-600">Closed</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Patient Journey Timeline */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-green-100 shadow-sm">
+              <h4 className="font-bold text-gray-900 text-base mb-5 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-green-600" />
+                Your Booking & Consultation Journey
+              </h4>
+              <div className="relative border-l border-green-200 pl-5 ml-2.5 space-y-6">
+                {/* Step 1 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">1</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Submit Request</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Fill out your health symptoms and details in the booking form.</p>
+                </div>
+                {/* Step 2 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">2</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Coordinator Contact</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Our coordinator connects with you on WhatsApp/Email within 24 hours to confirm timezone compatibility.</p>
+                </div>
+                {/* Step 3 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">3</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Secure Payment</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Pay the localized consultation fee safely online.</p>
+                </div>
+                {/* Step 4 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">4</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Book Live Slot</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Pick your exact date and hour on Dr. Arti's live calendar link.</p>
+                </div>
+                {/* Step 5 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">5</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Video Consultation</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Discuss symptoms, reports, and lifestyle during a private video call.</p>
+                </div>
+                {/* Step 6 */}
+                <div className="relative">
+                  <span className="absolute -left-[27px] top-0.5 bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-2xs font-bold ring-4 ring-white">6</span>
+                  <h5 className="font-bold text-gray-900 text-xs mb-0.5">Prescription & Medicine Delivery</h5>
+                  <p className="text-gray-500 text-2xs leading-relaxed">Receive a digital copy. Prescribed certified herbs are packed and shipped to your address.</p>
                 </div>
               </div>
             </div>
@@ -298,7 +388,47 @@ export default function ContactSection() {
                 <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
-                Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or phone to confirm your appointment time and provide the next steps for your Ayurvedic treatment.
+                Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or WhatsApp to confirm your appointment time and provide the next steps for your Ayurvedic treatment.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Can Ayurvedic medicines be shipped to my country (USA/UK/UAE/Canada/Australia)?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Yes, we routinely ship certified, natural Ayurvedic preparations to our international patients in the USA, UK, UAE, Canada, and Australia. Customs clearance, tracking details, and doorstep delivery are fully managed by our international courier partners.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Can I continue my current allopathic medicines during Ayurvedic treatment?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Yes. You should never stop any ongoing allopathic medication (such as thyroid hormone tablets or diabetes medicines) without consulting your prescribing doctor. Ayurvedic treatment can be safely integrated alongside them, and we advise maintaining a gap of at least 60 minutes between allopathic and Ayurvedic doses.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                Do I need to stop taking birth control pills or hormonal medication before consulting?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                No, please do not stop any hormonal treatment on your own. During your video consultation, Dr. Arti Singh will evaluate your complete hormone history and cycle rhythm to lay out a safe, gradual, and scientifically backed tapering plan if appropriate.
+              </div>
+            </details>
+
+            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
+              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
+                What reports should I keep ready before my consultation?
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
+                Please gather any pelvic ultrasound (USG) reports, thyroid panels (TSH, Free T3/T4), blood sugar profiles, or hormone tests (FSH, LH, Prolactin, Testosterone) done in the last 6 months. If you don't have recent tests, Dr. Arti Singh will tell you if any are required during your consultation.
               </div>
             </details>
 
@@ -308,37 +438,7 @@ export default function ContactSection() {
                 <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
-                Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women worldwide through our highly effective online Ayurvedic consultation platform.
-              </div>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
-              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
-                How do I book an online Ayurvedic consultation for PCOS?
-                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
-              </summary>
-              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
-                Simply fill out the contact form on this page with your details and mention 'PCOS Online Consultation' in the health concern box. We will arrange a secure video call consultation where Dr. Arti Singh will diagnose your condition and prescribe targeted Ayurvedic protocols.
-              </div>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
-              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
-                What should I prepare before my first Ayurvedic consultation?
-                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
-              </summary>
-              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
-                Please gather your recent medical reports (like pelvic ultrasounds, thyroid panels, or hormone tests), a detailed summary of your current symptoms, your menstrual cycle history, and a list of any allopathic medicines or supplements you are currently taking.
-              </div>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 group cursor-pointer">
-              <summary className="font-bold text-lg text-gray-900 list-none flex justify-between items-center outline-none">
-                What languages does Dr. Arti Singh speak during consultations?
-                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
-              </summary>
-              <div className="mt-4 text-gray-600 leading-relaxed font-medium pt-4 border-t border-gray-50">
-                Dr. Arti Singh is highly fluent in both English and Hindi. She conducts consultations comfortably in either language depending on the patient's preference, ensuring clear communication of complex Ayurvedic and medical concepts.
+                Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women globally through our highly effective online video consultation platform.
               </div>
             </details>
           </div>
@@ -357,7 +457,39 @@ export default function ContactSection() {
                   "name": "How quickly will Dr. Arti Singh review my consultation request?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or phone to confirm your appointment time and provide the next steps for your Ayurvedic treatment."
+                    "text": "Our team monitors all consultation requests closely. Dr. Arti Singh or her clinic coordinator will contact you within 24 hours (excluding Sundays) via email or WhatsApp to confirm your appointment time and provide the next steps for your Ayurvedic treatment."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can Ayurvedic medicines be shipped to my country (USA/UK/UAE/Canada/Australia)?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, we routinely ship certified, natural Ayurvedic preparations to our international patients in the USA, UK, UAE, Canada, and Australia. Customs clearance, tracking details, and doorstep delivery are fully managed by our international courier partners."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I continue my current allopathic medicines during Ayurvedic treatment?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. You should never stop any ongoing allopathic medication (such as thyroid hormone tablets or diabetes medicines) without consulting your prescribing doctor. Ayurvedic treatment can be safely integrated alongside them, and we advise maintaining a gap of at least 60 minutes between allopathic and Ayurvedic doses."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do I need to stop taking birth control pills or hormonal medication before consulting?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No, please do not stop any hormonal treatment on your own. During your video consultation, Dr. Arti Singh will evaluate your complete hormone history and cycle rhythm to lay out a safe, gradual, and scientifically backed tapering plan if appropriate."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What reports should I keep ready before my consultation?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Please gather any pelvic ultrasound (USG) reports, thyroid panels (TSH, Free T3/T4), blood sugar profiles, or hormone tests (FSH, LH, Prolactin, Testosterone) done in the last 6 months. If you don't have recent tests, Dr. Arti Singh will tell you if any are required during your consultation."
                   }
                 },
                 {
@@ -365,31 +497,7 @@ export default function ContactSection() {
                   "name": "Where is Dr. Arti Singh's Ayurvedic clinic physically located?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women worldwide through our highly effective online Ayurvedic consultation platform."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How do I book an online Ayurvedic consultation for PCOS?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Simply fill out the contact form on this page with your details and mention 'PCOS Online Consultation' in the health concern box. We will arrange a secure video call consultation where Dr. Arti Singh will diagnose your condition and prescribe targeted Ayurvedic protocols."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What should I prepare before my first Ayurvedic consultation?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Please gather your recent medical reports (like pelvic ultrasounds, thyroid panels, or hormone tests), a detailed summary of your current symptoms, your menstrual cycle history, and a list of any allopathic medicines or supplements you are currently taking."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What languages does Dr. Arti Singh speak during consultations?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Dr. Arti Singh is highly fluent in both English and Hindi. She conducts consultations comfortably in either language depending on the patient's preference, ensuring clear communication of complex Ayurvedic and medical concepts."
+                    "text": "Ayureva Clinic is located at Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016, Bihar. However, we serve women worldwide through our highly effective online video consultation platform."
                   }
                 }
               ]

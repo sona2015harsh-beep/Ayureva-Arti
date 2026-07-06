@@ -8138,13 +8138,13 @@ y: 52-year-old with HbA1c 9.2%</h4>
                   <p class="text-sm text-blue-800 font-semibold"> Medical Disclaimer </p>
                     <p class="text-sm text-blue-700">
                       The content provided in this article is for educational purposes only and does not constitute medical advice, diagnosis, or treatment. 
-                    Ayurvedic treatments are highly personalized.Please consult a qualified BAMS doctor before starting any regimen.
+                    Ayurvedic treatments are highly personalized. Please consult a qualified BAMS doctor before starting any regimen.
                   </p>
   </div>
   <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
     <p class="text-sm text-blue-800 font-semibold"> Self - Discovery </p>
       <p class="text-sm text-blue-700">
-        This is a general guide.For a precise pulse diagnosis(Nadi Pariksha), book a consultation.Most people are a combination(Dual Dosha).
+        This is a general guide. For a personalized evaluation of your constitution and health concerns, book a private consultation. Most people are a combination (Dual Dosha).
           </p>
           </div>
 
@@ -8237,7 +8237,7 @@ y: 52-year-old with HbA1c 9.2%</h4>
         <h2 class="text-3xl font-bold text-gray-900 mt-12 mb-6">Taking the Full Dosha Quiz</h2>
         <p class="mb-4 text-gray-700">
            A comprehensive Dosha assessment considers 25-30 factors including body type, digestion, temperament, sleep patterns, and disease tendencies.
-           For accurate results, consult an Ayurvedic practitioner who can assess pulse (Nadi Pariksha) and tongue diagnosis.
+           For accurate results, consult an Ayurvedic practitioner who can assess your symptoms, digestive fire, lifestyle, and tongue characteristics.
         </p>
 
         <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Scientific Backing</h2>

@@ -14,7 +14,7 @@ export const newLongTailPosts: BlogPost[] = [
         <p>PCOS is primarily a Kapha-dominant imbalance characterized by sluggish metabolism and insulin resistance. Therefore, the fruits you consume must possess <strong>Kashaya (astringent)</strong> or <strong>Tikta (bitter)</strong> tastes, as these naturally scrape away fat and Kapha.</p>
 
         <h3>1. Pomegranate (Dadima) - The Ultimate PCOS Fruit</h3>
-        <p>In Ayurveda, Pomegranate is considered <em>Tridoshic</em> (balances all three doshas) but is exceptionally good for PCOS. It acts as a blood purifier (Rakta Shodhaka) and contains potent antioxidants that lower ovarian inflammation. Furthermore, its astringent quality helps in reducing heavy menstrual bleeding.</p>
+        <p>In Ayurveda, Pomegranate is considered <em>Tridoshic</em> (balances all three doshas) but is exceptionally good for PCOS. It acts as a blood purifier (Rakta Shodhaka) and contains potent antioxidants that lower ovarian inflammation. Its astringent quality also helps in reducing heavy menstrual bleeding.</p>
 
         <h3>2. Amla (Indian Gooseberry)</h3>
         <p>Amla is a sour fruit but has a sweet post-digestive effect (Madhura Vipaka). It is a powerhouse of Vitamin C and deeply nourishes the Shukra Dhatu (reproductive tissue). Drinking fresh Amla juice on an empty stomach drastically improves insulin sensitivity.</p>
@@ -105,7 +105,7 @@ export const newLongTailPosts: BlogPost[] = [
         <h2>How Ashwagandha Helps PCOS</h2>
         <p>PCOS is heavily exacerbated by stress. High levels of the stress hormone cortisol alert the adrenal glands to pump out more DHEA, which converts to testosterone. This extra testosterone causes the facial hair, acne, and hair loss associated with PCOS.</p>
 
-        <p>As a powerful <em>Medhya Rasayana</em> (rejuvenator of the nervous system), Ashwagandha drastically lowers cortisol levels. By cooling the adrenal glands, it cuts off the overproduction of androgens at the source. Furthermore, it improves insulin sensitivity, making it a dual-action herb for women suffering from the stress-weight gain PCOS cycle.</p>
+        <p>As a powerful <em>Medhya Rasayana</em> (rejuvenator of the nervous system), Ashwagandha drastically lowers cortisol levels. By cooling the adrenal glands, it cuts off the overproduction of androgens at the source. It also improves insulin sensitivity, making it a dual-action herb for women suffering from the stress-weight gain PCOS cycle.</p>
 
         <h2>When is Ashwagandha BAD for PCOS?</h2>
         <p>Ayurveda is highly personalized. Ashwagandha has an <em>Ushna Virya</em> (heating potency). It is excellent for Vata and Kapha imbalances, but if your PCOS is heavily Pitta-dominant—characterized by severe inflammatory acne, acid reflux, heavy burning menstruation, or extreme anger—Ashwagandha will add literal fuel to the fire.</p>
