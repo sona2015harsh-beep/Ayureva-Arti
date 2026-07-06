@@ -401,21 +401,10 @@ export default function ContactSection() {
                         </div>
                       </div>
 
-                      {/* Mandatory Payment Terms */}
-                      <div className="flex items-start mb-6 bg-yellow-50/50 p-4 rounded-xl border border-yellow-100">
-                        <div className="flex items-center h-5">
-                          <input
-                            id="payment-terms"
-                            name="payment_terms_accepted"
-                            type="checkbox"
-                            required
-                            className="w-4 h-4 text-green-650 bg-white border-gray-300 rounded focus:ring-green-500 cursor-pointer"
-                          />
-                        </div>
-                        <label htmlFor="payment-terms" className="ml-2.5 text-xs text-gray-650 cursor-pointer leading-normal">
-                          I agree to pay the <span className="font-bold">{isLoading ? 'consultation fee' : pricing.label}</span> fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
-                        </label>
-                      </div>
+                      {/* Passive consent disclaimer — no checkbox friction */}
+                      <p className="text-[10px] text-gray-400 mt-4 mb-5 leading-normal text-center">
+                        By clicking below, you agree to pay the <span className="font-semibold">{isLoading ? 'consultation fee' : pricing.label}</span> consultation fee and accept our <a href="/terms-conditions" className="underline hover:text-gray-600">Terms</a> & <a href="/refund-policy" className="underline hover:text-gray-600">Refund Policy</a>.
+                      </p>
 
                       <Button
                         type="submit"
@@ -446,19 +435,43 @@ export default function ContactSection() {
                 )}
 
                 {paymentStep === "paying" && (
-                  <div className="space-y-6 py-4 animate-fadeIn">
-                    <div className="text-center mb-6">
+                  <div className="space-y-5 py-4 animate-fadeIn">
+                    {/* Step Progress Indicator */}
+                    <div className="flex items-center justify-center gap-0 mb-2">
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
+                        <span className="text-[10px] text-green-700 font-semibold mt-1">Details</span>
+                      </div>
+                      <div className="w-10 h-0.5 bg-green-600 mb-4"></div>
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold ring-2 ring-green-300 ring-offset-2">2</div>
+                        <span className="text-[10px] text-green-700 font-semibold mt-1">Payment</span>
+                      </div>
+                      <div className="w-10 h-0.5 bg-gray-200 mb-4"></div>
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-xs font-bold">3</div>
+                        <span className="text-[10px] text-gray-400 font-medium mt-1">Book Slot</span>
+                      </div>
+                    </div>
+
+                    {/* Header */}
+                    <div className="text-center">
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <ShieldCheck className="w-6 h-6 text-green-600" />
                       </div>
                       <h3 className="text-xl font-bold text-gray-900">Secure Consultation Payment</h3>
-                      <p className="text-xs text-gray-500 mt-1">Lead saved successfully. Complete payment to secure your scheduling slot.</p>
+                      <p className="text-xs text-gray-500 mt-1">Your details have been saved. Complete payment to proceed.</p>
                     </div>
 
+                    {/* Order Summary */}
                     <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 text-sm space-y-2">
                       <div className="flex justify-between">
                         <span className="text-gray-500">Patient:</span>
                         <span className="font-semibold text-gray-800">{clientInfo.fullName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">WhatsApp:</span>
+                        <span className="font-semibold text-gray-800">{clientInfo.phone}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-500">Service:</span>
@@ -470,6 +483,14 @@ export default function ContactSection() {
                       </div>
                     </div>
 
+                    {/* Next Step Hint */}
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-start gap-2">
+                      <Calendar className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <p className="text-xs text-emerald-800 leading-relaxed">
+                        <strong>Next step:</strong> After payment, you will be able to choose your preferred consultation date & time slot on Calendly.
+                      </p>
+                    </div>
+
                     {paymentError && (
                       <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg text-xs flex items-start gap-2">
                         <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
@@ -478,11 +499,7 @@ export default function ContactSection() {
                     )}
 
                     {pricing.currency === "INR" ? (
-                      <div className="space-y-4">
-                        <p className="text-xs text-gray-650 leading-relaxed">
-                          For Indian domestic bookings, payment is required upfront. Clicking the button below will open the secure <strong>Razorpay Payment Gateway</strong> to complete your <strong>₹500 INR</strong> payment.
-                        </p>
-                        
+                      <div className="space-y-3">
                         <Button
                           onClick={handleRazorpayCheckout}
                           disabled={isVerifyingPayment}
@@ -491,35 +508,31 @@ export default function ContactSection() {
                           {isVerifyingPayment ? (
                             <>
                               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                              Verifying Transaction...
+                              Verifying Payment...
                             </>
                           ) : (
                             <>
                               <CreditCard className="w-5 h-5" />
-                              Pay ₹500 INR & Select Slot
+                              Pay {pricing.label} & Book Slot →
                             </>
                           )}
                         </Button>
+                        <p className="text-[10px] text-gray-400 text-center">
+                          UPI • Cards • NetBanking • Wallets — Powered by Razorpay
+                        </p>
                       </div>
                     ) : (
-                      <div className="space-y-4">
-                        <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 leading-relaxed space-y-2">
-                          <p className="font-bold">🌐 PayPal Integration Pending (2-3 Days)</p>
-                          <p>
-                            We are currently setting up automated PayPal checkout for international currency. You can proceed to select your preferred date/time on Calendly immediately. 
-                          </p>
-                          <p className="font-semibold italic">
-                            Your secure payment invoice ({pricing.label}) will be emailed or sent via WhatsApp manually to validate your scheduled slot.
-                          </p>
-                        </div>
-
+                      <div className="space-y-3">
                         <Button
                           onClick={handleForeignProceedToCalendly}
                           className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-14 rounded-xl shadow-md flex items-center justify-center gap-2"
                         >
                           <Calendar className="w-5 h-5" />
-                          Proceed to Schedule on Calendly
+                          Book Your Slot →
                         </Button>
+                        <p className="text-[10px] text-gray-400 text-center">
+                          A secure payment link ({pricing.label}) will be sent to your WhatsApp/Email
+                        </p>
                       </div>
                     )}
 
