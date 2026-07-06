@@ -8,6 +8,7 @@ export interface PricingData {
   symbol: string
   label: string
   countryName: string
+  country: string
 }
 
 const countryNameMap: { [key: string]: string } = {
@@ -49,6 +50,7 @@ export function useGeoPricing() {
     symbol: "$",
     label: "$99 USD",
     countryName: "International",
+    country: "US",
   })
   
   const [isLoading, setIsLoading] = useState(true)
@@ -63,16 +65,16 @@ export function useGeoPricing() {
         const resolvedCountryName = countryNameMap[countryCode] || "International"
 
         if (countryCode === "IN") {
-          setPricing({ currency: "INR", amount: 500, symbol: "₹", label: "₹500 INR", countryName: resolvedCountryName })
+          setPricing({ currency: "INR", amount: 500, symbol: "₹", label: "₹500 INR", countryName: resolvedCountryName, country: countryCode })
         } else if (countryCode === "GB") {
-          setPricing({ currency: "GBP", amount: 79, symbol: "£", label: "£79 GBP", countryName: resolvedCountryName })
+          setPricing({ currency: "GBP", amount: 79, symbol: "£", label: "£79 GBP", countryName: resolvedCountryName, country: countryCode })
         } else if (["IE", "DE", "FR", "NL", "BE", "AT", "ES", "IT", "CH", "SE", "DK", "NO", "FI", "PL", "PT"].includes(countryCode)) {
-          setPricing({ currency: "EUR", amount: 89, symbol: "€", label: "€89 EUR", countryName: resolvedCountryName })
+          setPricing({ currency: "EUR", amount: 89, symbol: "€", label: "€89 EUR", countryName: resolvedCountryName, country: countryCode })
         } else if (["AE", "SA", "QA", "OM", "KW", "BH"].includes(countryCode)) {
-          setPricing({ currency: "AED", amount: 249, symbol: "AED ", label: "249 AED", countryName: resolvedCountryName })
+          setPricing({ currency: "AED", amount: 249, symbol: "AED ", label: "249 AED", countryName: resolvedCountryName, country: countryCode })
         } else {
           // USA, Canada, Australia, New Zealand, Singapore, Malaysia, and Rest of World default
-          setPricing({ currency: "USD", amount: 99, symbol: "$", label: "$99 USD", countryName: resolvedCountryName })
+          setPricing({ currency: "USD", amount: 99, symbol: "$", label: "$99 USD", countryName: resolvedCountryName, country: countryCode })
         }
       } catch (error) {
         console.error("Geo-pricing fallback triggered.", error)

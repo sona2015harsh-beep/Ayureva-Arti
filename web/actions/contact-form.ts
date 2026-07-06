@@ -7,6 +7,7 @@ const contactFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
+  countryCode: z.string().min(1, "Country code is required").max(6, "Invalid country code"),
   phone: z.string().min(5, "Please enter a valid phone number"),
   healthConcern: z.string().min(2, "Please describe your health concern in detail"),
 })
@@ -43,6 +44,7 @@ export async function submitContactForm(formData: FormData) {
       firstName: sanitize(formData.get("firstName")),
       lastName: sanitize(formData.get("lastName")),
       email: sanitize(formData.get("email")),
+      countryCode: sanitize(formData.get("countryCode")),
       phone: sanitize(formData.get("phone")),
       healthConcern: sanitize(formData.get("healthConcern")),
     }
@@ -59,13 +61,14 @@ export async function submitContactForm(formData: FormData) {
       }
     }
 
-    const { firstName, lastName, email, phone, healthConcern } = validatedFields.data
+    const { firstName, lastName, email, countryCode, phone, healthConcern } = validatedFields.data
+    const fullPhoneNumber = `${countryCode} ${phone}`
 
     // Save lead to database
     const newLead = await prisma.leads.create({
       data: {
         full_name: `${firstName} ${lastName}`,
-        phone_number: phone,
+        phone_number: fullPhoneNumber,
         message: healthConcern,
         status: "pending",
       },

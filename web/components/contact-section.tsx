@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -28,6 +28,7 @@ export default function ContactSection() {
     email: "",
     phone: "",
   })
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+91")
   const [isVerifyingPayment, setIsVerifyingPayment] = useState(false)
   const [paymentError, setPaymentError] = useState<string | null>(null)
 
@@ -50,6 +51,75 @@ export default function ContactSection() {
     })
   }
 
+  // Auto-detect country code from geo pricing
+  const countryCodeMap: Record<string, string> = {
+    "IN": "+91", "US": "+1", "CA": "+1", "GB": "+44", "DE": "+49", "FR": "+33",
+    "IT": "+39", "ES": "+34", "NL": "+31", "BE": "+32", "AT": "+43", "CH": "+41",
+    "PT": "+351", "SE": "+46", "NO": "+47", "DK": "+45", "FI": "+358", "IE": "+353",
+    "PL": "+48", "CZ": "+420", "HU": "+36", "RO": "+40", "GR": "+30", "HR": "+385",
+    "AE": "+971", "SA": "+966", "QA": "+974", "KW": "+965", "BH": "+973", "OM": "+968",
+    "AU": "+61", "NZ": "+64", "SG": "+65", "MY": "+60", "TH": "+66", "ID": "+62",
+    "PH": "+63", "VN": "+84", "JP": "+81", "KR": "+82", "CN": "+86", "HK": "+852",
+    "ZA": "+27", "NG": "+234", "KE": "+254", "EG": "+20", "BD": "+880",
+    "PK": "+92", "LK": "+94", "NP": "+977", "MX": "+52", "BR": "+55", "AR": "+54",
+    "CL": "+56", "CO": "+57", "PE": "+51", "IL": "+972", "TR": "+90", "RU": "+7",
+  }
+
+  // Country code options for the dropdown
+  const countryCodeOptions = [
+    { code: "+91", label: "🇮🇳 +91", country: "India" },
+    { code: "+1", label: "🇺🇸 +1", country: "USA/Canada" },
+    { code: "+44", label: "🇬🇧 +44", country: "UK" },
+    { code: "+971", label: "🇦🇪 +971", country: "UAE" },
+    { code: "+966", label: "🇸🇦 +966", country: "Saudi Arabia" },
+    { code: "+974", label: "🇶🇦 +974", country: "Qatar" },
+    { code: "+965", label: "🇰🇼 +965", country: "Kuwait" },
+    { code: "+973", label: "🇧🇭 +973", country: "Bahrain" },
+    { code: "+968", label: "🇴🇲 +968", country: "Oman" },
+    { code: "+49", label: "🇩🇪 +49", country: "Germany" },
+    { code: "+33", label: "🇫🇷 +33", country: "France" },
+    { code: "+39", label: "🇮🇹 +39", country: "Italy" },
+    { code: "+34", label: "🇪🇸 +34", country: "Spain" },
+    { code: "+31", label: "🇳🇱 +31", country: "Netherlands" },
+    { code: "+41", label: "🇨🇭 +41", country: "Switzerland" },
+    { code: "+46", label: "🇸🇪 +46", country: "Sweden" },
+    { code: "+47", label: "🇳🇴 +47", country: "Norway" },
+    { code: "+45", label: "🇩🇰 +45", country: "Denmark" },
+    { code: "+353", label: "🇮🇪 +353", country: "Ireland" },
+    { code: "+61", label: "🇦🇺 +61", country: "Australia" },
+    { code: "+64", label: "🇳🇿 +64", country: "New Zealand" },
+    { code: "+65", label: "🇸🇬 +65", country: "Singapore" },
+    { code: "+60", label: "🇲🇾 +60", country: "Malaysia" },
+    { code: "+66", label: "🇹🇭 +66", country: "Thailand" },
+    { code: "+62", label: "🇮🇩 +62", country: "Indonesia" },
+    { code: "+63", label: "🇵🇭 +63", country: "Philippines" },
+    { code: "+81", label: "🇯🇵 +81", country: "Japan" },
+    { code: "+82", label: "🇰🇷 +82", country: "South Korea" },
+    { code: "+86", label: "🇨🇳 +86", country: "China" },
+    { code: "+852", label: "🇭🇰 +852", country: "Hong Kong" },
+    { code: "+880", label: "🇧🇩 +880", country: "Bangladesh" },
+    { code: "+92", label: "🇵🇰 +92", country: "Pakistan" },
+    { code: "+94", label: "🇱🇰 +94", country: "Sri Lanka" },
+    { code: "+977", label: "🇳🇵 +977", country: "Nepal" },
+    { code: "+27", label: "🇿🇦 +27", country: "South Africa" },
+    { code: "+234", label: "🇳🇬 +234", country: "Nigeria" },
+    { code: "+254", label: "🇰🇪 +254", country: "Kenya" },
+    { code: "+20", label: "🇪🇬 +20", country: "Egypt" },
+    { code: "+52", label: "🇲🇽 +52", country: "Mexico" },
+    { code: "+55", label: "🇧🇷 +55", country: "Brazil" },
+    { code: "+972", label: "🇮🇱 +972", country: "Israel" },
+    { code: "+90", label: "🇹🇷 +90", country: "Turkey" },
+    { code: "+7", label: "🇷🇺 +7", country: "Russia" },
+  ]
+
+  // Auto-set country code when geo pricing loads
+  useEffect(() => {
+    if (!isLoading && pricing.country) {
+      const detected = countryCodeMap[pricing.country]
+      if (detected) setSelectedCountryCode(detected)
+    }
+  }, [isLoading, pricing.country])
+
   async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
     setSubmitResult(null)
@@ -58,8 +128,10 @@ export default function ContactSection() {
     const firstName = (formData.get("firstName") as string) || ""
     const lastName = (formData.get("lastName") as string) || ""
     const email = (formData.get("email") as string) || ""
+    const countryCode = (formData.get("countryCode") as string) || "+91"
     const phone = (formData.get("phone") as string) || ""
     const fullName = `${firstName} ${lastName}`
+    const fullPhone = `${countryCode} ${phone}`
 
     // Try the main email service first, then fallback
     let result = await submitContactForm(formData)
@@ -78,7 +150,7 @@ export default function ContactSection() {
 
     if (result.success && result.leadId) {
       setLeadId(result.leadId)
-      setClientInfo({ fullName, email, phone })
+      setClientInfo({ fullName, email, phone: fullPhone })
       setPaymentStep("paying")
       
       // Reset form fields
@@ -215,14 +287,32 @@ export default function ContactSection() {
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium text-gray-700 mb-2 block">Phone Number *</label>
-                        <Input
-                          name="phone"
-                          type="tel"
-                          placeholder="Enter your phone number"
-                          required
-                          disabled={isSubmitting}
-                        />
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Phone Number (with Country Code) *</label>
+                        <div className="flex gap-2">
+                          <select
+                            name="countryCode"
+                            value={selectedCountryCode}
+                            onChange={(e) => setSelectedCountryCode(e.target.value)}
+                            disabled={isSubmitting}
+                            required
+                            className="h-10 rounded-md border border-input bg-background px-2 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-[130px] shrink-0"
+                          >
+                            {countryCodeOptions.map((opt) => (
+                              <option key={opt.code} value={opt.code}>
+                                {opt.label}
+                              </option>
+                            ))}
+                          </select>
+                          <Input
+                            name="phone"
+                            type="tel"
+                            placeholder="e.g. 9709968077"
+                            required
+                            disabled={isSubmitting}
+                            className="flex-1"
+                          />
+                        </div>
+                        <p className="text-[10px] text-gray-400 mt-1">Required for WhatsApp prescription delivery</p>
                       </div>
 
                       <div>
