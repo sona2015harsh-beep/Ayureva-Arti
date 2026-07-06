@@ -138,7 +138,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {/* Content Body */}
                     <div
                         className="prose prose-lg prose-green max-w-none text-gray-700 internal-links-styled"
-                        dangerouslySetInnerHTML={{ __html: injectInternalLinks(post.content) }}
+                        dangerouslySetInnerHTML={{ 
+                            __html: injectInternalLinks(
+                                post.content.replace(/<div class="bg-blue-50[^"]*border-blue-(?:500|600)[^"]*">[\s\S]*?Medical Disclaimer[\s\S]*?<\/div>/gi, "")
+                            )
+                        }}
                     />
 
                     {/* Natural, Non-Pushy Consultation CTA */}
