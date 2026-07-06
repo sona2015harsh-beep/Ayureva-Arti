@@ -19,6 +19,7 @@ const getGroupedLocations = (locations: LocationData[]) => {
     "India (Top Cities)": [],
     "United States": [],
     "United Kingdom": [],
+    "Europe": [],
     "UAE & Middle East": [],
     "Canada": [],
     "Australia": [],
@@ -32,6 +33,8 @@ const getGroupedLocations = (locations: LocationData[]) => {
       groups["United States"].push(loc)
     } else if (loc.country === "UK") {
       groups["United Kingdom"].push(loc)
+    } else if (loc.region === "Europe" || loc.country === "Germany" || loc.country === "Ireland" || loc.country === "Netherlands" || loc.country === "France" || loc.country === "Switzerland") {
+      groups["Europe"].push(loc)
     } else if (loc.country === "UAE" || loc.country === "Saudi Arabia" || loc.country === "Qatar" || loc.country === "Oman" || loc.country === "Kuwait" || loc.country === "Bahrain") {
       groups["UAE & Middle East"].push(loc)
     } else if (loc.country === "Canada") {

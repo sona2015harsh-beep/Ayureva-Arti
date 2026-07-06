@@ -68,7 +68,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/online-pcod-treatment" className="hover:text-green-400">
-                  Our Locations
+                  Online PCOD Treatment Locations
                 </Link>
               </li>
               <li>

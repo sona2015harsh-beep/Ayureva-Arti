@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
 }
 
 function getRegionalContent(region: string) {
-  const isCold = region.includes("USA") || region.includes("UK") || region.includes("Canada") || region.includes("United Kingdom") || region.includes("Northeast") || region.includes("Midwest") || region.includes("Coast");
+  const isCold = region.includes("USA") || region.includes("UK") || region.includes("Canada") || region.includes("United Kingdom") || region.includes("Northeast") || region.includes("Midwest") || region.includes("Coast") || region.includes("Europe");
   const isMiddleEast = region.includes("Middle East");
   const isIndia = region.includes("India");
 

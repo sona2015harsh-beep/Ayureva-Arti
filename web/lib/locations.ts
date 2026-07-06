@@ -87,6 +87,15 @@ export const targetLocations: LocationData[] = [
   // ─── Singapore & Southeast Asia ─────────────────────────────────────
   { id: "singapore", name: "Singapore", state: "Singapore", country: "Singapore", region: "Southeast Asia" },
   { id: "kuala-lumpur", name: "Kuala Lumpur", state: "KL", country: "Malaysia", region: "Southeast Asia" },
+
+  // ─── Europe (High NRI density cities) ───────────────────────────────
+  { id: "dublin", name: "Dublin", state: "Leinster", country: "Ireland", region: "Europe" },
+  { id: "amsterdam", name: "Amsterdam", state: "North Holland", country: "Netherlands", region: "Europe" },
+  { id: "berlin", name: "Berlin", state: "Berlin", country: "Germany", region: "Europe" },
+  { id: "munich", name: "Munich", state: "Bavaria", country: "Germany", region: "Europe" },
+  { id: "frankfurt", name: "Frankfurt", state: "Hesse", country: "Germany", region: "Europe" },
+  { id: "paris", name: "Paris", state: "Île-de-France", country: "France", region: "Europe" },
+  { id: "zurich", name: "Zurich", state: "Zurich", country: "Switzerland", region: "Europe" },
 ];
 
 export function getLocationBySlug(slug: string): LocationData | undefined {
