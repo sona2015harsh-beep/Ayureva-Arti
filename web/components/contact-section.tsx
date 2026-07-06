@@ -33,6 +33,7 @@ export default function ContactSection() {
 
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
   const { pricing, isLoading } = useGeoPricing()
+  const CALENDLY_BASE_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/drartisingh1102/30min"
 
   // Helper to load Razorpay Checkout SDK dynamically on demand
   const loadRazorpayScript = () => {
@@ -124,7 +125,7 @@ export default function ContactSection() {
           if (verifyResult.success) {
             setPaymentStep("completed")
             // Redirect to prefilled Calendly Link
-            const calendlyUrl = `https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
+            const calendlyUrl = `${CALENDLY_BASE_URL}?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
             window.location.href = calendlyUrl
           } else {
             setPaymentError(verifyResult.message || "Payment verification failed. Please contact clinic support.")
@@ -157,7 +158,7 @@ export default function ContactSection() {
 
   const handleForeignProceedToCalendly = () => {
     setPaymentStep("completed")
-    const calendlyUrl = `https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
+    const calendlyUrl = `${CALENDLY_BASE_URL}?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
     window.open(calendlyUrl, "_blank")
   }
 
@@ -458,7 +459,7 @@ export default function ContactSection() {
                       className="bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-8 rounded-full shadow-md mt-4 w-full"
                     >
                       <a
-                        href={`https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`}
+                        href={`${CALENDLY_BASE_URL}?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
