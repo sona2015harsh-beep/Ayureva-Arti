@@ -254,10 +254,15 @@ export default function ContactSection() {
           <div>
             <Card className="border-2">
               <CardHeader>
-                <CardTitle className="text-2xl">Book Your Video Consultation</CardTitle>
+                <CardTitle className="text-2xl">
+                  {paymentStep === "form" && "Book Your Video Consultation"}
+                  {paymentStep === "paying" && "Complete Your Payment"}
+                  {paymentStep === "completed" && "Booking Confirmed!"}
+                </CardTitle>
                 <CardDescription>
-                  Fill out the form below and Dr. Arti Singh will contact you within 24 hours to schedule your
-                  appointment. Online consultations available for international patients.
+                  {paymentStep === "form" && "Fill out the form below to begin your consultation booking with Dr. Arti Singh."}
+                  {paymentStep === "paying" && "One quick step — complete your secure payment to book your slot."}
+                  {paymentStep === "completed" && "Payment received! Now select your preferred consultation date & time."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
