@@ -138,26 +138,74 @@ export default function ContactSection() {
                     </div>
                   )}
 
-                  {/* Dynamic Geo-Pricing Display */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mt-6 mb-4 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
-                    <div className="flex justify-between items-center mb-2">
-                       <span className="text-sm font-semibold text-gray-700">Online Consultation Fee:</span>
+                  {/* Dynamic Geo-Pricing Display & Value Stack */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mt-6 mb-4 relative overflow-hidden shadow-xs">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-green-600"></div>
+                    
+                    <div className="flex justify-between items-center mb-3">
+                       <span className="text-sm font-bold text-gray-800">
+                         Specialist Online Consultation Fee {isLoading ? "" : `(${pricing.countryName})`}:
+                       </span>
                        {isLoading ? (
                          <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
                        ) : (
-                         <span className="text-lg font-bold text-green-700 bg-green-100 px-3 py-1 rounded-md">
+                         <span className="text-lg font-bold text-green-800 bg-green-100 px-3 py-1 rounded-lg">
                            {pricing.label}
                          </span>
                        )}
                     </div>
-                    <p className="text-xs text-gray-500">
-                      Pricing is automatically adjusted based on your physical location to ensure fair global access.
+                    
+                    {/* Value Stack */}
+                    <div className="mt-4 text-xs text-gray-600 space-y-1.5 border-t border-gray-200 pt-4">
+                      <p className="font-bold text-gray-800 text-[11px] uppercase tracking-wide">What is Included:</p>
+                      <ul className="space-y-1 pl-4 list-disc text-gray-700">
+                        <li><strong>45–60 min private video consultation</strong> with Dr. Arti Singh</li>
+                        <li><strong>Personalized treatment plan</strong> based on your Dosha type</li>
+                        <li><strong>Official digital prescription</strong> document and symptom logs</li>
+                        <li><strong>Customized Ayurvedic diet & lifestyle</strong> counseling</li>
+                        <li><strong>Direct messaging support</strong> for follow-up questions</li>
+                        <li><strong>Doorstep herbal medicine shipping assistance</strong> (where available)</li>
+                      </ul>
+                    </div>
+
+                    {/* Follow-up Pricing Card */}
+                    <div className="mt-4 bg-green-50/50 p-3.5 rounded-xl border border-green-100 text-xs">
+                      <p className="font-bold text-green-800 mb-2 flex items-center gap-1">
+                        🔁 Follow-up Care Pricing:
+                      </p>
+                      <div className="grid grid-cols-2 gap-y-1 text-gray-600 text-[11px]">
+                        <div>• Follow-up (within 30 days):</div>
+                        <div className="font-semibold text-right text-gray-800">
+                          {pricing.currency === "INR" ? "₹300 INR" : pricing.currency === "AED" ? "149 AED" : pricing.currency === "GBP" ? "£39 GBP" : pricing.currency === "EUR" ? "€45 EUR" : "$49 USD"}
+                        </div>
+                        <div>• Follow-up (after 30 days):</div>
+                        <div className="font-semibold text-right text-gray-800">
+                          {pricing.currency === "INR" ? "₹400 INR" : pricing.currency === "AED" ? "199 AED" : pricing.currency === "GBP" ? "£59 GBP" : pricing.currency === "EUR" ? "€65 EUR" : "$69 USD"}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Transparency Disclaimer */}
+                    <p className="text-[10px] text-gray-400 mt-4 leading-normal italic">
+                      No hidden consultation charges. Your local currency is shown automatically based on your country. Medicine costs (if prescribed) and shipping are separate and will be discussed transparently before any purchase.
                     </p>
+
+                    {/* Payment trust icons */}
+                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100 justify-center text-[10px] text-gray-400">
+                      <span>Secure Checkout:</span>
+                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">VISA</span>
+                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">MC</span>
+                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">AMEX</span>
+                      {pricing.currency === "INR" ? (
+                        <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">UPI</span>
+                      ) : (
+                        <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">PAYPAL</span>
+                      )}
+                    </div>
                   </div>
 
                   {/* Mandatory Payment Terms */}
-                  <div className="flex items-start mb-6 bg-yellow-50/50 p-3 rounded border border-yellow-100">
+                  <div className="flex items-start mb-6 bg-yellow-50/50 p-4 rounded-xl border border-yellow-100">
                     <div className="flex items-center h-5">
                       <input
                         id="payment-terms"
@@ -167,8 +215,8 @@ export default function ContactSection() {
                         className="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 cursor-pointer"
                       />
                     </div>
-                    <label htmlFor="payment-terms" className="ml-2 text-sm text-gray-700 cursor-pointer">
-                      I agree to pay the <span className="font-semibold">{isLoading ? 'consultation fee' : pricing.label}</span> consultation fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
+                    <label htmlFor="payment-terms" className="ml-2.5 text-xs text-gray-650 cursor-pointer leading-normal">
+                      I agree to pay the <span className="font-bold">{isLoading ? 'consultation fee' : pricing.label}</span> fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
                     </label>
                   </div>
 
