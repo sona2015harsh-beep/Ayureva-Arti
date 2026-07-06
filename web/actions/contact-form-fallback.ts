@@ -7,24 +7,32 @@ const contactFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
-  healthConcern: z.string().min(10, "Please describe your health concern in detail"),
+  phone: z.string().min(5, "Please enter a valid phone number"),
+  healthConcern: z.string().min(2, "Please describe your health concern in detail"),
 })
 
 export async function submitContactFormFallback(formData: FormData) {
   try {
     console.log("=== Contact Form Submission Started (Fallback) ===")
 
+    const sanitize = (val: FormDataEntryValue | null) => {
+      if (typeof val !== "string") return ""
+      return val.trim()
+    }
+
+    const rawData = {
+      firstName: sanitize(formData.get("firstName")),
+      lastName: sanitize(formData.get("lastName")),
+      email: sanitize(formData.get("email")),
+      phone: sanitize(formData.get("phone")),
+      healthConcern: sanitize(formData.get("healthConcern")),
+    }
+
     // Validate form data
-    const validatedFields = contactFormSchema.safeParse({
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      healthConcern: formData.get("healthConcern"),
-    })
+    const validatedFields = contactFormSchema.safeParse(rawData)
 
     if (!validatedFields.success) {
+      console.error("Fallback Form Validation Failed:", validatedFields.error.flatten().fieldErrors)
       return {
         success: false,
         message: "Please fill all fields correctly",
