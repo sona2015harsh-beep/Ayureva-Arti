@@ -6,11 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Clock, FileText } from "lucide-react"
+import { Mail, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Clock, FileText, CreditCard, ShieldCheck } from "lucide-react"
 import { submitContactForm } from "@/actions/contact-form"
 import { submitContactFormFallback } from "@/actions/contact-form-fallback"
 import { useAnalytics } from "@/lib/analytics"
 import { useGeoPricing } from "@/hooks/use-geo-pricing"
+import { createConsultationRazorpayOrder, verifyConsultationPayment } from "@/actions/booking-payment"
 
 export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -20,12 +21,44 @@ export default function ContactSection() {
     errors?: any
   } | null>(null)
 
+  const [paymentStep, setPaymentStep] = useState<"form" | "paying" | "completed">("form")
+  const [leadId, setLeadId] = useState<string>("")
+  const [clientInfo, setClientInfo] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  })
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false)
+  const [paymentError, setPaymentError] = useState<string | null>(null)
+
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
   const { pricing, isLoading } = useGeoPricing()
+
+  // Helper to load Razorpay Checkout SDK dynamically on demand
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (typeof window !== "undefined" && (window as any).Razorpay) {
+        resolve(true)
+        return
+      }
+      const script = document.createElement("script")
+      script.src = "https://checkout.razorpay.com/v1/checkout.js"
+      script.onload = () => resolve(true)
+      script.onerror = () => resolve(false)
+      document.body.appendChild(script)
+    })
+  }
 
   async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
     setSubmitResult(null)
+    setPaymentError(null)
+
+    const firstName = (formData.get("firstName") as string) || ""
+    const lastName = (formData.get("lastName") as string) || ""
+    const email = (formData.get("email") as string) || ""
+    const phone = (formData.get("phone") as string) || ""
+    const fullName = `${firstName} ${lastName}`
 
     // Try the main email service first, then fallback
     let result = await submitContactForm(formData)
@@ -42,11 +75,90 @@ export default function ContactSection() {
     // Track form submission
     trackFormSubmission("contact_form", result.success)
 
-    if (result.success) {
-      // Reset form
+    if (result.success && result.leadId) {
+      setLeadId(result.leadId)
+      setClientInfo({ fullName, email, phone })
+      setPaymentStep("paying")
+      
+      // Reset form fields
       const form = document.getElementById("contact-form") as HTMLFormElement
       form?.reset()
     }
+  }
+
+  const handleRazorpayCheckout = async () => {
+    setIsVerifyingPayment(true)
+    setPaymentError(null)
+    try {
+      const scriptLoaded = await loadRazorpayScript()
+      if (!scriptLoaded) {
+        setPaymentError("Failed to load Razorpay payment gateway script. Please check your internet connection.")
+        setIsVerifyingPayment(false)
+        return
+      }
+
+      // Generate a verified Razorpay order from the server action (500 INR for India)
+      const orderResult = await createConsultationRazorpayOrder(leadId, 500)
+      if (!orderResult.success || !orderResult.orderId) {
+        setPaymentError(orderResult.message || "Failed to initiate payment session. Please try again.")
+        setIsVerifyingPayment(false)
+        return
+      }
+
+      const options = {
+        key: orderResult.keyId,
+        amount: orderResult.amount,
+        currency: orderResult.currency,
+        name: "Ayureva Clinic",
+        description: "Specialist Ayurvedic PCOD Consultation",
+        order_id: orderResult.orderId,
+        handler: async function (response: any) {
+          setIsVerifyingPayment(true)
+          const verifyResult = await verifyConsultationPayment(
+            leadId,
+            orderResult.orderId,
+            response.razorpay_payment_id,
+            response.razorpay_signature
+          )
+          
+          if (verifyResult.success) {
+            setPaymentStep("completed")
+            // Redirect to prefilled Calendly Link
+            const calendlyUrl = `https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
+            window.location.href = calendlyUrl
+          } else {
+            setPaymentError(verifyResult.message || "Payment verification failed. Please contact clinic support.")
+          }
+          setIsVerifyingPayment(false)
+        },
+        prefill: {
+          name: clientInfo.fullName,
+          email: clientInfo.email,
+          contact: clientInfo.phone,
+        },
+        theme: {
+          color: "#047857", // Emerald green theme
+        },
+        modal: {
+          ondismiss: function () {
+            setIsVerifyingPayment(false)
+          },
+        },
+      }
+
+      const rzp = new (window as any).Razorpay(options)
+      rzp.open()
+    } catch (err) {
+      console.error("Razorpay trigger error:", err)
+      setPaymentError("An unexpected error occurred during payment. Please contact support.")
+      setIsVerifyingPayment(false)
+    }
+  }
+
+  const handleForeignProceedToCalendly = () => {
+    setPaymentStep("completed")
+    const calendlyUrl = `https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
+    window.open(calendlyUrl, "_blank")
   }
 
   const handleEmailClick = () => {
@@ -76,175 +188,289 @@ export default function ContactSection() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form id="contact-form" action={handleSubmit} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">First Name *</label>
-                      <Input name="firstName" placeholder="Enter your first name" required disabled={isSubmitting} />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">Last Name *</label>
-                      <Input name="lastName" placeholder="Enter your last name" required disabled={isSubmitting} />
-                    </div>
-                  </div>
+                {paymentStep === "form" && (
+                  <>
+                    <form id="contact-form" action={handleSubmit} className="space-y-4">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium text-gray-700 mb-2 block">First Name *</label>
+                          <Input name="firstName" placeholder="Enter your first name" required disabled={isSubmitting} />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-gray-700 mb-2 block">Last Name *</label>
+                          <Input name="lastName" placeholder="Enter your last name" required disabled={isSubmitting} />
+                        </div>
+                      </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Email Address *</label>
-                    <Input
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email address"
-                      required
-                      disabled={isSubmitting}
-                    />
-                  </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Email Address *</label>
+                        <Input
+                          name="email"
+                          type="email"
+                          placeholder="Enter your email address"
+                          required
+                          disabled={isSubmitting}
+                        />
+                      </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Phone Number *</label>
-                    <Input
-                      name="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      required
-                      disabled={isSubmitting}
-                    />
-                  </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Phone Number *</label>
+                        <Input
+                          name="phone"
+                          type="tel"
+                          placeholder="Enter your phone number"
+                          required
+                          disabled={isSubmitting}
+                        />
+                      </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Health Concern *</label>
-                    <Textarea
-                      name="healthConcern"
-                      placeholder="Please describe your health concerns, symptoms, or questions in detail. This helps Dr. Arti Singh prepare for your consultation."
-                      rows={4}
-                      required
-                      disabled={isSubmitting}
-                    />
-                  </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Health Concern *</label>
+                        <Textarea
+                          name="healthConcern"
+                          placeholder="Please describe your health concerns, symptoms, or questions in detail. This helps Dr. Arti Singh prepare for your consultation."
+                          rows={4}
+                          required
+                          disabled={isSubmitting}
+                        />
+                      </div>
 
-                  {submitResult && (
-                    <div
-                      className={`p-4 rounded-lg flex items-start space-x-3 ${
-                        submitResult.success ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"
-                      }`}
-                    >
-                      {submitResult.success ? (
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                      ) : (
-                        <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                      {submitResult && !submitResult.success && (
+                        <div className="p-4 rounded-lg flex items-start space-x-3 bg-red-50 border border-red-200">
+                          <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                          <p className="text-sm text-red-800">
+                            {submitResult.message}
+                          </p>
+                        </div>
                       )}
-                      <p className={`text-sm ${submitResult.success ? "text-green-800" : "text-red-800"}`}>
-                        {submitResult.message}
-                      </p>
-                    </div>
-                  )}
 
-                  {/* Dynamic Geo-Pricing Display & Value Stack */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mt-6 mb-4 relative overflow-hidden shadow-xs">
-                    <div className="absolute top-0 left-0 w-1.5 h-full bg-green-600"></div>
-                    
-                    <div className="flex justify-between items-center mb-3">
-                       <span className="text-sm font-bold text-gray-800">
-                         Specialist Online Consultation Fee {isLoading ? "" : `(${pricing.countryName})`}:
-                       </span>
-                       {isLoading ? (
-                         <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
-                       ) : (
-                         <span className="text-lg font-bold text-green-800 bg-green-100 px-3 py-1 rounded-lg">
-                           {pricing.label}
-                         </span>
-                       )}
+                      {/* Dynamic Geo-Pricing Display & Value Stack */}
+                      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mt-6 mb-4 relative overflow-hidden shadow-xs">
+                        <div className="absolute top-0 left-0 w-1.5 h-full bg-green-600"></div>
+                        
+                        <div className="flex justify-between items-center mb-3">
+                           <span className="text-sm font-bold text-gray-800">
+                             Specialist Online Consultation Fee {isLoading ? "" : `(${pricing.countryName})`}:
+                           </span>
+                           {isLoading ? (
+                             <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
+                           ) : (
+                             <span className="text-lg font-bold text-green-800 bg-green-100 px-3 py-1 rounded-lg">
+                               {pricing.label}
+                             </span>
+                           )}
+                        </div>
+                        
+                        {/* Value Stack */}
+                        <div className="mt-4 text-xs text-gray-600 space-y-1.5 border-t border-gray-200 pt-4">
+                          <p className="font-bold text-gray-800 text-[11px] uppercase tracking-wide">What is Included:</p>
+                          <ul className="space-y-1 pl-4 list-disc text-gray-700">
+                            <li><strong>45–60 min private video consultation</strong> with Dr. Arti Singh</li>
+                            <li><strong>Personalized treatment plan</strong> based on your Dosha type</li>
+                            <li><strong>Official digital prescription</strong> document and symptom logs</li>
+                            <li><strong>Customized Ayurvedic diet & lifestyle</strong> counseling</li>
+                            <li><strong>Direct messaging support</strong> for follow-up questions</li>
+                            <li><strong>Doorstep herbal medicine shipping assistance</strong> (where available)</li>
+                          </ul>
+                        </div>
+
+                        {/* Follow-up Pricing Card */}
+                        <div className="mt-4 bg-green-50/50 p-3.5 rounded-xl border border-green-100 text-xs">
+                          <p className="font-bold text-green-800 mb-2 flex items-center gap-1">
+                            🔁 Follow-up Care Pricing:
+                          </p>
+                          <div className="grid grid-cols-2 gap-y-1 text-gray-600 text-[11px]">
+                            <div>• Follow-up (within 30 days):</div>
+                            <div className="font-semibold text-right text-gray-800">
+                              {pricing.currency === "INR" ? "₹300 INR" : pricing.currency === "AED" ? "149 AED" : pricing.currency === "GBP" ? "£39 GBP" : pricing.currency === "EUR" ? "€45 EUR" : "$49 USD"}
+                            </div>
+                            <div>• Follow-up (after 30 days):</div>
+                            <div className="font-semibold text-right text-gray-800">
+                              {pricing.currency === "INR" ? "₹400 INR" : pricing.currency === "AED" ? "199 AED" : pricing.currency === "GBP" ? "£59 GBP" : pricing.currency === "EUR" ? "€65 EUR" : "$69 USD"}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Transparency Disclaimer */}
+                        <p className="text-[10px] text-gray-400 mt-4 leading-normal italic">
+                          No hidden consultation charges. Your local currency is shown automatically based on your country. Medicine costs (if prescribed) and shipping are separate and will be discussed transparently before any purchase.
+                        </p>
+
+                        {/* Payment trust icons */}
+                        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100 justify-center text-[10px] text-gray-400">
+                          <span>Secure Checkout:</span>
+                          <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">VISA</span>
+                          <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">MC</span>
+                          <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">AMEX</span>
+                          {pricing.currency === "INR" ? (
+                            <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">UPI</span>
+                          ) : (
+                            <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">PAYPAL</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Mandatory Payment Terms */}
+                      <div className="flex items-start mb-6 bg-yellow-50/50 p-4 rounded-xl border border-yellow-100">
+                        <div className="flex items-center h-5">
+                          <input
+                            id="payment-terms"
+                            name="payment_terms_accepted"
+                            type="checkbox"
+                            required
+                            className="w-4 h-4 text-green-650 bg-white border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+                          />
+                        </div>
+                        <label htmlFor="payment-terms" className="ml-2.5 text-xs text-gray-650 cursor-pointer leading-normal">
+                          I agree to pay the <span className="font-bold">{isLoading ? 'consultation fee' : pricing.label}</span> fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
+                        </label>
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-lg h-14 rounded-xl shadow-lg transition-transform hover:-translate-y-1"
+                        size="lg"
+                        disabled={isSubmitting}
+                      >
+                        <Calendar className="w-5 h-5 mr-3" />
+                        {isSubmitting ? "Submitting Request..." : "Request Video Consultation"}
+                      </Button>
+                    </form>
+
+                    {/* Alternative Contact Methods - Phone number removed */}
+                    <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <h4 className="font-semibold text-blue-900 mb-2">Prefer Direct Contact?</h4>
+                      <div className="space-y-2">
+                        <a
+                          href="mailto:drartisingh1102@gmail.com"
+                          className="flex items-center text-blue-700 hover:text-blue-900 transition-colors"
+                          onClick={handleEmailClick}
+                        >
+                          <Mail className="w-4 h-4 mr-2" />
+                          Email: drartisingh1102@gmail.com
+                        </a>
+                      </div>
                     </div>
-                    
-                    {/* Value Stack */}
-                    <div className="mt-4 text-xs text-gray-600 space-y-1.5 border-t border-gray-200 pt-4">
-                      <p className="font-bold text-gray-800 text-[11px] uppercase tracking-wide">What is Included:</p>
-                      <ul className="space-y-1 pl-4 list-disc text-gray-700">
-                        <li><strong>45–60 min private video consultation</strong> with Dr. Arti Singh</li>
-                        <li><strong>Personalized treatment plan</strong> based on your Dosha type</li>
-                        <li><strong>Official digital prescription</strong> document and symptom logs</li>
-                        <li><strong>Customized Ayurvedic diet & lifestyle</strong> counseling</li>
-                        <li><strong>Direct messaging support</strong> for follow-up questions</li>
-                        <li><strong>Doorstep herbal medicine shipping assistance</strong> (where available)</li>
-                      </ul>
+                  </>
+                )}
+
+                {paymentStep === "paying" && (
+                  <div className="space-y-6 py-4 animate-fadeIn">
+                    <div className="text-center mb-6">
+                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <ShieldCheck className="w-6 h-6 text-green-600" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900">Secure Consultation Payment</h3>
+                      <p className="text-xs text-gray-500 mt-1">Lead saved successfully. Complete payment to secure your scheduling slot.</p>
                     </div>
 
-                    {/* Follow-up Pricing Card */}
-                    <div className="mt-4 bg-green-50/50 p-3.5 rounded-xl border border-green-100 text-xs">
-                      <p className="font-bold text-green-800 mb-2 flex items-center gap-1">
-                        🔁 Follow-up Care Pricing:
-                      </p>
-                      <div className="grid grid-cols-2 gap-y-1 text-gray-600 text-[11px]">
-                        <div>• Follow-up (within 30 days):</div>
-                        <div className="font-semibold text-right text-gray-800">
-                          {pricing.currency === "INR" ? "₹300 INR" : pricing.currency === "AED" ? "149 AED" : pricing.currency === "GBP" ? "£39 GBP" : pricing.currency === "EUR" ? "€45 EUR" : "$49 USD"}
-                        </div>
-                        <div>• Follow-up (after 30 days):</div>
-                        <div className="font-semibold text-right text-gray-800">
-                          {pricing.currency === "INR" ? "₹400 INR" : pricing.currency === "AED" ? "199 AED" : pricing.currency === "GBP" ? "£59 GBP" : pricing.currency === "EUR" ? "€65 EUR" : "$69 USD"}
-                        </div>
+                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 text-sm space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Patient:</span>
+                        <span className="font-semibold text-gray-800">{clientInfo.fullName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Service:</span>
+                        <span className="font-semibold text-gray-800">Specialist Video Consultation</span>
+                      </div>
+                      <div className="flex justify-between border-t border-gray-200 pt-2 mt-2 font-bold text-base">
+                        <span className="text-gray-800 font-bold">Consultation Fee:</span>
+                        <span className="text-green-700">{pricing.label}</span>
                       </div>
                     </div>
 
-                    {/* Transparency Disclaimer */}
-                    <p className="text-[10px] text-gray-400 mt-4 leading-normal italic">
-                      No hidden consultation charges. Your local currency is shown automatically based on your country. Medicine costs (if prescribed) and shipping are separate and will be discussed transparently before any purchase.
+                    {paymentError && (
+                      <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg text-xs flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                        <span>{paymentError}</span>
+                      </div>
+                    )}
+
+                    {pricing.currency === "INR" ? (
+                      <div className="space-y-4">
+                        <p className="text-xs text-gray-650 leading-relaxed">
+                          For Indian domestic bookings, payment is required upfront. Clicking the button below will open the secure <strong>Razorpay Payment Gateway</strong> to complete your <strong>₹500 INR</strong> payment.
+                        </p>
+                        
+                        <Button
+                          onClick={handleRazorpayCheckout}
+                          disabled={isVerifyingPayment}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-14 rounded-xl shadow-md flex items-center justify-center gap-2"
+                        >
+                          {isVerifyingPayment ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              Verifying Transaction...
+                            </>
+                          ) : (
+                            <>
+                              <CreditCard className="w-5 h-5" />
+                              Pay ₹500 INR & Select Slot
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900 leading-relaxed space-y-2">
+                          <p className="font-bold">🌐 PayPal Integration Pending (2-3 Days)</p>
+                          <p>
+                            We are currently setting up automated PayPal checkout for international currency. You can proceed to select your preferred date/time on Calendly immediately. 
+                          </p>
+                          <p className="font-semibold italic">
+                            Your secure payment invoice ({pricing.label}) will be emailed or sent via WhatsApp manually to validate your scheduled slot.
+                          </p>
+                        </div>
+
+                        <Button
+                          onClick={handleForeignProceedToCalendly}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-14 rounded-xl shadow-md flex items-center justify-center gap-2"
+                        >
+                          <Calendar className="w-5 h-5" />
+                          Proceed to Schedule on Calendly
+                        </Button>
+                      </div>
+                    )}
+
+                    <Button
+                      variant="ghost"
+                      onClick={() => setPaymentStep("form")}
+                      disabled={isVerifyingPayment}
+                      className="w-full text-xs text-gray-500 hover:text-gray-700"
+                    >
+                      ← Back & Edit Booking Details
+                    </Button>
+                  </div>
+                )}
+
+                {paymentStep === "completed" && (
+                  <div className="text-center py-8 space-y-4">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-200">
+                      <CheckCircle className="w-10 h-10 text-green-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Booking Initiated!</h3>
+                    <p className="text-xs text-gray-600 max-w-sm mx-auto leading-relaxed">
+                      Thank you! Your details have been registered. If you were not automatically redirected to Calendly, please click the button below to pick your consultation date and time.
                     </p>
 
-                    {/* Payment trust icons */}
-                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100 justify-center text-[10px] text-gray-400">
-                      <span>Secure Checkout:</span>
-                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">VISA</span>
-                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">MC</span>
-                      <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">AMEX</span>
-                      {pricing.currency === "INR" ? (
-                        <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">UPI</span>
-                      ) : (
-                        <span className="font-bold px-1.5 py-0.5 bg-gray-100 rounded text-gray-500">PAYPAL</span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Mandatory Payment Terms */}
-                  <div className="flex items-start mb-6 bg-yellow-50/50 p-4 rounded-xl border border-yellow-100">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="payment-terms"
-                        name="payment_terms_accepted"
-                        type="checkbox"
-                        required
-                        className="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 cursor-pointer"
-                      />
-                    </div>
-                    <label htmlFor="payment-terms" className="ml-2.5 text-xs text-gray-650 cursor-pointer leading-normal">
-                      I agree to pay the <span className="font-bold">{isLoading ? 'consultation fee' : pricing.label}</span> fee. I understand that after submitting this form, I will receive a secure payment link and a Calendly scheduling link via email/WhatsApp to confirm my video consultation slot.
-                    </label>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-lg h-14 rounded-xl shadow-lg transition-transform hover:-translate-y-1"
-                    size="lg"
-                    disabled={isSubmitting}
-                  >
-                    <Calendar className="w-5 h-5 mr-3" />
-                    {isSubmitting ? "Submitting Request..." : "Request Video Consultation"}
-                  </Button>
-                </form>
-
-                {/* Alternative Contact Methods - Phone number removed */}
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h4 className="font-semibold text-blue-900 mb-2">Prefer Direct Contact?</h4>
-                  <div className="space-y-2">
-                    <a
-                      href="mailto:drartisingh1102@gmail.com"
-                      className="flex items-center text-blue-700 hover:text-blue-900 transition-colors"
-                      onClick={handleEmailClick}
+                    <Button
+                      asChild
+                      className="bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-8 rounded-full shadow-md mt-4 w-full"
                     >
-                      <Mail className="w-4 h-4 mr-2" />
-                      Email: drartisingh1102@gmail.com
-                    </a>
+                      <a
+                        href={`https://calendly.com/drartisingh1102/30min?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Book Your Slot on Calendly
+                      </a>
+                    </Button>
+
+                    <p className="text-[10px] text-gray-400 mt-2">
+                      After scheduling, you will receive a Google Meet video conference link in your inbox.
+                    </p>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
           </div>

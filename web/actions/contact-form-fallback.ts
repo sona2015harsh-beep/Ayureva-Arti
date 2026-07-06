@@ -35,7 +35,7 @@ export async function submitContactFormFallback(formData: FormData) {
     const { firstName, lastName, email, phone, healthConcern } = validatedFields.data
 
     // Save lead to database (Fallback insurance)
-    await prisma.leads.create({
+    const newLead = await prisma.leads.create({
       data: {
         full_name: `${firstName} ${lastName}`,
         phone_number: phone,
@@ -51,6 +51,7 @@ export async function submitContactFormFallback(formData: FormData) {
 
     return {
       success: true,
+      leadId: newLead.id,
       message:
         "Thank you for your inquiry! We received your request. Dr. Arti Singh will contact you within 24 hours. For immediate assistance, please call +91 9709968077.",
     }

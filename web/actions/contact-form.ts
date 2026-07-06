@@ -62,7 +62,7 @@ export async function submitContactForm(formData: FormData) {
     const { firstName, lastName, email, phone, healthConcern } = validatedFields.data
 
     // Save lead to database
-    await prisma.leads.create({
+    const newLead = await prisma.leads.create({
       data: {
         full_name: `${firstName} ${lastName}`,
         phone_number: phone,
@@ -157,6 +157,7 @@ Please contact the patient to schedule their consultation.`
 
     return {
       success: true,
+      leadId: newLead.id,
       message: "Thank you for your inquiry! Dr. Arti Singh will contact you within 24 hours to schedule your consultation.",
     }
   } catch (error) {
