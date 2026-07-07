@@ -311,7 +311,7 @@ export default function ContactSection() {
                           <Input
                             name="phone"
                             type="tel"
-                            placeholder="e.g. 9709968077"
+                            placeholder="e.g. 9876543210"
                             required
                             disabled={isSubmitting}
                             className="flex-1"
