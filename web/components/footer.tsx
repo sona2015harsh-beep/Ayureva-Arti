@@ -91,6 +91,11 @@ export default function Footer() {
                   Refund Policy
                 </Link>
               </li>
+              <li>
+                <Link href="/trust" className="hover:text-green-400 font-semibold text-green-400">
+                  Trust Hub & Policies
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -133,6 +138,10 @@ export default function Footer() {
             <span>•</span>
             <Link href="/disclaimer" className="hover:text-green-400">
               Disclaimer
+            </Link>
+            <span>•</span>
+            <Link href="/trust" className="hover:text-green-400">
+              Trust Hub
             </Link>
             <span>•</span>
             <Link href="/admin" className="hover:text-green-400">

@@ -31,13 +31,8 @@ export function generateSchema(post: BlogPost) {
         },
         "specialty": "Ayurveda",
         "reviewedBy": {
-            "@type": "Physician",
+            "@type": "Person",
             "name": "Dr. Arti Singh"
-        },
-        // Speakable schema - tells Google what to read aloud / extract for AI Overview
-        "speakable": {
-            "@type": "SpeakableSpecification",
-            "cssSelector": ["#short-answer", "h1", "#faq-section"]
         }
     }
 
