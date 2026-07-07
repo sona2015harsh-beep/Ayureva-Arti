@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
     return {}
   }
 
-  const title = `Best Ayurvedic Doctor for PCOD in ${locData.name} | Online Consultation with Dr. Arti Singh`
-  const description = `Looking for the best Ayurvedic treatment for PCOD/PCOS in ${locData.name}, ${locData.state}? Book a 1-on-1 secure online video consultation with expert Dr. Arti Singh, B.A.M.S.`
+  const title = `Online Ayurvedic Consultation for PCOS in ${locData.name} | Dr. Arti Singh`
+  const description = `Consult with expert Ayurvedic physician Dr. Arti Singh (B.A.M.S.) online from ${locData.name}, ${locData.state}. Get personalized Ayurvedic care for PCOS/PCOD and hormonal wellness.`
 
   return {
     title,
@@ -144,11 +144,11 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Best Ayurvedic Treatment for PCOD in <span className="text-green-600">{locData.name}</span>
+              Ayurvedic PCOS Care & Online Consultation in <span className="text-green-600">{locData.name}</span>
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Skip the clinic wait times. Get a customized, root-cause Ayurvedic treatment plan for your PCOS/PCOD securely from the comfort of your home in {locData.region}.
+              Get a personalized Ayurvedic care plan and wellness guidance for PCOS/PCOD securely from the comfort of your home in {locData.region}.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -226,8 +226,8 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">The 3-Step Ayurvedic PCOD Protocol</h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">How we naturally dissolve cysts, regulate your menstrual cycle, and restore fertility without clinical side effects.</p>
+            <h2 className="text-3xl font-bold text-gray-900">Our 3-Step Ayurvedic PCOS Care Protocol</h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">Focusing on metabolism correction, natural cycle regulation, and hormonal balance through customized herbal advice.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -238,8 +238,8 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold text-xl mb-4">2</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Granthi Bhedana (Cyst Dissolving)</h3>
-              <p className="text-gray-600 text-sm">Targeted herbal formulations (like Kanchanar Guggulu) physically reduce and dissolve existing ovarian follicles and cysts naturally.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Ovarian Channel Cleansing</h3>
+              <p className="text-gray-600 text-sm">Supporting the body's natural processes using traditional herbs like Kanchanar Guggulu to clear Kapha accumulation and balance ovarian energy.</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold text-xl mb-4">3</div>
@@ -288,9 +288,9 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
       {/* Final CTA */}
       <section className="py-20 bg-green-900 text-white text-center">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to regain control of your hormones?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Start Your Personalized Ayurvedic PCOS Journey</h2>
           <p className="text-green-100 mb-8 max-w-2xl mx-auto text-lg">
-            Join hundreds of women from {locData.country} who have successfully reversed their PCOD with Ayureva.
+            Consult with Dr. Arti Singh and get customized diet, lifestyle, and traditional herbal guidance suited for {locData.country}.
           </p>
           <Button size="lg" className="h-14 px-8 bg-white hover:bg-gray-100 text-green-900 text-lg font-bold shadow-xl rounded-full" asChild>
             <Link href="/contact">

@@ -110,6 +110,14 @@ const jsonLd = {
   sameAs: ["https://www.ayureva.in"],
   telephone: "+919709968077",
   email: "drartisingh1102@gmail.com",
+  areaServed: [
+    { "@type": "Country", "name": "India" },
+    { "@type": "Country", "name": "United States" },
+    { "@type": "Country", "name": "United Kingdom" },
+    { "@type": "Country", "name": "United Arab Emirates" },
+    { "@type": "Country", "name": "Canada" },
+    { "@type": "Country", "name": "Australia" }
+  ],
   address: {
     "@type": "PostalAddress",
     streetAddress: "Road No - 13B, Bahadurpur Gumati, Rajendra Nagar",
