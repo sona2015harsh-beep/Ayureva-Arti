@@ -50,7 +50,7 @@ export default function TrustHubPage() {
                   </div>
                   <div>
                     <span className="font-semibold block text-gray-500">Medical Registration Number:</span>
-                    <span className="font-bold text-green-700 font-mono">Reg. No: 0045 (State Council of Ayurvedic and Unani Medicine, Bihar)</span>
+                    <span className="font-bold text-green-700 font-mono">Reg. No: 4200 (State Council of Ayurvedic and Unani Medicine, Bihar)</span>
                   </div>
                   <div>
                     <span className="font-semibold block text-gray-500">Languages Spoken:</span>

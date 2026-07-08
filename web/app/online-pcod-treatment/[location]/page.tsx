@@ -194,7 +194,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
               </p>
               <div className="flex flex-wrap gap-3">
                 <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">B.A.M.S. Certified</span>
-                <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">Reg. No: 0045 (Bihar)</span>
+                <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">Reg. No: 4200 (Bihar)</span>
               </div>
             </div>
           </div>

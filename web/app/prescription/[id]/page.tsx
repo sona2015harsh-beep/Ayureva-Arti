@@ -151,7 +151,7 @@ export default async function PrescriptionVerificationPage({ params }: Verificat
               <p className="font-semibold italic text-gray-500 text-[10px]">(Medical officer)</p>
               <p className="mt-1">B.A.M.S (G.A.C.H Patna)</p>
               <p>C.R.I.T (N.M.C.H Patna)</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Reg. No.- 42</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">{prescription.doctor?.registration || "Reg. No. 4200"}</p>
             </div>
 
             {/* Right Side: Hindi */}

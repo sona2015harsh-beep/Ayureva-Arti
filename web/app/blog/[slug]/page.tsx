@@ -188,7 +188,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             </div>
                             <div>
                                 <h4 className="font-bold text-gray-900 text-lg mb-1">Reviewed by Dr. Arti Singh</h4>
-                                <p className="text-green-700 text-sm font-medium mb-3">B.A.M.S. (Ayurvedacharya) • Reg. No: 0045 (Bihar)</p>
+                                <p className="text-green-700 text-sm font-medium mb-3">B.A.M.S. (Ayurvedacharya) • Reg. No: 4200 (Bihar)</p>
                                 <p className="text-gray-600 text-sm leading-relaxed mb-4">
                                     Dr. Arti Singh is a licensed Ayurvedic physician specializing in women's health, PCOS, and hormonal
                                     disorders. With a focus on evidence-based Ayurveda, she combines ancient clinical texts (Charaka Samhita) with modern diagnostic understanding to help patients achieve remission naturally.

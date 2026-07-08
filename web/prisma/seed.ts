@@ -98,13 +98,13 @@ async function main() {
         where: { email: 'drartisingh1102@gmail.com' },
         update: {
             name: 'Dr. Arti Kumari',
-            registration: 'Reg. No. 42',
+            registration: 'Reg. No. 4200',
             specialization: 'Ayurvedic Medical Officer',
         },
         create: {
             id: 'd16c5b96-6e27-4a0b-85fa-7f8976f92026',
             name: 'Dr. Arti Kumari',
-            registration: 'Reg. No. 42',
+            registration: 'Reg. No. 4200',
             specialization: 'Ayurvedic Medical Officer',
             email: 'drartisingh1102@gmail.com',
         }
