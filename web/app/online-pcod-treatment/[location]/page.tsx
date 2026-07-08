@@ -222,6 +222,56 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
         </div>
       </section>
 
+      {/* Other Chronic Health Consultations */}
+      <section className="py-16 bg-gray-50/50 border-b border-gray-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900">Ayurvedic Consultations for Other Chronic Concerns in {locData.name}</h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Apart from PCOS/PCOD, patients in {locData.name} frequently consult Dr. Arti Singh for natural, root-cause recovery from these common conditions:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2">
+                🍂 Chronic Digestive & Gut Health (IBS, GERD)
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Conventional antacids and symptom blockers only mask digestive issues. Our protocol focuses on correcting your Agni (metabolic fire) and cleansing Ama (toxins) to restore natural gut balance, addressing IBS, acid reflux, and chronic bloating.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2">
+                🧠 Stress, Anxiety & Insomnia Management
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Western lifestyles drive severe adrenal fatigue. We avoid heavy sedatives and instead use traditional Ayurvedic adaptogens (Ashwagandha, Brahmi, Jatamansi) to regulate Vata dosha and naturally lower high cortisol levels.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2">
+                🌸 Chronic Skin Conditions (Eczema, Psoriasis)
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Steroid creams offer temporary relief but thin the skin. Our treatment uses traditional Rakta Shodhana (blood purification) herbs like Neem, Manjistha, and Guduchi to clear systemic toxins and soothe inflammatory flares.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2">
+                🦋 Thyroid & Metabolic Disorders
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Sluggish thyroid function (hypothyroidism) is directly linked to Kapha congestion. We support your endocrine system naturally by optimizing cellular metabolism and clearing blocked energetic pathways.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* The Protocol */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">

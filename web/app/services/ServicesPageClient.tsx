@@ -468,6 +468,70 @@ export default function ServicesPageClient() {
 
             <Card className="border-2 hover:border-green-200 transition-colors group">
               <CardHeader>
+                <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
+                  <Leaf className="w-6 h-6 text-emerald-600" />
+                </div>
+                <CardTitle className="text-xl">Chronic Digestive & Gut Health</CardTitle>
+                <CardDescription>
+                  Rebuilding metabolic fire (Agni) to naturally resolve IBS, acid reflux, chronic bloating, and indigestion.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Irritable Bowel Syndrome (IBS) care
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    GERD & Acid Reflux management
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Chronic bloating & gas relief
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Agni (digestive fire) correction
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-green-200 transition-colors group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-rose-200 transition-colors">
+                  <Flower2 className="w-6 h-6 text-rose-600" />
+                </div>
+                <CardTitle className="text-xl">Chronic Skin & Hair Care</CardTitle>
+                <CardDescription>
+                  Deep Ayurvedic blood purification (Rakta Shodhana) to manage eczema, psoriasis, and hormonal acne.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Eczema & Dermatitis support
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Psoriasis management protocols
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Hormonal cystic acne recovery
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                    Rakta Shodhana (blood purification)
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-green-200 transition-colors group">
+              <CardHeader>
                 <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-cyan-200 transition-colors">
                   <Users className="w-6 h-6 text-cyan-600" />
                 </div>
