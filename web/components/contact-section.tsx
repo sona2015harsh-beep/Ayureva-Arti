@@ -12,6 +12,7 @@ import { submitContactFormFallback } from "@/actions/contact-form-fallback"
 import { useAnalytics } from "@/lib/analytics"
 import { useGeoPricing } from "@/hooks/use-geo-pricing"
 import { createConsultationRazorpayOrder, verifyConsultationPayment } from "@/actions/booking-payment"
+import { createConsultationPaypalOrder, verifyAndCapturePaypalPayment } from "@/actions/paypal-payment"
 
 export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,6 +36,93 @@ export default function ContactSection() {
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
   const { pricing, isLoading } = useGeoPricing()
   const CALENDLY_BASE_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/dr-arti-ayureva/1-to-1-private-consultation"
+
+  const [paypalLoaded, setPaypalLoaded] = useState(false)
+
+  // Dynamically load PayPal Script
+  const loadPaypalScript = (currency: string) => {
+    return new Promise((resolve) => {
+      const scriptId = "paypal-sdk-script"
+      const existingScript = document.getElementById(scriptId)
+      if (existingScript) {
+        resolve(true)
+        return
+      }
+      const script = document.createElement("script")
+      script.id = scriptId
+      script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb"}&currency=${currency}`
+      script.onload = () => resolve(true)
+      script.onerror = () => resolve(false)
+      document.body.appendChild(script)
+    })
+  }
+
+  // Load PayPal SDK only when step is "paying" and currency is not INR
+  useEffect(() => {
+    if (paymentStep === "paying" && pricing.currency !== "INR") {
+      const initPaypal = async () => {
+        // Fallback AED to USD as PayPal card checkouts don't natively support AED
+        const checkoutCurrency = pricing.currency === "AED" ? "USD" : pricing.currency
+        const loaded = await loadPaypalScript(checkoutCurrency)
+        if (loaded && (window as any).paypal) {
+          setPaypalLoaded(true)
+        } else {
+          setPaymentError("Failed to load PayPal payment SDK. Please try again.")
+        }
+      }
+      initPaypal()
+    }
+  }, [paymentStep, pricing.currency])
+
+  // Initialize and render PayPal Buttons
+  useEffect(() => {
+    if (paypalLoaded && (window as any).paypal && document.getElementById("paypal-button-container")) {
+      const container = document.getElementById("paypal-button-container")
+      if (container) container.innerHTML = "" // Clear previous buttons
+
+      ;(window as any).paypal.Buttons({
+        style: {
+          layout: "vertical",
+          color: "gold",
+          shape: "rect",
+          label: "pay",
+        },
+        createOrder: async () => {
+          setIsVerifyingPayment(true)
+          setPaymentError(null)
+          const res = await createConsultationPaypalOrder(leadId, pricing.amount, pricing.currency)
+          if (res.success && res.orderId) {
+            return res.orderId
+          } else {
+            setPaymentError(res.message || "Failed to create PayPal order.")
+            setIsVerifyingPayment(false)
+            return ""
+          }
+        },
+        onApprove: async (data: any) => {
+          setIsVerifyingPayment(true)
+          const verifyResult = await verifyAndCapturePaypalPayment(leadId, data.orderID)
+          if (verifyResult.success) {
+            setPaymentStep("completed")
+            // Redirect to Calendly for Booking confirmation
+            const calendlyUrl = `${CALENDLY_BASE_URL}?name=${encodeURIComponent(clientInfo.fullName)}&email=${encodeURIComponent(clientInfo.email)}&a1=${encodeURIComponent(clientInfo.phone)}`
+            window.location.href = calendlyUrl
+          } else {
+            setPaymentError(verifyResult.message || "PayPal verification failed. Please contact support.")
+          }
+          setIsVerifyingPayment(false)
+        },
+        onError: (err: any) => {
+          console.error("PayPal Error:", err)
+          setPaymentError("An error occurred during PayPal checkout. Please try again.")
+          setIsVerifyingPayment(false)
+        },
+        onCancel: () => {
+          setIsVerifyingPayment(false)
+        },
+      }).render("#paypal-button-container")
+    }
+  }, [paypalLoaded, leadId, pricing])
 
   // Helper to load Razorpay Checkout SDK dynamically on demand
   const loadRazorpayScript = () => {
@@ -527,16 +615,17 @@ export default function ContactSection() {
                         </p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <Button
-                          onClick={handleForeignProceedToCalendly}
-                          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-14 rounded-xl shadow-md flex items-center justify-center gap-2"
-                        >
-                          <Calendar className="w-5 h-5" />
-                          Book Your Slot →
-                        </Button>
+                      <div className="space-y-4">
+                        <div id="paypal-button-container" className="min-h-[150px] w-full">
+                          {!paypalLoaded && (
+                            <div className="flex flex-col items-center justify-center py-8 gap-2 text-sm text-gray-500">
+                              <div className="w-6 h-6 border-2 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                              Loading PayPal Secure Checkout...
+                            </div>
+                          )}
+                        </div>
                         <p className="text-[10px] text-gray-400 text-center">
-                          A secure payment link ({pricing.label}) will be sent to your WhatsApp/Email
+                          Pay securely via PayPal using credit cards or account funds
                         </p>
                       </div>
                     )}
