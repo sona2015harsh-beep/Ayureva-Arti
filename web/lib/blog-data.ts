@@ -978,10 +978,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "endometriosis-ayurvedic-treatment-chocolate-cysts",
-    title: "Endometriosis Pain Won't Stop? Ayurvedic Treatment Without Surgery",
+    title: "Ayurvedic Care for Endometriosis & Chocolate Cysts: Natural Perspectives",
     quickAnswer: "Endometriosis occurs when uterine tissue grows outside the uterus, causing severe pain and infertility. Ayurveda treats it as Vata-Kapha imbalance where retrograde menstrual tissue adheres to organs due to sticky Ama (toxins). Treatment combines Kanchanar Guggulu to dissolve growths, Varunadi Kashayam for pelvic decongestion, and Virechana detox to clear the channels. Most patients see significant pain reduction within 2-3 months.",
     excerpt:
-      "Is excruciating period pain normal? No. Learn how Ayurveda treats Endometriosis (Chocolate Cysts) by correcting 'Vata' flow and dissolving deep-seated toxins without surgery.",
+      "Can Ayurvedic care support recovery from chocolate cysts? Learn about the traditional approach to clearing blockages and calming Vata dosha naturally.",
     publishDate: "January 10, 2026",
     author: "Dr. Arti Singh (BAMS)",
     category: "Women's Health",
@@ -1595,10 +1595,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "heavy-period-bleeding-ayurvedic-treatment",
-    title: "How to Stop Heavy Period Bleeding? Ayurvedic Home Remedies That Work",
+    title: "Managing Heavy Period Bleeding: Ayurvedic Care & Traditional Remedies",
     quickAnswer: "Heavy bleeding (Raktapradar) in Ayurveda is caused by excess Pitta (heat) in the blood that thins vessel walls and prevents clotting. The immediate remedy is Ashoka bark decoction — the most powerful Ayurvedic uterine tonic — combined with Praval Pishti (coral calcium) to cool Pitta and Nagkesar to promote clotting. Dietary shifts like avoiding spicy food and adding pomegranate juice reduce bleeding by 40-60% within 2 cycles.",
     excerpt:
-      "Tired of changing pads every hour? Heavy bleeding is not just inconvenient; it drains your life force (Ojas). Discover how 'Stambhana' herbs like Ashoka and Lodhra can stop the flow.",
+      "Understand the Ayurvedic perspective on heavy periods (Raktapradar). Learn about supportive home care and traditional cooling herbs like Ashoka and Lodhra.",
     publishDate: "January 12, 2026",
     author: "Dr. Arti Singh (BAMS)",
     category: "Women's Health",
@@ -2190,10 +2190,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "ayurvedic-weight-loss-tips-agni",
-    title: "What is the Best Ayurvedic Way to Lose Weight Without Dieting?",
+    title: "Ayurvedic Weight Loss: 12 Tips to Ignite Agni & Support Metabolism",
     quickAnswer: "Ayurveda treats obesity as a Meda Dhatu (fat tissue) excess caused by weak Agni (digestive fire), not excess calories. The solution targets your metabolic fire: Trikatu before meals ignites digestion, Triphala at night scrapes accumulated fat, and replacing wheat with millets like Barley and Jowar reduces the Kapha heaviness that stores fat. Avoid cold water, daytime sleeping, and sweet foods. Most patients lose 3-5 kg in the first month without calorie counting.",
     excerpt:
-      "Counting calories but not losing weight? Ayurveda offers a different perspective. Learn how to ignite your digestive fire (Agni), remove toxins (Ama), and lose weight sustainably.",
+      "Discover how optimizing your Agni (digestive fire) can boost metabolism and clear toxins naturally. Learn the Ayurvedic approach to healthy, sustainable weight management.",
     publishDate: "January 15, 2026",
     author: "Dr. Arti Singh (BAMS)",
     category: "Metabolism & Thyroid",
@@ -2824,10 +2824,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "white-discharge-leucorrhea-ayurvedic-treatment",
-    title: "White Discharge Problem: Best Ayurvedic Treatment & Home Remedies",
+    title: "Ayurvedic Management of White Discharge (Leucorrhea): Herbs & Home Care",
     quickAnswer: "White discharge (Shweta Pradar) in Ayurveda is caused by Kapha aggravation in the reproductive channels, creating excess mucus. Normal discharge is thin, clear, and odorless. Abnormal discharge — thick, yellow, itchy, or foul-smelling — signals infection or Kapha-Pitta imbalance. The Ayurvedic protocol uses Pradrantak Churna internally, Triphala Kashaya wash externally, and dietary changes like avoiding dairy, sugar, and cold foods. Most cases resolve within 4-6 weeks of consistent treatment.",
     excerpt:
-      "Is your white discharge normal or an infection? Learn the difference between physiological discharge and 'Sweta Pradara', and how to manage it with basic kitchen herbs.",
+      "Struggling with abnormal white discharge? Learn the Ayurvedic approach to restoring Kapha-Pitta balance with traditional uterine tonics and hygiene guidelines.",
     publishDate: "January 17, 2026",
     author: "Dr. Arti Singh (BAMS)",
     category: "Women's Health",
@@ -5087,10 +5087,10 @@ y: 52-year-old with HbA1c 9.2%</h4>
   },
   {
     slug: "bloating-gas-ayurvedic-home-remedies",
-    title: "Pet Mein Gas Banta Hai? 5 Ayurvedic Kitchen Spices That Fix Bloating",
+    title: "Ayurvedic Home Remedies for Gas & Bloating Relief: 5 Kitchen Spices",
     quickAnswer: "Bloating is trapped Vata (air) in the gut caused by weak Agni (digestive fire). The 5 Ayurvedic spice fixes: (1) Hing (Asafoetida) — the #1 anti-gas spice, add a pinch to dal; (2) Ajwain (Carom seeds) — chew 1/2 tsp with warm water after meals; (3) Jeera (Cumin) — dry roast and drink as tea; (4) Saunf (Fennel) — chew after meals to prevent gas formation; (5) Adrak (Ginger) — fresh ginger slice with rock salt before eating ignites Agni. Results within 24-48 hours.",
     excerpt:
-      "Look 6 months pregnant after a meal? Gas (Adhmana) is a sign of poor digestion. Here are 5 carminative spices from your kitchen to deflate the balloon.",
+      "Struggling with gas or bloating? Discover how traditional Ayurvedic spices like Hing and Ajwain are used to support Agni (digestion) and relieve discomfort naturally.",
     publishDate: "January 24, 2026",
     author: "Dr. Arti Singh (BAMS)",
     category: "Gut Health",
