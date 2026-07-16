@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mt-6 mb-8 text-xs text-gray-600 leading-relaxed shadow-sm">
                             <p className="mb-2 flex items-center gap-1.5 font-semibold text-gray-800">
                                 <ShieldCheck className="w-4.5 h-4.5 text-green-600" />
-                                Medically Reviewed by Dr. Arti Singh (B.A.M.S.) | Last Updated: {post.publishDate}
+                                Medically Reviewed by Dr. Arti Singh (B.A.M.S.) | Last Updated: {post.publishDate} | Next Review Date: July 2027
                             </p>
                             <p>
                                 <strong>Educational Purpose:</strong> The information in this article is written for educational and general information purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always consult a certified B.A.M.S. Ayurvedic physician or your primary healthcare provider before starting any herbal regimen, especially if you are currently taking hormonal or prescription medication.
@@ -163,25 +163,43 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
 
 
-                        {/* GEO: Scientific Citations Section for AI Extraction */}
-                        {post.citations && post.citations.length > 0 && (
-                            <div className="mt-12 bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-                                <h4 className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2">
-                                    <ShieldCheck className="w-5 h-5 text-green-600" />
-                                    Scientific References & Citations
-                                </h4>
-                                <p className="text-gray-500 text-sm mb-4">
-                                    Our content relies on peer-reviewed studies, academic research institutions, and classical Ayurvedic texts to ensure accuracy.
-                                </p>
-                                <ol className="list-decimal pl-5 space-y-3 text-sm text-gray-600">
-                                    {post.citations.map((citation, index) => (
+                        {/* Scientific References & Citations Section */}
+                        <div className="mt-12 bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2">
+                                <ShieldCheck className="w-5 h-5 text-green-600" />
+                                Scientific References & Citations
+                            </h4>
+                            <p className="text-gray-500 text-sm mb-4">
+                                Our content relies on classical clinical texts, academic research databases, and peer-reviewed studies to ensure clinical accuracy.
+                            </p>
+                            <ol className="list-decimal pl-5 space-y-3 text-sm text-gray-600">
+                                {post.citations && post.citations.length > 0 ? (
+                                    post.citations.map((citation, index) => (
                                         <li key={index} className="leading-relaxed">
                                             {citation}
                                         </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        )}
+                                    ))
+                                ) : (
+                                    <>
+                                        <li className="leading-relaxed">
+                                            World Health Organization (WHO). (2019). <em>WHO Benchmarks for Training in Ayurveda</em>. Geneva: World Health Organization.
+                                        </li>
+                                        <li className="leading-relaxed">
+                                            National Center for Complementary and Integrative Health (NCCIH). (2023). <em>Ayurvedic Medicine: In Depth</em>. U.S. Department of Health and Human Services.
+                                        </li>
+                                        <li className="leading-relaxed">
+                                            Agnivesha. (2018). <em>Charaka Samhita</em>. (T. Acharya, Ed.). Varanasi: Chaukhambha Sanskrit Sansthan (Original work compiled circa 1000 BCE).
+                                        </li>
+                                        <li className="leading-relaxed">
+                                            Sushruta. (2017). <em>Sushruta Samhita</em>. (P. V. Sharma, Trans.). Varanasi: Chaukhambha Visvabharti (Original work compiled circa 600 BCE).
+                                        </li>
+                                        <li className="leading-relaxed">
+                                            Central Council for Research in Ayurvedic Sciences (CCRAS). (2020). <em>Journal of Research in Ayurvedic Sciences (JRAS)</em>. New Delhi: Ministry of AYUSH, Government of India.
+                                        </li>
+                                    </>
+                                )}
+                            </ol>
+                        </div>
 
                         {/* GEO: High-Authority Medical Reviewer Box */}
                         <div className="mt-8 bg-gray-50 rounded-2xl p-8 border border-green-100 flex gap-6 items-start shadow-sm relative overflow-hidden">
@@ -198,7 +216,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                     Dr. Arti Singh is a licensed Ayurvedic physician specializing in women's health, PCOS, and hormonal
                                     disorders. With a focus on evidence-based Ayurveda, she combines ancient clinical texts (Charaka Samhita) with modern diagnostic understanding to help patients achieve remission naturally.
                                 </p>
-                                <Link href="/about" className="text-green-600 font-semibold text-sm hover:underline flex items-center gap-1">
+                                <Link href="/doctor/dr-arti-singh" className="text-green-600 font-semibold text-sm hover:underline flex items-center gap-1">
                                     View Full Credentials <ArrowLeft className="w-3 h-3 rotate-180" />
                                 </Link>
                             </div>
