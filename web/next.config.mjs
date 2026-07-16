@@ -39,7 +39,16 @@ const nextConfig = {
   },
   async redirects() {
     return [
-
+      {
+        source: '/blog/ayurvedic-remedies-irregular-periods',
+        destination: '/blog/ayurvedic-management-pcos-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/agni-digestive-fire-ayurveda',
+        destination: '/blog/ayurvedic-weight-loss-tips-agni',
+        permanent: true,
+      },
       {
         source: '/download',
         destination: '/app-release.apk',

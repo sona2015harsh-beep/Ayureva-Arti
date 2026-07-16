@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation"
-import { targetLocations, getLocationBySlug } from "@/lib/locations"
+import { targetLocations, getLocationBySlug, LocationData } from "@/lib/locations"
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, Video, CheckCircle, Shield, Award, MapPin, ChevronRight, Activity } from "lucide-react"
+import { Calendar, Video, CheckCircle, Shield, Award, MapPin, ChevronRight, Activity, BookOpen, HelpCircle } from "lucide-react"
 
 interface LocationPageProps {
   params: Promise<{
@@ -44,55 +44,279 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   }
 }
 
-function getRegionalContent(region: string) {
-  const isCold = region.includes("USA") || region.includes("UK") || region.includes("Canada") || region.includes("United Kingdom") || region.includes("Northeast") || region.includes("Midwest") || region.includes("Coast") || region.includes("Europe");
-  const isMiddleEast = region.includes("Middle East");
-  const isIndia = region.includes("India");
+interface LocalizedContent {
+  title: string
+  content: string
+  insight: string
+  challenges: { title: string; description: string }[]
+  faqs: { question: string; answer: string }[]
+  relatedBlogs: { title: string; slug: string }[]
+}
 
-  if (isCold) {
+function getLocalizedContent(locData: LocationData): LocalizedContent {
+  const id = locData.id
+  const name = locData.name
+
+  // Tech Hubs
+  const isTechHub = ["bangalore", "hyderabad", "pune", "gurugram", "noida"].includes(id)
+  // Metros
+  const isMetro = ["mumbai", "delhi", "kolkata", "chennai"].includes(id)
+  // UK
+  const isUK = locData.country === "UK"
+  // USA
+  const isUSA = locData.country === "USA"
+  // Middle East
+  const isME = locData.country === "UAE" || locData.country === "Saudi Arabia" || locData.country === "Qatar" || locData.country === "Oman" || locData.country === "Kuwait" || locData.country === "Bahrain" || locData.region.includes("Middle East")
+
+  if (isTechHub) {
     return {
-      title: `Ayurvedic Care for Cold & Temperate Climates (${region})`,
-      content: "Living in colder regions often leads to Vitamin D deficiency, which is directly linked to insulin resistance and worsening PCOS/PCOD symptoms. In cold climates, bodily Agni (metabolic fire) gets sluggish. Dr. Arti's customized protocol for this region includes specific warming herbs (like Ginger, Cinnamon, and Pippali) and a strict recommendation to avoid cold/iced beverages, which deplete your metabolic fire.",
-      insight: "Focus: Boosting Agni & correcting Vitamin D absorption naturally."
+      title: `Ayurvedic Protocols for IT & Corporate Lifestyles in ${name}`,
+      content: `PCOS and PCOD symptoms in tech hubs like ${name} are closely linked to long sitting hours and late night shifts. In Ayurvedic tradition, prolonged sitting is traditionally believed to cause physical stagnation (Sanga) in the pelvic region, obstructing the downward flow of Vata. Our treatment program focus is on re-igniting your digestive fire (Agni) and introducing movement routines that help restore natural energy circulation.`,
+      insight: `Focus: Restoring natural pelvic circulation & aligning daily sleep-wake patterns.`,
+      challenges: [
+        {
+          title: "Sedentary Workplace Stagnation",
+          description: "Sitting at desk jobs for 8-10 hours restricts lower abdominal circulation, encouraging Kapha-type fluid and tissue stagnation."
+        },
+        {
+          title: "Erratic Sleep & Screen Hours",
+          description: "Late evening shifts and extensive screen exposure disturb bodily biological rhythms, directly impacting cycle timing."
+        },
+        {
+          title: "Food Delivery Dependency",
+          description: "Frequent consumption of outside restaurant meals loaded with refined flour and bad fats slows down digestion (Mandagni)."
+        }
+      ],
+      faqs: [
+        {
+          question: `Can I schedule consultations around my office hours in ${name}?`,
+          answer: `Yes. We provide flexible early morning and late evening online consultation slots specifically to accommodate busy corporate schedules in ${name}.`
+        },
+        {
+          question: `How can I follow the diet chart with office cafeteria food?`,
+          answer: "Dr. Arti provides simple guidelines on choosing healthier local cafeteria options and quick-prep snacks that support your healing journey."
+        },
+        {
+          question: `Does the prescription specify local grain alternatives in ${name}?`,
+          answer: "Yes, the nutrition plan integrates easily available local grains like Ragi, Jowar, or Bajra, replacing refined wheat."
+        }
+      ],
+      relatedBlogs: [
+        { title: "Can Ayurveda Cure PCOS Permanently?", slug: "ayurvedic-management-pcos-guide" },
+        { title: "Agni and Ayurvedic Weight Loss Tips", slug: "ayurvedic-weight-loss-tips-agni" }
+      ]
     }
   }
 
-  if (isMiddleEast) {
+  if (isMetro) {
     return {
-      title: `Ayurvedic Strategy for Hot Climates & Indoor Lifestyles (${region})`,
-      content: "In extremely hot climates where daily life is spent mostly indoors under constant air conditioning, Kapha dosha can easily accumulate. This leads to water retention, slow metabolism, and sluggish ovulation. Our treatment for Middle Eastern patients emphasizes dry-brushing (Udvarthanam), specific warming spices to clear channels (Srotas), and strict guidelines to avoid ice-cold drinks and high-glycemic dates.",
-      insight: "Focus: Clearing water retention and stimulating Kapha-blocked metabolism."
+      title: `Ayurvedic Strategy for Transit Stress & Metro Lifestyles in ${name}`,
+      content: `Metro lifestyles in cities like ${name} involve daily commuting exhaustion, high travel stress, and frequent consumption of heavy street foods or quick-fried snacks. In Ayurveda, this combination is believed to disrupt digestive balance and accumulate Ama (metabolic waste), which underlies insulin resistance. We customize your plan to focus on blood-purifying nutrition and stress-reducing herbal support.`,
+      insight: `Focus: Clearing urban metabolic toxins and stabilizing energy levels naturally.`,
+      challenges: [
+        {
+          title: "Urban Commute Exhaustion",
+          description: "Spending hours traveling causes body fatigue and mental stress, which directly elevates stress hormones (cortisol)."
+        },
+        {
+          title: "Dependency on Commuter Street Foods",
+          description: "Eating quick fried or highly refined snacks (like maida or processed sugars) spikes insulin levels, accelerating weight gain."
+        },
+        {
+          title: "Lack of Proper Hydration",
+          description: "Drinking insufficient water during travel or busy hours dry out Vata, causing gut dryness and bloating."
+        }
+      ],
+      faqs: [
+        {
+          question: `Do you deliver Ayurvedic formulations to my address in ${name}?`,
+          answer: `Yes, we offer express shipping. Herbal formulations usually reach your doorstep in ${name} within 24 to 48 hours.`
+        },
+        {
+          question: `How do I manage high daily commuting stress on this program?`,
+          answer: "We incorporate easy 5-minute pranayama (breathing) exercises and natural adaptogenic herbs to support your nervous system during travel hours."
+        },
+        {
+          question: `Can I take consultations on weekends?`,
+          answer: "Yes. Weekend video slots are available for busy metro professionals who cannot take calls on weekdays."
+        }
+      ],
+      relatedBlogs: [
+        { title: "PCOD vs PCOS: What's the Real Difference?", slug: "pcod-vs-pcos-ayurvedic-difference" },
+        { title: "Daily Dinacharya Routine Guide", slug: "dinacharya-ayurvedic-daily-routine" }
+      ]
     }
   }
 
-  if (isIndia) {
+  if (isUK) {
     return {
-      title: `Ayurvedic Guidelines for Traditional Indian Diets (${region})`,
-      content: "Modern Indian dietary habits have shifted toward highly refined carbohydrates (polished white rice, refined wheat flour/maida), leading to a high prevalence of insulin resistance (the root driver of PCOD weight gain). Dr. Arti's protocol focuses on correcting your Agni by replacing refined grains with local millets (Jowar, Bajra, Ragi) and integrating insulin-sensitizing herbs like Methi (Fenugreek) and Haridra (Turmeric).",
-      insight: "Focus: Reversing insulin resistance through native grain optimization."
+      title: `Ayurvedic Support for Cold Weather & UK Timezones in ${name}`,
+      content: `Living in colder climates like the UK presents unique physiological challenges. The persistent cold, damp weather can increase bodily Kapha, while limited sunshine often leads to Vitamin D deficiencies, which are traditionally linked to sluggish insulin metabolism. Dr. Arti Singh designs customized Ayurvedic regimens with warming herbs and lifestyle advice suited to help you regulate cycles naturally.`,
+      insight: `Focus: Supporting circulation, compensating for cold weather sluggishness, and active cycle care.`,
+      challenges: [
+        {
+          title: "Temperate Damp Stagnation",
+          description: "Persistent cold, wet UK weather tends to slow down bodily metabolism, accumulating sluggishness (Kapha)."
+        },
+        {
+          title: "Limited Sunlight & Vitamin D Lack",
+          description: "The lack of regular sunshine in the UK impacts Vitamin D absorption, which plays a major role in follicular development."
+        },
+        {
+          title: "NHS waiting times for specialist care",
+          description: "Patients looking for timely, private Ayurvedic guidance can book online directly with us, avoiding long waiting lists."
+        }
+      ],
+      faqs: [
+        {
+          question: `How are custom Ayurvedic formulations delivered in the UK?`,
+          answer: `We arrange secure shipping directly to your UK address. Estimated delivery times vary depending on the destination, customs processing, and local courier schedules, typically taking 5-9 business days.`
+        },
+        {
+          question: `Are consultations scheduled in UK time?`,
+          answer: "Yes, our online consultation calendar aligns with GMT/BST, letting you book slots convenient for your local UK routine."
+        },
+        {
+          question: `What reports should I keep ready for the doctor?`,
+          answer: "If you have recent pelvic ultrasounds, thyroid profiles, or hormone panels, you can upload them to our secure portal before your consultation."
+        }
+      ],
+      relatedBlogs: [
+        { title: "Ayurvedic Treatment for Hypothyroidism", slug: "hypothyroidism-ayurvedic-treatment-diet" },
+        { title: "Can Ayurveda Cure PCOS permanently?", slug: "ayurvedic-management-pcos-guide" }
+      ]
     }
   }
 
+  if (isUSA) {
+    return {
+      title: `Ayurvedic Protocol for USA Busy Schedules & US Timezones in ${name}`,
+      content: `For patients living in the US, high corporate stress, erratic schedules, and a reliance on quick cold diets (like frozen foods, iced drinks, or raw salads) are common triggers. In Ayurvedic tradition, dry, cold foods are believed to aggravate Vata, affecting hormonal rhythm. Our USA-specific protocol introduces grounding, warm meals and stress-balancing herbs tailored to support your wellness journey.`,
+      insight: `Focus: Grounding Vata dosha, reducing mental fatigue, and warm digestive care.`,
+      challenges: [
+        {
+          title: "High Adrenal Cortisol Burnout",
+          description: "The demanding pace of US professional life keeps cortisol high, which blocks natural progesterone production."
+        },
+        {
+          title: "Aggravation from Cold & Raw Diets",
+          description: "Consuming raw cold salads, iced beverages, and refrigerated foods weakens the digestive Agni and disrupts cycles."
+        },
+        {
+          title: "Expensive Out-of-Pocket Care",
+          description: "Accessing private holistic practitioners or functional care locally is highly expensive and rarely covered by health insurance."
+        }
+      ],
+      faqs: [
+        {
+          question: `How does delivery of herbal formulations work in the US?`,
+          answer: "We ship laboratory-tested herbal formulations safely to the United States. Shipping times vary by destination, but packages usually clear customs and arrive in 6-10 working days."
+        },
+        {
+          question: `Can I get video consultation slots matching my timezone?`,
+          answer: "Yes, our booking platform offers dedicated slots matching US Eastern, Central, and Pacific timezones."
+        },
+        {
+          question: `Do you support plant-based/vegan diets on this plan?`,
+          answer: "Yes. Dr. Arti customizes the nutrition plan to match your personal dietary preferences, ensuring optimal plant-based protein and mineral absorption."
+        }
+      ],
+      relatedBlogs: [
+        { title: "Is Ashwagandha Good for PCOS?", slug: "is-ashwagandha-good-for-pcos" },
+        { title: "Vata Pitta Kapha Dosha Quiz Guide", slug: "vata-pitta-kapha-dosha-quiz-guide" }
+      ]
+    }
+  }
+
+  if (isME) {
+    return {
+      title: `Ayurvedic Guidelines for Indoor Lifestyles & Hot Climates in ${name}`,
+      content: `In hot climates like ${name} where life is spent primarily indoors under constant air conditioning, Kapha dosha gets blocked inside body channels. This causes high water retention, sluggish ovaries, and slow metabolism. We focus on dry warming spices, herbal teas that clear channel blockages (Srotas), and customized guidelines to avoid ice-cold drinks and high-glycemic foods that trigger insulin spikes.`,
+      insight: `Focus: Clearing lymphatic stagnation and Kapha blockages in the ovaries.`,
+      challenges: [
+        {
+          title: "Air Conditioning Stagnation",
+          description: "Spending 90% of the day in artificial cold air constricts bodily channels, causing Kapha blockages."
+        },
+        {
+          title: "Ice-Cold Drink Depletion",
+          description: "Drinking iced beverages to combat outdoor heat instantly extinguishes your digestive fire, generating toxins."
+        },
+        {
+          title: "High Glycemic Sweeteners",
+          description: "Frequent consumption of dates, sugary drinks, or refined wheat spikes insulin, worsening hormonal acne and hirsutism."
+        }
+      ],
+      faqs: [
+        {
+          question: `Do you ship Ayurvedic medicines to UAE and the Gulf countries?`,
+          answer: `Yes, we regularly ship medicines to Dubai, Abu Dhabi, Riyadh, and other Gulf regions. Delivery typically takes 3 to 5 business days.`
+        },
+        {
+          question: "Is consultation available on weekends?",
+          answer: "Yes, we offer flexible weekend consultation slots to fit the Friday-Saturday or Saturday-Sunday weekend patterns in the Middle East."
+        }
+      ],
+      relatedBlogs: [
+        { title: "Can Ayurveda Cure PCOS permanently?", slug: "ayurvedic-management-pcos-guide" },
+        { title: "PCOD vs PCOS Core Differences", slug: "pcod-vs-pcos-ayurvedic-difference" }
+      ]
+    }
+  }
+
+  // Default / Canada / Australia / Europe
   return {
-    title: `Localized Ayurvedic Protocol for ${region}`,
-    content: "Ayurveda is a science of relativity. The local climate, water, and regional dietary habits (Desha) heavily influence your bodily Doshas. Dr. Arti Singh customizes your Ayurvedic formulations, herbal teas, and daily dinacharya (routine) specifically to match the season, temperature, and lifestyle patterns of your local geographical region.",
-    insight: "Focus: Climate-compatible dosha balancing (Desha Satmya)."
+    title: `Localized Ayurvedic PCOS/PCOD Consultation for ${name}`,
+    content: `Ayurvedic healing is highly dependent on your local climate, environment (Desha), and regional dietary habits. In ${name}, Dr. Arti customizes your herbal formulations, daily dinacharya (routine), and cycle-regulating plans specifically to counter local environmental challenges, restoring your Dosha balance without synthetic hormones.`,
+    insight: `Focus: Restoring hormonal rhythm through climate-adapted Ayurvedic therapy.`,
+    challenges: [
+      {
+        title: "Environmental Climate Stress",
+        description: "Seasonal shifts and extreme local temperatures alter bodily metabolic rates, influencing cycle timing."
+      },
+      {
+        title: "Limited Access to Certified Specialists",
+        description: "Finding certified B.A.M.S. doctors specializing in root-cause PCOS care in your local area is challenging."
+      },
+      {
+        title: "Busy Lifestyle Obstacles",
+        description: "Struggling to maintain healthy home cooking routines alongside a demanding global schedule."
+      }
+    ],
+    faqs: [
+      {
+        question: `How are the herbal formulations delivered internationally?`,
+        answer: "We ship all customized herbal formulations globally using certified international couriers. Custom clearance and tracking details are fully handled by us."
+      },
+      {
+        question: `What languages are supported during consultations?`,
+        answer: "Consultations are conducted in English or Hindi, depending on your comfort and preference."
+      },
+      {
+        question: `How are prescription guidelines shared?`,
+        answer: "A digital prescription copy, complete with detailed dosage guides, diet charts, and lifestyle instructions, is sent directly via email and WhatsApp."
+      }
+    ],
+    relatedBlogs: [
+      { title: "Can Ayurveda Cure PCOS permanently?", slug: "ayurvedic-management-pcos-guide" },
+      { title: "PCOD vs PCOS Core Differences", slug: "pcod-vs-pcos-ayurvedic-difference" }
+    ]
   }
 }
 
 function getAdjacentLocations(currentLocId: string, currentCountry: string, currentRegion: string) {
   let matches = targetLocations.filter(
     (loc) => loc.region === currentRegion && loc.id !== currentLocId
-  );
+  )
 
   if (matches.length < 4) {
     const countryMatches = targetLocations.filter(
       (loc) => loc.country === currentCountry && loc.id !== currentLocId && !matches.find((m) => m.id === loc.id)
-    );
-    matches = [...matches, ...countryMatches];
+    )
+    matches = [...matches, ...countryMatches]
   }
 
-  return matches.slice(0, 4);
+  return matches.slice(0, 4)
 }
 
 export default async function PcodLocationPage({ params }: LocationPageProps) {
@@ -103,7 +327,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
     notFound()
   }
 
-  const regional = getRegionalContent(locData.region)
+  const regional = getLocalizedContent(locData)
   const adjacent = getAdjacentLocations(locData.id, locData.country, locData.region)
 
   const jsonLd = {
@@ -143,7 +367,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
               Now seeing patients across {locData.name}, {locData.state}
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight font-serif">
               Ayurvedic PCOS Care & Online Consultation in <span className="text-green-600">{locData.name}</span>
             </h1>
             
@@ -188,13 +412,16 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
               />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Meet Your Ayurvedic Specialist: Dr. Arti Singh</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 font-serif">Meet Your Ayurvedic Specialist: Dr. Arti Singh</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 "PCOD cannot be treated with a generic one-size-fits-all pill. I've successfully treated hundreds of women globally by designing personalized treatment protocols based on their unique Prakriti (body constitution) and Dosha imbalances. You don't need surgery, and you don't need lifelong hormonal pills to heal."
               </p>
-              <div className="flex flex-wrap gap-3">
-                <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">B.A.M.S. Certified</span>
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">B.A.M.S. (Bachelor of Ayurvedic Medicine & Surgery)</span>
                 <span className="bg-white border border-green-200 text-green-800 text-xs px-3 py-1 rounded-full font-semibold">Reg. No: 4200 (Bihar)</span>
+                <Link href="/contact" className="inline-flex items-center text-sm font-bold text-green-700 hover:text-green-800 hover:underline">
+                  Book Call with Dr. Arti <ChevronRight className="w-4 h-4 ml-0.5" />
+                </Link>
               </div>
             </div>
           </div>
@@ -209,7 +436,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
               <Activity className="w-5 h-5" />
               <span>Ayurvedic Regional Assessment</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 font-serif">
               {regional.title}
             </h3>
             <p className="text-gray-700 leading-relaxed mb-4 text-sm md:text-base">
@@ -222,11 +449,74 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
         </div>
       </section>
 
+      {/* Localized Lifestyle Challenges */}
+      <section className="py-16 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 font-serif">PCOS Lifestyle Challenges in {locData.name}</h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Environmental factors, climate conditions, and local routines in {locData.name} play a significant role in hormonal health.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {regional.challenges.map((ch, idx) => (
+              <div key={idx} className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100 flex flex-col justify-between">
+                <div>
+                  <div className="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-sm mb-4">0{idx + 1}</div>
+                  <h4 className="font-bold text-gray-900 mb-2">{ch.title}</h4>
+                  <p className="text-gray-600 text-xs leading-relaxed">{ch.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Localized FAQ Section */}
+      <section className="py-16 bg-gray-50/30 border-b border-gray-100">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <h3 className="text-3xl font-bold text-gray-900 mb-10 text-center font-serif">
+            Frequently Asked Questions from Patients in {locData.name}
+          </h3>
+          <div className="space-y-6">
+            {regional.faqs.map((faq, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                <h4 className="font-bold text-gray-900 mb-2 flex items-start gap-2.5">
+                  <HelpCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>{faq.question}</span>
+                </h4>
+                <p className="text-gray-600 text-sm leading-relaxed pl-7.5">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related Educational Guides */}
+      <section className="py-12 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 font-serif">
+            Educational Guides for PCOS Reversal
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            {regional.relatedBlogs.map((b, idx) => (
+              <Link
+                key={idx}
+                href={`/blog/${b.slug}`}
+                className="bg-green-50/50 hover:bg-green-50 border border-green-100 hover:border-green-200 text-green-800 text-sm font-semibold px-5 py-3.5 rounded-2xl transition-all"
+              >
+                {b.title} &rarr;
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Other Chronic Health Consultations */}
       <section className="py-16 bg-gray-50/50 border-b border-gray-100">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Ayurvedic Consultations for Other Chronic Concerns in {locData.name}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 font-serif">Ayurvedic Consultations for Other Chronic Concerns in {locData.name}</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Apart from PCOS/PCOD, patients in {locData.name} frequently consult Dr. Arti Singh for natural, root-cause recovery from these common conditions:
             </p>
@@ -276,7 +566,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Our 3-Step Ayurvedic PCOS Care Protocol</h2>
+            <h2 className="text-3xl font-bold text-gray-900 font-serif">Our 3-Step Ayurvedic PCOS Care Protocol</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">Focusing on metabolism correction, natural cycle regulation, and hormonal balance through customized herbal advice.</p>
           </div>
           
@@ -338,7 +628,7 @@ export default async function PcodLocationPage({ params }: LocationPageProps) {
       {/* Final CTA */}
       <section className="py-20 bg-green-900 text-white text-center">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Start Your Personalized Ayurvedic PCOS Journey</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-serif">Start Your Personalized Ayurvedic PCOS Journey</h2>
           <p className="text-green-100 mb-8 max-w-2xl mx-auto text-lg">
             Consult with Dr. Arti Singh and get customized diet, lifestyle, and traditional herbal guidance suited for {locData.country}.
           </p>

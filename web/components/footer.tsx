@@ -36,12 +36,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog/ayurvedic-diet-for-pcos" className="hover:text-green-400 transition-colors">
-                  Best Diet for PCOS
+                <Link href="/blog/which-fruit-is-best-for-pcos-in-ayurveda" className="hover:text-green-400 transition-colors">
+                  PCOS Diet & Fruit Guide
                 </Link>
               </li>
               <li>
-                <Link href="/blog/ayurvedic-thyroid-treatment" className="hover:text-green-400 transition-colors">
+                <Link href="/blog/hypothyroidism-ayurvedic-treatment-diet" className="hover:text-green-400 transition-colors">
                   Thyroid Management
                 </Link>
               </li>
@@ -89,6 +89,11 @@ export default function Footer() {
               <li>
                 <Link href="/refund-policy" className="hover:text-green-400">
                   Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/disclaimer" className="hover:text-green-400">
+                  Disclaimer
                 </Link>
               </li>
               <li>

@@ -9,31 +9,69 @@ export const KEYWORD_DICT: Record<string, string> = {
   "Ayurveda": "/about",
   "fertility treatment": "/services",
   
-  // Blog specific long-tail keywords
+  // High-Intent Booking & Landing Page Mappings
+  "PCOD treatment online": "/pcod-ayurvedic-treatment-online",
+  "PCOS treatment online": "/pcod-ayurvedic-treatment-online",
+  "Ayurvedic PCOD treatment online": "/pcod-ayurvedic-treatment-online",
+  "PCOD treatment locations": "/online-pcod-treatment",
+  "PCOS treatment locations": "/online-pcod-treatment",
+
+  // Core Condition Blog Articles (High-intent search terms mapping)
   "PCOS vs PCOD": "/blog/pcod-vs-pcos-ayurvedic-difference",
-  "Ayurvedic diet": "/blog/ayurvedic-diet-for-pcos",
-  "PCOS diet": "/blog/ayurvedic-diet-for-pcos",
-  "hormonal imbalance": "/blog/ayurvedic-diet-hormonal-imbalance",
-  "female infertility": "/blog/ayurvedic-infertility-treatment-egg-quality",
-  "egg quality": "/blog/ayurvedic-infertility-treatment-egg-quality",
-  "endometriosis": "/blog/ayurvedic-management-endometriosis",
-  "thyroid disorders": "/blog/ayurvedic-thyroid-treatment",
-  "UTI treatment": "/blog/chronic-uti-ayurvedic-treatment",
-  "heavy bleeding": "/blog/heavy-menstrual-bleeding-ayurveda",
-  "irregular periods": "/blog/ayurvedic-remedies-irregular-periods",
-  "Panchakarma": "/blog/panchakarma-for-hormonal-balance",
-  "Shatavari": "/blog/shatavari-benefits-womens-health",
-  "Ashoka tree": "/blog/ashoka-herb-benefits",
-  "Kanchanar Guggulu": "/blog/kanchanar-guggulu-pcos",
-  "insulin resistance": "/blog/insulin-resistance-pcos-ayurveda",
-  "weight loss": "/blog/ayurvedic-weight-loss-pcos",
-  "Vata imbalance": "/blog/understanding-vata-dosha",
-  "Pitta imbalance": "/blog/understanding-pitta-dosha",
-  "Kapha imbalance": "/blog/understanding-kapha-dosha",
-  "digestive fire": "/blog/agni-digestive-fire-ayurveda",
-  "Ama (toxins)": "/blog/ama-toxins-ayurveda",
-  "Dinacharya": "/blog/dinacharya-ayurvedic-daily-routine",
-  "Ritucharya": "/blog/ritucharya-seasonal-routine",
+  "PCOS diet guide": "/blog/which-fruit-is-best-for-pcos-in-ayurveda",
+  "Ayurvedic diet for PCOS": "/blog/which-fruit-is-best-for-pcos-in-ayurveda",
+  "hormonal imbalance recovery": "/blog/ayurvedic-management-pcos-guide",
+  "infertility treatment": "/blog/ayurvedic-infertility-treatment-egg-quality",
+  "improve egg quality": "/blog/ayurvedic-infertility-treatment-egg-quality",
+  "endometriosis treatment": "/blog/endometriosis-ayurvedic-treatment-chocolate-cysts",
+  "thyroid treatment": "/blog/hypothyroidism-ayurvedic-treatment-diet",
+  "UTI treatment": "/blog/recurrent-uti-ayurvedic-treatment-home-remedies",
+  "recurrent UTI remedies": "/blog/recurrent-uti-ayurvedic-treatment-home-remedies",
+  "heavy period bleeding": "/blog/heavy-period-bleeding-ayurvedic-treatment",
+  "PCOS reversal guide": "/blog/ayurvedic-management-pcos-guide",
+  "Panchakarma detox": "/blog/seasonal-detox-ritucharya-immunity",
+  "Shatavari benefits": "/blog/ayurvedic-infertility-treatment-egg-quality",
+  "Ashoka tree benefits": "/blog/heavy-period-bleeding-ayurvedic-treatment",
+  "Kanchanar Guggulu PCOD": "/blog/endometriosis-ayurvedic-treatment-chocolate-cysts",
+  "insulin resistance PCOS": "/blog/pcod-vs-pcos-ayurvedic-difference",
+  "weight loss tips": "/blog/ayurvedic-weight-loss-tips-agni",
+  "anxiety treatment": "/blog/anxiety-ayurvedic-treatment-vata-mind",
+  "hormonal acne treatment": "/blog/hormonal-acne-ayurvedic-treatment-face-mapping",
+  "Dinacharya daily routine": "/blog/dinacharya-ayurvedic-daily-routine",
+  "Ritucharya seasonal detox": "/blog/seasonal-detox-ritucharya-immunity",
+
+  // Indexing optimizations for crawled-but-unindexed posts
+  "IBS treatment": "/blog/ibs-ayurvedic-treatment-grahani",
+  "acid reflux treatment": "/blog/acid-reflux-gerd-ayurvedic-treatment",
+  "GERD treatment": "/blog/acid-reflux-gerd-ayurvedic-treatment",
+  "sleep hygiene guidelines": "/blog/sleep-hygiene-insomnia-ayurveda-nidra",
+  "insomnia treatment": "/blog/sleep-hygiene-insomnia-ayurveda-nidra",
+  "milk and ghee facts": "/blog/milk-ghee-ayurveda-myths-facts",
+  "A2 Ghee benefits": "/blog/milk-ghee-ayurveda-myths-facts",
+  "blocked fallopian tubes": "/blog/blocked-fallopian-tubes-ayurvedic-treatment",
+  "Dosha balance quiz": "/blog/vata-pitta-kapha-dosha-quiz-guide",
+  "Vata Pitta Kapha types": "/blog/vata-pitta-kapha-dosha-quiz-guide",
+  "Eczema treatment": "/blog/eczema-ayurvedic-treatment-vicharchika",
+  "Vicharchika care": "/blog/eczema-ayurvedic-treatment-vicharchika",
+  "postpartum care": "/blog/post-partum-care-ayurveda-sutika-paricharya",
+  "Sutika routine": "/blog/post-partum-care-ayurveda-sutika-paricharya",
+  "anti-aging herbs": "/blog/anti-aging-ayurvedic-rasayana-herbs",
+  "Rasayana herbs": "/blog/anti-aging-ayurvedic-rasayana-herbs",
+  "cure PCOD permanently": "/blog/can-ayurveda-cure-pcod-permanently",
+  "chronic fatigue treatment": "/blog/chronic-fatigue-ayurvedic-treatment-ojas",
+  "Ojas recovery": "/blog/chronic-fatigue-ayurvedic-treatment-ojas",
+  "diabetes treatment": "/blog/diabetes-ayurvedic-treatment-bloodsugar",
+  "blood sugar control": "/blog/diabetes-ayurvedic-treatment-bloodsugar",
+  "fatty liver treatment": "/blog/fatty-liver-ayurvedic-treatment-diet",
+  "piles treatment kshara": "/blog/hemorrhoids-piles-ayurvedic-treatment-kshara",
+  "hemorrhoids treatment": "/blog/hemorrhoids-piles-ayurvedic-treatment-kshara",
+  "pigmentation treatment": "/blog/melasma-pigmentation-ayurvedic-treatment",
+  "melasma care": "/blog/melasma-pigmentation-ayurvedic-treatment",
+  "menopause treatment": "/blog/menopause-ayurvedic-treatment-hot-flashes",
+  "hot flashes relief": "/blog/menopause-ayurvedic-treatment-hot-flashes",
+  "psoriasis treatment": "/blog/psoriasis-ayurvedic-treatment-kitibha",
+  "Kitibha care": "/blog/psoriasis-ayurvedic-treatment-kitibha",
+  "constipation remedies": "/blog/severe-constipation-ayurvedic-remedies"
 };
 
 export function injectInternalLinks(htmlContent: string): string {
@@ -42,10 +80,9 @@ export function injectInternalLinks(htmlContent: string): string {
   
   // To avoid linking the same URL multiple times in one post, preserving the "Wikipedia" style
   const linkedUrls = new Set<string>();
+  let linkedCount = 0;
 
   // Split HTML into text nodes and HTML tags
-  // This regex matches complete <a> tags including their content, OR any other HTML tag
-  // We only want to replace text outside of HTML tags and completely ignore existing anchor tags
   const tokenRegex = /(<a\b[^>]*>.*?<\/a>|<[^>]+>)/ig;
   
   let tokens = htmlContent.split(tokenRegex);
@@ -53,14 +90,13 @@ export function injectInternalLinks(htmlContent: string): string {
   for (const keyword of sortedKeywords) {
     const url = KEYWORD_DICT[keyword];
     
-    // Skip if we already linked to this URL in this document
-    if (linkedUrls.has(url)) continue;
+    // Skip if we already linked to this URL or reached the limit of 6 links per article
+    if (linkedUrls.has(url) || linkedCount >= 6) continue;
 
     // Use a case-insensitive regex for the keyword bounded by word boundaries
-    // Note: this may have edge cases with punctuation, but is generally safe
     const keywordRegex = new RegExp(`\\b(${keyword})\\b`, 'i');
 
-    // Only iterate over text tokens (these are at even indices based on how split works with capturing groups)
+    // Only iterate over text tokens
     for (let i = 0; i < tokens.length; i += 2) {
       if (keywordRegex.test(tokens[i])) {
         // Replace ONLY the first occurrence in the text block to avoid over-linking
@@ -69,6 +105,7 @@ export function injectInternalLinks(htmlContent: string): string {
           (match) => `<a href="${url}" class="text-green-600 font-semibold hover:underline" title="Read more about ${match}">${match}</a>`
         );
         linkedUrls.add(url);
+        linkedCount++;
         break; // Stop after replacing the first occurrence of this keyword in the entire document
       }
     }

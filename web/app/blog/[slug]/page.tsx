@@ -52,6 +52,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         notFound()
     }
 
+    const postTags = post.tags || []
+    const relatedPosts = blogPosts
+        .filter((p) => p.slug !== post.slug && (p.category === post.category || (p.tags && p.tags.some(t => postTags.includes(t)))))
+        .slice(0, 3)
+
     const jsonLd = generateSchema(post)
 
     return (
@@ -198,6 +203,38 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                 </Link>
                             </div>
                         </div>
+                        
+                        {/* Dynamic Related Articles Topic Cluster */}
+                        {relatedPosts.length > 0 && (
+                            <div className="mt-12 border-t border-gray-100 pt-10">
+                                <h3 className="text-2xl font-bold text-gray-900 mb-6 font-serif">Related Articles</h3>
+                                <div className="grid sm:grid-cols-3 gap-6">
+                                    {relatedPosts.map((rp) => (
+                                        <Link 
+                                            key={rp.slug} 
+                                            href={`/blog/${rp.slug}`}
+                                            className="group block"
+                                        >
+                                            <div className="relative aspect-video w-full rounded-xl overflow-hidden mb-3 border border-gray-100 shadow-xs">
+                                                <Image
+                                                    src={rp.image || "/placeholder-blog.jpg"}
+                                                    alt={rp.title}
+                                                    fill
+                                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                    sizes="(max-width: 640px) 100vw, 250px"
+                                                />
+                                            </div>
+                                            <span className="text-xs font-bold text-green-700 uppercase tracking-wider block mb-1">
+                                                {rp.category}
+                                            </span>
+                                            <h4 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-green-700 transition-colors line-clamp-2">
+                                                {rp.title}
+                                            </h4>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </article>
 
                     {/* Mobile/Bottom CTA */}
