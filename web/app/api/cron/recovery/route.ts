@@ -55,16 +55,16 @@ export async function GET(request: Request) {
       const patientName = lead.full_name.split(" ")[0]
 
       if (nextEmailNumber === 2) {
-        emailSubject = "Just checking in"
+        emailSubject = "Following up on your consultation request"
         nextScheduleHours = DELAY_CONFIG.email_3
-        emailText = `Hello ${patientName},\n\nI'm just checking in to see if you had any questions about scheduling your video consultation.\n\nI understand that consulting a doctor online can sometimes feel unfamiliar. We will be using a secure video call to discuss your symptoms in detail, so you can share your health history comfortably.\n\nIf you would still like to move forward, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nIf now isn't the right time, or if you have any questions about the consultation, please feel free to reply directly to this email.\n\nWarm regards,\nDr. Arti Singh`
+        emailText = `Hello ${patientName},\n\nI wanted to follow up on the consultation request you recently submitted.\n\nIf you were waiting because you had questions before booking, simply reply to this email. I'll make sure my team helps you.\n\nIf you would still like to move forward, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
-            <p>I'm just checking in to see if you had any questions about scheduling your video consultation.</p>
+            <p>I wanted to follow up on the consultation request you recently submitted.</p>
             
-            <p>I understand that consulting a doctor online can sometimes feel unfamiliar. We will be using a secure video call to discuss your symptoms in detail, so you can share your health history comfortably.</p>
+            <p>If you were waiting because you had questions before booking, simply reply to this email. I'll make sure my team helps you.</p>
             
             <p>If you would still like to move forward, you can complete your booking and pick a time slot here:</p>
             
@@ -72,21 +72,24 @@ export async function GET(request: Request) {
               <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Complete Your Booking</a>
             </div>
             
-            <p>If now isn't the right time, or if you have any questions about the consultation setup, please feel free to reply directly to this email.</p>
+            <p style="margin-top: 24px; margin-bottom: 0;">Warm regards,</p>
+            <p style="font-weight: bold; color: #047857; margin: 4px 0 0 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="font-size: 12px; color: #6b7280; margin: 2px 0 0 0;">Ayureva Clinic</p>
             
-            <p style="margin-top: 24px;">Warm regards,</p>
-            <p style="font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 28px; border-top: 1px solid #f3f4f6; padding-top: 12px; font-style: italic;">
+              If this email reached you by mistake or you've already completed your booking, you can simply ignore this message.
+            </p>
           </div>
         `
       } else if (nextEmailNumber === 3) {
-        emailSubject = "What happens during the consultation?"
+        emailSubject = "What to expect during your consultation"
         nextScheduleHours = DELAY_CONFIG.email_4
-        emailText = `Hello ${patientName},\n\nMany patients ask me what they need to prepare before their first online consultation. Here are a few details that might help:\n\n- Do I need reports? If you have recent blood tests or ultrasound scans (especially for PCOS or thyroid), please have them ready. If not, don't worry—we can still start.\n- How long does it take? We will spend 45 to 60 minutes discussing your current concerns, diet, and sleep patterns.\n- What happens next? After the call, I will email you a personalized treatment plan and lifestyle recommendations within 24 hours.\n\nIf you would like to proceed with your booking, you can choose a convenient slot here:\n${checkoutUrl}\n\nIf you have any questions, you can reply directly to this email.\n\nWarm regards,\nDr. Arti Singh`
+        emailText = `Hello ${patientName},\n\nMany patients ask me what they need to prepare before their first online consultation. You don't need to prepare anything special. Even if you don't have previous reports, we can still begin with your medical history and symptoms.\n\n- Do I need reports? If you have recent blood tests or ultrasound scans (especially for PCOS or thyroid), please have them ready. If not, don't worry—we can still start.\n- How long does it take? We will spend 45 to 60 minutes discussing your current concerns, diet, and sleep patterns.\n- What happens next? After the call, I will email you a personalized treatment plan and lifestyle recommendations within 24 hours.\n\nIf you would like to proceed with your booking, you can choose a convenient slot here:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
-            <p>Many patients ask me what they need to prepare before their first online consultation. Here are a few details that might help you get ready:</p>
+            <p>Many patients ask me what they need to prepare before their first online consultation. You don't need to prepare anything special. Even if you don't have previous reports, we can still begin with your medical history and symptoms.</p>
             
             <ul style="padding-left: 20px; margin: 16px 0; space-y-3;">
               <li style="margin-bottom: 8px;"><strong>Do I need reports?</strong> If you have recent blood tests or ultrasound scans (especially for PCOS or thyroid), please have them ready. If not, don't worry—we can still start.</li>
@@ -100,25 +103,28 @@ export async function GET(request: Request) {
               <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Choose a Consultation Slot</a>
             </div>
             
-            <p>If you have any questions, you can reply directly to this email.</p>
+            <p>If you have any questions before booking, simply reply to this email. My team and I will be happy to help.</p>
             
-            <p style="margin-top: 24px;">Warm regards,</p>
-            <p style="font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="margin-top: 24px; margin-bottom: 0;">Warm regards,</p>
+            <p style="font-weight: bold; color: #047857; margin: 4px 0 0 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="font-size: 12px; color: #6b7280; margin: 2px 0 0 0;">Ayureva Clinic</p>
+            
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 28px; border-top: 1px solid #f3f4f6; padding-top: 12px; font-style: italic;">
+              If this email reached you by mistake or you've already completed your booking, you can simply ignore this message.
+            </p>
           </div>
         `
       } else if (nextEmailNumber === 4) {
-        emailSubject = "A note about your symptoms"
+        emailSubject = "My approach to your consultation"
         nextScheduleHours = DELAY_CONFIG.email_5
-        emailText = `Hello ${patientName},\n\nI wanted to share a brief note about how I approach treatment.\n\nIn my years of clinical practice helping women manage PCOS, thyroid, and pelvic health concerns, I have found that chronic conditions respond best when we look at the whole body, rather than just masking individual symptoms.\n\nMy focus is on restoring your natural balance through customized herbal protocols and simple, practical changes to your daily diet and lifestyle.\n\nIf you would like to discuss your symptoms and start a guided treatment plan, you can complete your booking using the link below:\n${checkoutUrl}\n\nI look forward to helping you.\n\nWarm regards,\nDr. Arti Singh`
+        emailText = `Hello ${patientName},\n\nI wanted to share a brief note about how I approach treatment.\n\nDuring every consultation, I take time to understand your symptoms, medical history, lifestyle, and previous treatments before recommending an Ayurvedic treatment plan. My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.\n\nIf you would like to discuss your symptoms and start a guided treatment plan, you can complete your booking using the link below:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
             <p>I wanted to share a brief note about how I approach treatment.</p>
             
-            <p>In my years of clinical practice helping women manage PCOS, thyroid, and pelvic health concerns, I have found that chronic conditions respond best when we look at the whole body, rather than just masking individual symptoms.</p>
-            
-            <p>My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.</p>
+            <p>During every consultation, I take time to understand your symptoms, medical history, lifestyle, and previous treatments before recommending an Ayurvedic treatment plan. My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.</p>
             
             <p>If you would like to discuss your symptoms and start a guided treatment plan, you can complete your booking using the link below:</p>
             
@@ -126,23 +132,28 @@ export async function GET(request: Request) {
               <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Schedule Your Consultation</a>
             </div>
             
-            <p>I look forward to helping you.</p>
+            <p>If you have any questions before booking, simply reply to this email. My team and I will be happy to help.</p>
             
-            <p style="margin-top: 24px;">Warm regards,</p>
-            <p style="font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="margin-top: 24px; margin-bottom: 0;">Warm regards,</p>
+            <p style="font-weight: bold; color: #047857; margin: 4px 0 0 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="font-size: 12px; color: #6b7280; margin: 2px 0 0 0;">Ayureva Clinic</p>
+            
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 28px; border-top: 1px solid #f3f4f6; padding-top: 12px; font-style: italic;">
+              If this email reached you by mistake or you've already completed your booking, you can simply ignore this message.
+            </p>
           </div>
         `
       } else if (nextEmailNumber === 5) {
         emailSubject = "I'll close your consultation request for now"
         nextScheduleHours = 0 // final step
-        emailText = `Hello ${patientName},\n\nI didn't want your consultation request to go unanswered, but I understand that life gets busy and now might not be the right time for you.\n\nI will close this pending request for now to keep my scheduling calendar organized for active patients.\n\nIf you would still like to consult with me in the future, you can complete your booking anytime using this link:\n${checkoutUrl}\n\nOtherwise, whenever you are ready, you can simply reply directly to this email to get in touch.\n\nWishing you good health,\nDr. Arti Singh`
+        emailText = `Hello ${patientName},\n\nI didn't want your consultation request to go unanswered, but I understand that life gets busy and now might not be the right time for you.\n\nI'll close this request for now, but you're always welcome to book a consultation whenever you're ready. You can complete your booking anytime using this link:\n${checkoutUrl}\n\nOtherwise, whenever you are ready, you can simply reply directly to this email to get in touch.\n\nWishing you good health,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
             <p>I didn't want your consultation request to go unanswered, but I understand that life gets busy and now might not be the right time for you.</p>
             
-            <p>I will close this pending request for now to keep my scheduling calendar organized for active patients.</p>
+            <p>I'll close this request for now, but you're always welcome to book a consultation whenever you're ready.</p>
             
             <p>If you would still like to consult with me in the future, you can complete your booking anytime using this link:</p>
             
@@ -152,8 +163,13 @@ export async function GET(request: Request) {
             
             <p>Otherwise, whenever you are ready, you can simply reply directly to this email to get in touch.</p>
             
-            <p style="margin-top: 24px;">Wishing you good health,</p>
-            <p style="font-weight: bold; color: #7c2d12; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="margin-top: 24px; margin-bottom: 0;">Wishing you good health,</p>
+            <p style="font-weight: bold; color: #7c2d12; margin: 4px 0 0 0;">Dr. Arti Singh (B.A.M.S.)</p>
+            <p style="font-size: 12px; color: #7f1d1d; margin: 2px 0 0 0;">Ayureva Clinic</p>
+            
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 28px; border-top: 1px solid #f3f4f6; padding-top: 12px; font-style: italic;">
+              If this email reached you by mistake or you've already completed your booking, you can simply ignore this message.
+            </p>
           </div>
         `
       }

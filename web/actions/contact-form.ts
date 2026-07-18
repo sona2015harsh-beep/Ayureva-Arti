@@ -155,27 +155,31 @@ Please contact the patient to schedule their consultation.`
           from: "Dr. Arti - Ayureva <dr.arti@ayureva.in>",
           to: [email],
           reply_to: "dr.arti@ayureva.in",
-          subject: "I received your consultation request",
-          text: `Hello ${firstName},\n\nI wanted to let you know that I have received your request regarding your health concern.\n\nTo help you, we need to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate, I will prepare a personalized Ayurvedic treatment plan and digital prescription afterwards.\n\nIf you would still like to consult with me, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nIf you have any questions or would like to share your previous reports beforehand, you can simply reply to this email.\n\nWarm regards,\nDr. Arti Singh\nAyureva Clinic`,
+          subject: "Thank you for your consultation request",
+          text: `Hello ${firstName},\n\nThank you for taking the time to share your health concern with me. I know reaching out for help is often the hardest first step, and I'm glad you did.\n\nThe next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.\n\nIf you would still like to consult with me, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
               <p>Hello ${firstName},</p>
               
-              <p>I wanted to let you know that I have received your request regarding your health concern.</p>
+              <p>Thank you for taking the time to share your health concern with me. I know reaching out for help is often the hardest first step, and I'm glad you did.</p>
               
-              <p>To help you, we need to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.</p>
+              <p>The next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.</p>
               
               <p>If you would still like to consult with me, you can complete your booking and pick a time slot using the link below:</p>
               
               <div style="text-align: center; margin: 24px 0;">
-                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Complete Your Consultation Booking</a>
+                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Complete Your Booking</a>
               </div>
               
-              <p>If you have any questions or would like to share your previous medical reports with me beforehand, you can simply reply directly to this email.</p>
+              <p>If you have any questions before booking, simply reply to this email. My team and I will be happy to help.</p>
               
-              <p style="margin-top: 24px;">Warm regards,</p>
-              <p style="font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
-              <p style="font-size: 12px; color: #6b7280; margin: 4px 0 0 0;">Ayurvedic Physician | Reg No. 4200</p>
+              <p style="margin-top: 24px; margin-bottom: 0;">Warm regards,</p>
+              <p style="font-weight: bold; color: #047857; margin: 4px 0 0 0;">Dr. Arti Singh (B.A.M.S.)</p>
+              <p style="font-size: 12px; color: #6b7280; margin: 2px 0 0 0;">Ayureva Clinic</p>
+              
+              <p style="font-size: 11px; color: #9ca3af; margin-top: 28px; border-top: 1px solid #f3f4f6; padding-top: 12px; font-style: italic;">
+                If this email reached you by mistake or you've already completed your booking, you can simply ignore this message.
+              </p>
             </div>
           `,
         }),
