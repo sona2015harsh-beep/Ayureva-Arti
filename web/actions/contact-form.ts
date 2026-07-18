@@ -154,6 +154,7 @@ Please contact the patient to schedule their consultation.`
         body: JSON.stringify({
           from: "Ayureva <onboarding@resend.dev>",
           to: [email],
+          reply_to: "drartisingh1102@gmail.com",
           subject: "Your Consultation Request Has Been Received",
           text: `Hello ${firstName},\n\nWe have received your consultation request. Please complete your secure payment to book your session: ${checkoutUrl}\n\nWhat is included:\n- 45-60 min private video consultation\n- Customized treatment plan\n- Digital prescription\n\nConsultation Fee: ₹999 INR (Domestic) / $49 USD (International)\n\nThank you,\nDr. Arti Singh\nAyureva Clinic`,
           html: `

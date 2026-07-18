@@ -90,6 +90,7 @@ export async function GET(request: Request) {
           body: JSON.stringify({
             from: "Ayureva <onboarding@resend.dev>",
             to: [patientEmail],
+            reply_to: "drartisingh1102@gmail.com",
             subject: emailSubject,
             text: `Hello ${patientName},\n\nWe hope you are feeling better. Please take 1 minute to review your consultation on Google: ${reviewUrl}\n\nThank you,\nDr. Arti Singh\nAyureva Clinic`,
             html: emailHtml,

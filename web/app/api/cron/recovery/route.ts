@@ -174,6 +174,7 @@ export async function GET(request: Request) {
             body: JSON.stringify({
               from: "Ayureva <onboarding@resend.dev>",
               to: [lead.email],
+              reply_to: "drartisingh1102@gmail.com",
               subject: emailSubject,
               text: emailText,
               html: emailHtml,
