@@ -35,13 +35,27 @@ interface TimelineEvent {
 interface Lead {
     id: string;
     full_name: string;
+    email: string | null;
     phone_number: string;
     message: string;
-    status: 'new' | 'contacted' | 'scheduled' | 'completed' | 'rx_sent' | 'converted' | 'follow_up' | 'closed';
-    source: 'google' | 'instagram' | 'facebook' | 'referral' | 'direct' | 'whatsapp';
+    status: 'new' | 'contacted' | 'scheduled' | 'completed' | 'rx_sent' | 'converted' | 'follow_up' | 'closed' | 'paid' | 'booked' | 'pending';
+    source: string;
     notes: string | null;
     patient_id: string | null;
     timeline: TimelineEvent[] | null;
+    recovery_status: string | null;
+    recovery_emails_sent: number | null;
+    last_recovery_email_sent: string | null;
+    first_recovery_email_sent_at: string | null;
+    last_recovery_email_sent_at: string | null;
+    next_recovery_scheduled_at: string | null;
+    recovered_by_email: boolean | null;
+    payment_completed_at: string | null;
+    payment_amount: number | null;
+    payment_currency: string | null;
+    utm_source: string | null;
+    utm_medium: string | null;
+    utm_campaign: string | null;
     created_at: string;
 }
 
@@ -210,8 +224,17 @@ export default function LeadsPage() {
     // Calculate Dashboard Analytics
     const totalLeads = leads.length;
     const newLeads = leads.filter(l => l.status === 'new').length;
-    const convertedLeads = leads.filter(l => l.status === 'converted' || l.status === 'rx_sent').length;
+    const convertedLeads = leads.filter(l => ['converted', 'booked', 'paid'].includes(l.status)).length;
     const conversionRate = totalLeads > 0 ? Math.round((convertedLeads / totalLeads) * 100) : 0;
+
+    // Calculate Lead Recovery Analytics
+    const pendingPayments = leads.filter(l => l.status === 'pending' || (l.status === 'new' && l.recovery_status === 'active')).length;
+    const recoveryEmailsSent = leads.reduce((sum, l) => sum + (l.recovery_emails_sent || 0), 0);
+    const recoveredPatientsCount = leads.filter(l => ['converted', 'booked', 'paid'].includes(l.status) && l.recovered_by_email === true).length;
+    const recoveredRevenue = leads.filter(l => ['converted', 'booked', 'paid'].includes(l.status) && l.recovered_by_email === true).reduce((sum, l) => sum + (l.payment_amount || 0), 0);
+    const recoveryRate = pendingPayments + recoveredPatientsCount > 0
+        ? Math.round((recoveredPatientsCount / (pendingPayments + recoveredPatientsCount)) * 100)
+        : 0;
 
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -252,6 +275,40 @@ export default function LeadsPage() {
                     <CardContent className="p-5 flex flex-col justify-between">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Conversion Rate</span>
                         <span className="text-3xl font-black text-indigo-700 mt-2">{conversionRate}%</span>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Lead Recovery Statistics Row */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                <Card className="bg-white border-green-100 shadow-2xs">
+                    <CardContent className="p-4 flex flex-col justify-between">
+                        <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider">Pending Checkout</span>
+                        <span className="text-2xl font-black text-amber-700 mt-2">{pendingPayments}</span>
+                    </CardContent>
+                </Card>
+                <Card className="bg-white border-green-100 shadow-2xs">
+                    <CardContent className="p-4 flex flex-col justify-between">
+                        <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider">Recovery Emails Sent</span>
+                        <span className="text-2xl font-black text-blue-700 mt-2">{recoveryEmailsSent}</span>
+                    </CardContent>
+                </Card>
+                <Card className="bg-white border-green-100 shadow-2xs">
+                    <CardContent className="p-4 flex flex-col justify-between">
+                        <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider">Recovered Patients</span>
+                        <span className="text-2xl font-black text-emerald-700 mt-2">{recoveredPatientsCount}</span>
+                    </CardContent>
+                </Card>
+                <Card className="bg-white border-green-100 shadow-2xs">
+                    <CardContent className="p-4 flex flex-col justify-between">
+                        <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider">Recovery Rate</span>
+                        <span className="text-2xl font-black text-indigo-705 mt-2">{recoveryRate}%</span>
+                    </CardContent>
+                </Card>
+                <Card className="bg-white border-green-100 shadow-2xs">
+                    <CardContent className="p-4 flex flex-col justify-between">
+                        <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider">Recovered Revenue</span>
+                        <span className="text-2xl font-black text-green-950 mt-2">₹{recoveredRevenue.toLocaleString("en-IN")}</span>
                     </CardContent>
                 </Card>
             </div>
@@ -456,6 +513,89 @@ export default function LeadsPage() {
                                     placeholder="e.g. Sent pricing catalog on WhatsApp"
                                     className="text-xs h-9"
                                 />
+                            </div>
+
+                            {/* Recovery Engine Actions */}
+                            <div className="border-t pt-4 space-y-3">
+                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Lead Recovery Sequence</h4>
+                                
+                                <div className="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border space-y-1.5">
+                                  <div><strong>Email status:</strong> <Badge className="text-2xs uppercase px-1.5 py-0.5 bg-gray-100 text-gray-800">{selectedLead.recovery_status || "not_started"}</Badge></div>
+                                  <div><strong>Emails sent:</strong> {selectedLead.recovery_emails_sent || 0} ({selectedLead.last_recovery_email_sent || "none"})</div>
+                                  {selectedLead.next_recovery_scheduled_at && (
+                                    <div><strong>Next Schedule:</strong> {format(new Date(selectedLead.next_recovery_scheduled_at), 'MMM d, h:mm a')}</div>
+                                  )}
+                                  {selectedLead.utm_source && (
+                                    <div className="mt-1 bg-white p-1.5 border rounded-sm font-mono text-[10px] text-gray-500">
+                                      utm: {selectedLead.utm_source} / {selectedLead.utm_medium} / {selectedLead.utm_campaign}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="flex gap-2">
+                                    <Button
+                                        onClick={async () => {
+                                          if (!confirm("Are you sure you want to cancel the recovery sequence for this patient?")) return;
+                                          try {
+                                            const res = await fetch('/api/leads', {
+                                              method: 'PATCH',
+                                              headers: { 'Content-Type': 'application/json' },
+                                              body: JSON.stringify({ id: selectedLead.id, recovery_status: 'cancelled' }),
+                                            });
+                                            if (res.ok) {
+                                              toast({ title: "Sequence Cancelled", description: "Lead recovery automation cancelled." });
+                                              fetchLeads();
+                                              setSelectedLead({ ...selectedLead, recovery_status: 'cancelled' });
+                                            }
+                                          } catch (e) {
+                                            console.error(e);
+                                          }
+                                        }}
+                                        variant="outline"
+                                        className="flex-1 text-red-650 hover:text-red-750 border-red-200 h-8 text-2xs"
+                                        disabled={selectedLead.recovery_status !== 'active'}
+                                    >
+                                        Cancel Emails
+                                    </Button>
+                                    
+                                    <Button
+                                        onClick={async () => {
+                                          if (!confirm("Are you sure you want to mark this lead as paid?")) return;
+                                          try {
+                                            const res = await fetch('/api/leads', {
+                                              method: 'PATCH',
+                                              headers: { 'Content-Type': 'application/json' },
+                                              body: JSON.stringify({
+                                                id: selectedLead.id,
+                                                status: 'paid',
+                                                recovery_status: 'completed',
+                                                payment_completed_at: new Date().toISOString(),
+                                                payment_amount: 500,
+                                                payment_currency: 'INR'
+                                              }),
+                                            });
+                                            if (res.ok) {
+                                              toast({ title: "Marked Paid", description: "Lead marked paid successfully." });
+                                              fetchLeads();
+                                              setSelectedLead({
+                                                ...selectedLead,
+                                                status: 'paid',
+                                                recovery_status: 'completed',
+                                                payment_completed_at: new Date().toISOString(),
+                                                payment_amount: 500,
+                                                payment_currency: 'INR'
+                                              });
+                                            }
+                                          } catch (e) {
+                                            console.error(e);
+                                          }
+                                        }}
+                                        className="flex-1 bg-green-700 hover:bg-green-800 text-white h-8 text-2xs"
+                                        disabled={['paid', 'booked', 'converted'].includes(selectedLead.status)}
+                                    >
+                                        Mark Paid (₹500)
+                                    </Button>
+                                </div>
                             </div>
 
                             <Button onClick={handleSaveCrmDetails} disabled={savingCrm} className="w-full bg-green-700 hover:bg-green-800 text-white font-bold h-9 text-xs">

@@ -13,6 +13,7 @@ import { useAnalytics } from "@/lib/analytics"
 import { useGeoPricing } from "@/hooks/use-geo-pricing"
 import { createConsultationRazorpayOrder, verifyConsultationPayment } from "@/actions/booking-payment"
 import { createConsultationPaypalOrder, verifyAndCapturePaypalPayment } from "@/actions/paypal-payment"
+import { useFunnelAnalytics } from "@/hooks/use-funnel-analytics"
 
 export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,6 +36,8 @@ export default function ContactSection() {
 
   const { trackFormSubmission, trackEmailClick } = useAnalytics()
   const { pricing, isLoading } = useGeoPricing()
+  const { logEvent } = useFunnelAnalytics()
+  const [formStartedLogged, setFormStartedLogged] = useState(false)
   const CALENDLY_BASE_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/dr-arti-ayureva/1-to-1-private-consultation"
 
   const [paypalLoaded, setPaypalLoaded] = useState(false)
@@ -221,6 +224,14 @@ export default function ContactSection() {
     const fullName = `${firstName} ${lastName}`
     const fullPhone = `${countryCode} ${phone}`
 
+    // Append client UTM parameters
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search)
+      formData.append("utm_source", searchParams.get("utm_source") || "")
+      formData.append("utm_medium", searchParams.get("utm_medium") || "")
+      formData.append("utm_campaign", searchParams.get("utm_campaign") || "")
+    }
+
     // Try the main email service first, then fallback
     let result = await submitContactForm(formData)
 
@@ -237,9 +248,11 @@ export default function ContactSection() {
     trackFormSubmission("contact_form", result.success)
 
     if (result.success && result.leadId) {
+      logEvent("form_submitted", { leadId: result.leadId })
       setLeadId(result.leadId)
       setClientInfo({ fullName, email, phone: fullPhone })
       setPaymentStep("paying")
+      logEvent("payment_initiated", { leadId: result.leadId })
       
       // Reset form fields
       const form = document.getElementById("contact-form") as HTMLFormElement
@@ -356,7 +369,12 @@ export default function ContactSection() {
               <CardContent>
                 {paymentStep === "form" && (
                   <>
-                    <form id="contact-form" action={handleSubmit} className="space-y-4">
+                    <form id="contact-form" action={handleSubmit} className="space-y-4" onFocus={() => {
+                      if (!formStartedLogged) {
+                        logEvent("form_started");
+                        setFormStartedLogged(true);
+                      }
+                    }}>
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <label className="text-sm font-medium text-gray-700 mb-2 block">First Name *</label>

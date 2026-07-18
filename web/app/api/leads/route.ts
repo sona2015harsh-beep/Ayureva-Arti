@@ -94,7 +94,7 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status, notes, source, timelineEvent } = body;
+    const { id, status, notes, source, timelineEvent, recovery_status, payment_amount, payment_currency, payment_completed_at, recovered_by_email } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -117,6 +117,11 @@ export async function PATCH(request: Request) {
       if (notes !== undefined) dataToUpdate.notes = notes;
       if (source !== undefined) dataToUpdate.source = source;
       if (status !== undefined) dataToUpdate.status = status;
+      if (recovery_status !== undefined) dataToUpdate.recovery_status = recovery_status;
+      if (payment_amount !== undefined) dataToUpdate.payment_amount = payment_amount;
+      if (payment_currency !== undefined) dataToUpdate.payment_currency = payment_currency;
+      if (payment_completed_at !== undefined) dataToUpdate.payment_completed_at = payment_completed_at ? new Date(payment_completed_at) : null;
+      if (recovered_by_email !== undefined) dataToUpdate.recovered_by_email = recovered_by_email;
 
       // Handle status transition timeline logging
       if (status && status !== existingLead.status) {

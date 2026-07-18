@@ -49,9 +49,13 @@ export async function submitContactFormFallback(formData: FormData) {
     const newLead = await prisma.leads.create({
       data: {
         full_name: `${firstName} ${lastName}`,
+        email: email,
         phone_number: fullPhoneNumber,
         message: healthConcern,
         status: "pending",
+        recovery_status: "active",
+        recovery_emails_sent: 0, // 0 since email confirmation failed to send
+        next_recovery_scheduled_at: new Date(Date.now() + 2 * 60 * 60 * 1000), // Check in 2 hours since fallback was triggered
       },
     })
 

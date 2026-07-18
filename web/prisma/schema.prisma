@@ -297,16 +297,30 @@ model device_tokens {
 // ============================================
 
 model leads {
-  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  full_name        String
-  phone_number     String
-  message          String?
-  status           String?  @default("new") // new, contacted, scheduled, completed, rx_sent, converted, follow_up, closed
-  source           String?  @default("google") // google, instagram, facebook, referral, direct, whatsapp
-  notes            String?
-  patient_id       String?  @db.Uuid
-  created_at       DateTime @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  full_name                     String
+  email                         String?
+  phone_number                  String
+  message                       String?
+  status                        String?  @default("new") // new, contacted, scheduled, completed, rx_sent, converted, follow_up, closed
+  source                        String?  @default("google") // google, instagram, facebook, referral, direct, whatsapp
+  notes                         String?
+  patient_id                    String?  @db.Uuid
+  recovery_status               String?  @default("not_started") // not_started, active, completed, cancelled
+  recovery_emails_sent          Int?     @default(0)
+  last_recovery_email_sent      String?
+  first_recovery_email_sent_at  DateTime?
+  last_recovery_email_sent_at   DateTime?
+  next_recovery_scheduled_at    DateTime?
+  recovered_by_email            Boolean? @default(false)
+  payment_completed_at          DateTime?
+  payment_amount                Float?
+  payment_currency              String?
+  utm_source                    String?
+  utm_medium                    String?
+  utm_campaign                  String?
+  created_at                    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 
   // Relations
   timeline           lead_timeline[]
@@ -455,5 +469,14 @@ model appointments {
   patient            patients? @relation(fields: [patient_id], references: [id], onDelete: Cascade)
   lead               leads?    @relation(fields: [lead_id], references: [id], onDelete: Cascade)
   doctor             doctors   @relation(fields: [doctor_id], references: [id], onDelete: Cascade)
+}
+
+model funnel_events {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  session_id  String
+  event_type  String   // landing_page_view, cta_click, form_started, form_submitted, payment_initiated, payment_completed, booking_completed
+  page_path   String
+  metadata    Json?
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
 }
 

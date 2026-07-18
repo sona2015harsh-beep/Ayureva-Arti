@@ -102,14 +102,97 @@ export async function verifyConsultationPayment(
     }
 
     if (isValid) {
+      // Fetch verified payment details from Razorpay
+      let paidAmount = 500
+      let paidCurrency = "INR"
+      try {
+        const razorpay = getRazorpayInstance()
+        if (!razorpayOrderId.startsWith("order_mock_")) {
+          const paymentDetails = await razorpay.payments.fetch(razorpayPaymentId)
+          paidAmount = Number(paymentDetails.amount) / 100
+          paidCurrency = paymentDetails.currency
+        }
+      } catch (err) {
+        console.error("Failed to fetch Razorpay details:", err)
+      }
+
+      // Fetch existing lead to check recovery sequence
+      const lead = await prisma.leads.findUnique({
+        where: { id: leadId },
+      })
+
+      const isRecovered = lead && lead.recovery_emails_sent && lead.recovery_emails_sent > 0
+
       // Update the lead status in the database to paid
       await prisma.leads.update({
         where: { id: leadId },
         data: {
           status: "paid",
+          recovery_status: "completed",
+          payment_completed_at: new Date(),
+          payment_amount: paidAmount,
+          payment_currency: paidCurrency,
+          recovered_by_email: isRecovered ? true : false,
           notes: `Paid successfully. Razorpay Order ID: ${razorpayOrderId}, Payment ID: ${razorpayPaymentId}.`,
         },
       })
+
+      // Send doctor notification
+      if (lead) {
+        try {
+          const apiKey = process.env.RESEND_API_KEY
+          if (apiKey) {
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                from: "Ayureva <onboarding@resend.dev>",
+                to: ["drartisingh1102@gmail.com"],
+                subject: `💰 Paid Consultation: ${lead.full_name}`,
+                text: `Hello Dr. Arti,\n\nWe have received a paid consultation booking!\n\nPatient Details:\n- Name: ${lead.full_name}\n- Phone: ${lead.phone_number}\n- Message/Concern: ${lead.message}\n- Amount Paid: ${paidCurrency} ${paidAmount}\n- Lead Source: ${lead.source}\n- Recovered via Email: ${isRecovered ? "Yes" : "No"}\n\nSession scheduling is pending. The patient will pick their slot on Calendly.`,
+                html: `
+                  <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #bbf7d0; border-radius: 12px; background-color: #f0fdf4;">
+                    <h2 style="color: #15803d; margin-top: 0;">💰 Paid Consultation Booking</h2>
+                    <p>A new patient has completed checkout payment and is ready for scheduling.</p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e5e7eb; width: 140px;">Patient Name:</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${lead.full_name}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Phone:</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><a href="tel:${lead.phone_number}">${lead.phone_number}</a></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Amount Paid:</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; color: #15803d; font-weight: bold;">${paidCurrency} ${paidAmount}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Source:</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${lead.source || "Direct"}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Recovered via Email:</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold;">${isRecovered ? "Yes" : "No"}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0; font-weight: bold; vertical-align: top;">Health Concern:</td>
+                        <td style="padding: 8px 0; font-style: italic;">${lead.message || "None provided"}</td>
+                      </tr>
+                    </table>
+                    <p style="font-size: 12px; color: #6b7280;">Please prepare case review before video slot.</p>
+                  </div>
+                `,
+              }),
+            })
+          }
+        } catch (mailError) {
+          console.error("Failed to send doctor notification email:", mailError)
+        }
+      }
 
       return { success: true, message: "Payment verified successfully!" }
     } else {

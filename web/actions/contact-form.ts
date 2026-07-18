@@ -64,13 +64,27 @@ export async function submitContactForm(formData: FormData) {
     const { firstName, lastName, email, countryCode, phone, healthConcern } = validatedFields.data
     const fullPhoneNumber = `${countryCode} ${phone}`
 
+    const utmSource = sanitize(formData.get("utm_source")) || null
+    const utmMedium = sanitize(formData.get("utm_medium")) || null
+    const utmCampaign = sanitize(formData.get("utm_campaign")) || null
+
     // Save lead to database
     const newLead = await prisma.leads.create({
       data: {
         full_name: `${firstName} ${lastName}`,
+        email: email,
         phone_number: fullPhoneNumber,
         message: healthConcern,
         status: "pending",
+        recovery_status: "active",
+        recovery_emails_sent: 1,
+        last_recovery_email_sent: "email_1",
+        first_recovery_email_sent_at: new Date(),
+        last_recovery_email_sent_at: new Date(),
+        next_recovery_scheduled_at: new Date(Date.now() + 24 * 60 * 60 * 1000), // Next email in 24 hours
+        utm_source: utmSource,
+        utm_medium: utmMedium,
+        utm_campaign: utmCampaign,
       },
     })
 
@@ -87,7 +101,7 @@ Submitted: ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
 
 Please contact the patient to schedule their consultation.`
 
-    // Send email using Resend API with the new API key
+    // Send email using Resend API to the doctor
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -127,6 +141,60 @@ Please contact the patient to schedule their consultation.`
         `,
       }),
     })
+
+    // Send Email 1 to patient immediately (Recovery Email 1)
+    const checkoutUrl = `https://www.ayureva.in/pay/${newLead.id}`
+    try {
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Ayureva <onboarding@resend.dev>",
+          to: [email],
+          subject: "Your Consultation Request Has Been Received",
+          text: `Hello ${firstName},\n\nWe have received your consultation request. Please complete your secure payment to book your session: ${checkoutUrl}\n\nWhat is included:\n- 45-60 min private video consultation\n- Customized treatment plan\n- Digital prescription\n\nConsultation Fee: ₹999 INR (Domestic) / $49 USD (International)\n\nThank you,\nDr. Arti Singh\nAyureva Clinic`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
+                <h2 style="color: #047857; margin-top: 12px; font-size: 22px;">Your Consultation Request Received</h2>
+              </div>
+              
+              <p>Dear <strong>${firstName} ${lastName}</strong>,</p>
+              
+              <p>Thank you for requesting an online video consultation with <strong>Dr. Arti Singh (B.A.M.S.)</strong>. We have saved your symptoms profile and health concern details.</p>
+              
+              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
+                <h3 style="color: #15803d; margin-top: 0; font-size: 16px;">What Your Consultation Includes:</h3>
+                <ul style="padding-left: 20px; margin: 0; font-size: 14px; line-height: 1.6;">
+                  <li><strong>45–60 Minute Secure Video Call</strong> with Dr. Arti Singh</li>
+                  <li><strong>Complete Case History</strong> and personalized Dosha diagnostics</li>
+                  <li><strong>Customized Herbal Medicine Formulation</strong></li>
+                  <li><strong>Personalized Diet & Lifestyle Plan</strong></li>
+                  <li><strong>14-day direct WhatsApp follow-up support</strong></li>
+                </ul>
+              </div>
+              
+              <p style="font-size: 14px; color: #4b5563;">To secure your slot and schedule your session, please complete the checkout payment below:</p>
+              
+              <div style="text-align: center; margin: 28px 0;">
+                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none !important;">Complete Your Checkout Payment</a>
+              </div>
+              
+              <div style="font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 28px;">
+                <p><strong>Dr. Arti Singh</strong> is a registered Ayurvedic Physician (Reg No. 4200 Bihar) specializing in PCOS/PCOD reversal, thyroid disorders, and women's pelvic health.</p>
+                <p style="margin-top: 8px; font-style: italic;">If you have any questions, feel free to reply directly to this email.</p>
+              </div>
+            </div>
+          `,
+        }),
+      })
+    } catch (eError) {
+      console.error("Failed to send patient confirmation email:", eError)
+    }
 
     if (!response.ok) {
       const errorText = await response.text()
