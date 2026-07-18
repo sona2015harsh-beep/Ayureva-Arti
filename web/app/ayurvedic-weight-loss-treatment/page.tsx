@@ -137,7 +137,7 @@ export default function WeightLossTreatmentPage() {
               <div className="border border-green-100 rounded-2xl p-6 bg-green-50/30">
                 <h4 className="font-bold text-gray-900 text-sm mb-1">Domestic Consultation</h4>
                 <p className="text-xs text-gray-500 mb-4">For patients residing within India</p>
-                <div className="text-2xl font-bold text-green-950 mb-4">₹999 <span className="text-xs font-normal text-gray-500">/ session</span></div>
+                <div className="text-2xl font-bold text-green-950 mb-4">₹500 <span className="text-xs font-normal text-gray-500">/ session</span></div>
                 <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl" asChild>
                   <Link href="/contact">Book Domestic</Link>
                 </Button>
@@ -214,7 +214,7 @@ export default function WeightLossTreatmentPage() {
               </div>
               <div className="border-t border-gray-100 pt-4 mt-4">
                 <span className="text-2xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Clinic Pricing</span>
-                <div className="text-xl font-bold text-green-950">₹999 / $49 USD</div>
+                <div className="text-xl font-bold text-green-950">₹500 / $49 USD</div>
               </div>
               <Button className="w-full bg-green-750 hover:bg-green-800 text-white font-bold rounded-xl mt-4" asChild>
                 <Link href="/contact">Book Consultation</Link>
