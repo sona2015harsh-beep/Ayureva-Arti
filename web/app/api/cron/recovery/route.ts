@@ -9,6 +9,17 @@ const DELAY_CONFIG = {
   email_5: 72, // Sent 72 hrs after Email 4 (Day 7 total)
 }
 
+function getConcernLabel(message: string | null | undefined): string {
+  if (!message) return "your health concern"
+  const msg = message.toLowerCase()
+  if (msg.includes("pcos") || msg.includes("pcod")) return "your PCOS concern"
+  if (msg.includes("thyroid") || msg.includes("hypothyroid")) return "your thyroid symptoms"
+  if (msg.includes("discharge") || msg.includes("leucorrhea") || msg.includes("white")) return "your white discharge concern"
+  if (msg.includes("weight") || msg.includes("metabolism") || msg.includes("fat")) return "your metabolic health concern"
+  if (msg.includes("period") || msg.includes("bleeding") || msg.includes("menstru")) return "your menstrual health concern"
+  return "your health concern"
+}
+
 export async function GET(request: Request) {
   try {
     // Validate authorization header in production
@@ -53,16 +64,17 @@ export async function GET(request: Request) {
 
       const checkoutUrl = `https://www.ayureva.in/pay/${lead.id}`
       const patientName = lead.full_name.split(" ")[0]
+      const concernLabel = getConcernLabel(lead.message)
 
       if (nextEmailNumber === 2) {
         emailSubject = "Following up on your consultation request"
         nextScheduleHours = DELAY_CONFIG.email_3
-        emailText = `Hello ${patientName},\n\nI wanted to follow up on the consultation request you recently submitted.\n\nIf you were waiting because you had questions before booking, simply reply to this email. I'll make sure my team helps you.\n\nIf you would still like to move forward, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
+        emailText = `Hello ${patientName},\n\nI wanted to follow up on the consultation request you recently submitted regarding ${concernLabel}.\n\nIf you were waiting because you had questions before booking, simply reply to this email. I'll make sure my team helps you.\n\nIf you would still like to move forward, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
-            <p>I wanted to follow up on the consultation request you recently submitted.</p>
+            <p>I wanted to follow up on the consultation request you recently submitted regarding ${concernLabel}.</p>
             
             <p>If you were waiting because you had questions before booking, simply reply to this email. I'll make sure my team helps you.</p>
             
@@ -117,12 +129,12 @@ export async function GET(request: Request) {
       } else if (nextEmailNumber === 4) {
         emailSubject = "My approach to your consultation"
         nextScheduleHours = DELAY_CONFIG.email_5
-        emailText = `Hello ${patientName},\n\nI wanted to share a brief note about how I approach treatment.\n\nDuring every consultation, I take time to understand your symptoms, medical history, lifestyle, and previous treatments before recommending an Ayurvedic treatment plan. My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.\n\nIf you would like to discuss your symptoms and start a guided treatment plan, you can complete your booking using the link below:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
+        emailText = `Hello ${patientName},\n\nI wanted to share a brief note about how I approach treatment for conditions like ${concernLabel}.\n\nDuring every consultation, I take time to understand your symptoms, medical history, lifestyle, and previous treatments before recommending an Ayurvedic treatment plan. My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.\n\nIf you would like to discuss your symptoms and start a guided treatment plan, you can complete your booking using the link below:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
-            <p>I wanted to share a brief note about how I approach treatment.</p>
+            <p>I wanted to share a brief note about how I approach treatment for conditions like ${concernLabel}.</p>
             
             <p>During every consultation, I take time to understand your symptoms, medical history, lifestyle, and previous treatments before recommending an Ayurvedic treatment plan. My focus is on helping you find lasting relief through customized Ayurvedic herbal protocols and simple, practical changes to your daily diet and lifestyle.</p>
             
@@ -146,12 +158,12 @@ export async function GET(request: Request) {
       } else if (nextEmailNumber === 5) {
         emailSubject = "I'll close your consultation request for now"
         nextScheduleHours = 0 // final step
-        emailText = `Hello ${patientName},\n\nI didn't want your consultation request to go unanswered, but I understand that life gets busy and now might not be the right time for you.\n\nI'll close this request for now, but you're always welcome to book a consultation whenever you're ready. You can complete your booking anytime using this link:\n${checkoutUrl}\n\nOtherwise, whenever you are ready, you can simply reply directly to this email to get in touch.\n\nWishing you good health,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
+        emailText = `Hello ${patientName},\n\nI didn't want your consultation request regarding ${concernLabel} to go unanswered, but I understand that life gets busy and now might not be the right time for you.\n\nI'll close this request for now, but you're always welcome to book a consultation whenever you're ready. You can complete your booking anytime using this link:\n${checkoutUrl}\n\nOtherwise, whenever you are ready, you can simply reply directly to this email to get in touch.\n\nWishing you good health,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
             <p>Hello ${patientName},</p>
             
-            <p>I didn't want your consultation request to go unanswered, but I understand that life gets busy and now might not be the right time for you.</p>
+            <p>I didn't want your consultation request regarding ${concernLabel} to go unanswered, but I understand that life gets busy and now might not be the right time for you.</p>
             
             <p>I'll close this request for now, but you're always welcome to book a consultation whenever you're ready.</p>
             

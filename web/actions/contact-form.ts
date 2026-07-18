@@ -22,6 +22,17 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, "&#039;")
 }
 
+function getConcernLabel(message: string | null | undefined): string {
+  if (!message) return "your health concern"
+  const msg = message.toLowerCase()
+  if (msg.includes("pcos") || msg.includes("pcod")) return "your PCOS concern"
+  if (msg.includes("thyroid") || msg.includes("hypothyroid")) return "your thyroid symptoms"
+  if (msg.includes("discharge") || msg.includes("leucorrhea") || msg.includes("white")) return "your white discharge concern"
+  if (msg.includes("weight") || msg.includes("metabolism") || msg.includes("fat")) return "your metabolic health concern"
+  if (msg.includes("period") || msg.includes("bleeding") || msg.includes("menstru")) return "your menstrual health concern"
+  return "your health concern"
+}
+
 export async function submitContactForm(formData: FormData) {
   try {
     // Check if RESEND_API_KEY exists
@@ -62,6 +73,7 @@ export async function submitContactForm(formData: FormData) {
     }
 
     const { firstName, lastName, email, countryCode, phone, healthConcern } = validatedFields.data
+    const concernLabel = getConcernLabel(healthConcern)
     const fullPhoneNumber = `${countryCode} ${phone}`
 
     const utmSource = sanitize(formData.get("utm_source")) || null
@@ -156,20 +168,22 @@ Please contact the patient to schedule their consultation.`
           to: [email],
           reply_to: "dr.arti@ayureva.in",
           subject: "Thank you for your consultation request",
-          text: `Hello ${firstName},\n\nThank you for taking the time to share your health concern with me. I know reaching out for help is often the hardest first step, and I'm glad you did.\n\nThe next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.\n\nIf you would still like to consult with me, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`,
+          text: `Hello ${firstName},\n\nThank you for taking the time to share ${concernLabel} with me. I know reaching out for help is often the hardest first step, and I'm glad you did.\n\nThe next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. The consultation fee is ₹999 for patients in India (or USD $49 for international patients) and includes the video session along with your personalized treatment plan.\n\nIf you would still like to consult with me, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nI look forward to understanding your concerns and discussing the best treatment approach for you. Please note that consultation requests are usually reviewed Monday–Saturday during clinic hours.\n\nIf you have any questions before booking, simply reply to this email. My team and I will be happy to help.\n\nWarm regards,\n\nDr. Arti Singh (B.A.M.S.)\nAyureva Clinic\n\nIf this email reached you by mistake or you've already completed your booking, you can simply ignore this message.`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
               <p>Hello ${firstName},</p>
               
-              <p>Thank you for taking the time to share your health concern with me. I know reaching out for help is often the hardest first step, and I'm glad you did.</p>
+              <p>Thank you for taking the time to share ${concernLabel} with me. I know reaching out for help is often the hardest first step, and I'm glad you did.</p>
               
-              <p>The next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.</p>
+              <p>The next step is to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. The consultation fee is ₹999 for patients in India (or USD $49 for international patients) and includes the video session along with your personalized treatment plan.</p>
               
               <p>If you would still like to consult with me, you can complete your booking and pick a time slot using the link below:</p>
               
               <div style="text-align: center; margin: 24px 0;">
                 <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Complete Your Booking</a>
               </div>
+              
+              <p>I look forward to understanding your concerns and discussing the best treatment approach for you. Please note that consultation requests are usually reviewed Monday–Saturday during clinic hours.</p>
               
               <p>If you have any questions before booking, simply reply to this email. My team and I will be happy to help.</p>
               
