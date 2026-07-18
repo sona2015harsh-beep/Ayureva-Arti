@@ -55,110 +55,110 @@ export async function GET(request: Request) {
       const patientName = lead.full_name.split(" ")[0]
 
       if (nextEmailNumber === 2) {
-        emailSubject = "Complete Your Consultation Booking | Ayureva"
+        emailSubject = "Quick follow-up on your health consultation — Dr. Arti Singh"
         nextScheduleHours = DELAY_CONFIG.email_3
-        emailText = `Hello ${patientName},\n\nThis is a friendly reminder to complete your booking. Choosing your video consultation slot with Dr. Arti Singh can help you address root causes early.\n\nComplete Payment: ${checkoutUrl}\n\nThank you,\nAyureva Clinic`
+        emailText = `Hello ${patientName},\n\nI wanted to check back on your consultation request. In Ayurveda, we say that addressing imbalances early prevents toxins (Ama) from settling deeper into your tissues.\n\nIf you'd still like to get to the root of your health concern, you can secure your video slot here: ${checkoutUrl}\n\nIf you have any questions or are facing payment issues, please reply directly to this email—I read and reply to all my patient emails myself.\n\nWarmly,\nDr. Arti Singh\nAyureva Clinic`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-            <div style="text-align: center; margin-bottom: 24px;">
-              <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
-              <h2 style="color: #047857; margin-top: 12px; font-size: 22px;">Complete Your Consultation Booking</h2>
-            </div>
+            <p>Hello <strong>${patientName}</strong>,</p>
             
-            <p>Dear <strong>${patientName}</strong>,</p>
+            <p>I wanted to follow up with you personally regarding your consultation request. In Ayurveda, we emphasize that addressing metabolic and hormonal imbalances early prevents toxins (Ama) from settling deeper into your tissues and causing chronic symptoms.</p>
             
-            <p>This is a friendly reminder that your request for a video consultation with <strong>Dr. Arti Singh</strong> is still pending checkout.</p>
-            
-            <p style="background-color: #f9fafb; border-left: 4px solid #047857; padding: 12px; font-size: 14px; color: #4b5563; font-style: italic;">
-              "Addressing hormonal and gut imbalances early prevents chronic tissues and adhesions from accumulating."
+            <p style="background-color: #f9fafb; border-left: 4px solid #047857; padding: 12px; font-size: 13px; color: #4b5563; font-style: italic;">
+              "Early correction of Apana Vata flow prevents cellular blockages from setting in."
             </p>
             
-            <p style="font-size: 14px;">Complete your checkout payment below to pick your date and time slot:</p>
+            <p>If you would still like to work together to address your health concerns, you can secure your consultation slot and complete checkout here:</p>
             
-            <div style="text-align: center; margin: 28px 0;">
-              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">Proceed to Secure Payment</a>
+            <div style="text-align: center; margin: 24px 0;">
+              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">Secure My Consultation Slot</a>
             </div>
             
-            <p style="font-size: 12px; color: #6b7280; text-align: center;">Need assistance? Just reply directly to this email.</p>
+            <p>If you have any questions or are experiencing payment issues, please feel free to reply directly to this email. I read and respond to my patient emails myself.</p>
+            
+            <p style="font-size: 13px; margin-top: 24px;">Warmly,</p>
+            <p style="font-size: 14px; font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
           </div>
         `
       } else if (nextEmailNumber === 3) {
-        emailSubject = "Frequently Asked Questions About Your Consultation"
+        emailSubject = "How my online Ayurvedic consultations work"
         nextScheduleHours = DELAY_CONFIG.email_4
-        emailText = `Hello ${patientName},\n\nWe answered some common questions regarding your consultation:\n- Video Call: 45-60 mins\n- Prescription: Digital PDF\n- Follow-up: 14 days WhatsApp support\n\nComplete Payment: ${checkoutUrl}`
+        emailText = `Hello ${patientName},\n\nPatients often ask me how a virtual Ayurvedic consultation works. Here are the details:\n1. Detailed Consultation: 45-60 minutes video call\n2. Personalized Protocol: Custom herbal formulations and region-specific diet plan\n3. Continuous Support: 14-day WhatsApp follow-up support\n\nYou can book your session and secure your slot here: ${checkoutUrl}\n\nWarmly,\nDr. Arti Singh`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-            <div style="text-align: center; margin-bottom: 24px;">
-              <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
-              <h2 style="color: #047857; margin-top: 12px; font-size: 22px;">How Your Consultation Works</h2>
-            </div>
+            <p>Hello <strong>${patientName}</strong>,</p>
             
-            <p>Dear <strong>${patientName}</strong>,</p>
+            <p>Patients often ask me how an online Ayurvedic consultation works and what they can expect. I wanted to share a few details to make you feel comfortable:</p>
             
-            <p>We want to ensure you feel comfortable. Here are the answers to frequently asked questions:</p>
-            
-            <div style="margin: 20px 0; font-size: 14px; space-y-4;">
+            <div style="margin: 20px 0; font-size: 13px; line-height: 1.6;">
               <div style="margin-bottom: 16px;">
-                <strong style="color: #047857;">Q. How long is the video consultation?</strong>
-                <p style="margin: 4px 0 0 0; color: #4b5563;">It lasts 45 to 60 minutes, giving Dr. Arti plenty of time to analyze your specific concerns.</p>
+                <strong style="color: #047857; font-size: 14px;">1. Detailed Video Consultation (45-60 Mins)</strong>
+                <p style="margin: 4px 0 0 0; color: #4b5563;">We spend time discussing your specific concerns, dietary habits, stress levels, and digestion. This helps me identify the root-cause imbalances.</p>
               </div>
               <div style="margin-bottom: 16px;">
-                <strong style="color: #047857;">Q. Will I receive a prescription?</strong>
-                <p style="margin: 4px 0 0 0; color: #4b5563;">Yes. You will receive an official digital prescription containing details on classical herbal formulations, dosage, and dietary guidelines.</p>
+                <strong style="color: #047857; font-size: 14px;">2. Personalized Ayurvedic Protocol</strong>
+                <p style="margin: 4px 0 0 0; color: #4b5563;">You will receive an official digital prescription with classical herbal formulations (such as Kanchanar Guggulu or Chandraprabha Vati, if appropriate) and a tailored diet plan.</p>
               </div>
               <div style="margin-bottom: 16px;">
-                <strong style="color: #047857;">Q. How do I join the video session?</strong>
-                <p style="margin: 4px 0 0 0; color: #4b5563;">After checkout, you pick a slot on Calendly. A Google Meet invite link is automatically sent to your inbox.</p>
+                <strong style="color: #047857; font-size: 14px;">3. Direct Support</strong>
+                <p style="margin: 4px 0 0 0; color: #4b5563;">To ensure you implement the plan successfully, you will have 14 days of direct WhatsApp follow-up support with my care team.</p>
               </div>
             </div>
             
-            <div style="text-align: center; margin: 28px 0;">
-              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">Proceed to Secure Checkout</a>
+            <div style="text-align: center; margin: 24px 0;">
+              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block;">Proceed to Secure Checkout</a>
             </div>
+            
+            <p>I look forward to helping you start your healing journey.</p>
+            
+            <p style="font-size: 13px; margin-top: 24px;">Warmly,</p>
+            <p style="font-size: 14px; font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
           </div>
         `
       } else if (nextEmailNumber === 4) {
-        emailSubject = "Your Consultation Request Is Still Pending | Ayureva"
+        emailSubject = "A quick note on root-cause healing — Dr. Arti Singh"
         nextScheduleHours = DELAY_CONFIG.email_5
-        emailText = `Hello ${patientName},\n\nWe understand that busy schedules can get in the way. Reclaim your health by booking your session with Dr. Arti.\n\nComplete Payment: ${checkoutUrl}`
+        emailText = `Hello ${patientName},\n\nMany of my patients struggle with chronic issues (like PCOS, thyroid, or gut disorders) for years, relying on temporary fixes. In my practice, I focus on correcting cell-level digestion (Dhatu Agni) to restore natural hormonal balance.\n\nIf you are ready to start your root-cause healing journey, you can secure your video slot here: ${checkoutUrl}\n\nWarmly,\nDr. Arti`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-            <div style="text-align: center; margin-bottom: 24px;">
-              <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
-              <h2 style="color: #047857; margin-top: 12px; font-size: 22px;">Reclaim Your Well-being</h2>
+            <p>Hello <strong>${patientName}</strong>,</p>
+            
+            <p>Many patients come to me after struggling with symptoms like irregular cycles, sudden weight gain, or thyroid sluggishness for years. Often, they have only been managing the symptoms, rather than looking at why they began.</p>
+            
+            <p>In my clinical practice, I focus on identifying the root blockages in your channels (*Srotas*) and correcting your cellular metabolic fire (*Dhatu Agni*). When your body digests nutrients and hormones correctly, healing happens naturally and sustainably.</p>
+            
+            <p>Most patients experience a significant shift in their bloating, energy levels, and cycles within 3 to 4 weeks of starting their custom protocol.</p>
+            
+            <div style="text-align: center; margin: 24px 0;">
+              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block;">Start Root-Cause Healing</a>
             </div>
             
-            <p>Dear <strong>${patientName}</strong>,</p>
+            <p>If you're ready to address the root cause, you can secure your slot on my calendar today.</p>
             
-            <p>We wanted to reach out because your wellness request is still pending checkout. Dr. Arti Singh specializes in helping women target root-causes of hormonal, weight, and thyroid imbalances naturally.</p>
-            
-            <p style="font-size: 14px;">Our treatment programs focus on correcting your Agni (digestive fire) and regulating nervous system triggers so you can restore deep cellular health.</p>
-            
-            <div style="text-align: center; margin: 28px 0;">
-              <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">Secure Consultation Booking</a>
-            </div>
+            <p style="font-size: 13px; margin-top: 24px;">Warmly,</p>
+            <p style="font-size: 14px; font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
           </div>
         `
       } else if (nextEmailNumber === 5) {
-        emailSubject = "Final Reminder – Complete Your Consultation Request"
+        emailSubject = "Closing your consultation request tomorrow — Dr. Arti Singh"
         nextScheduleHours = 0 // final step
-        emailText = `Hello ${patientName},\n\nThis is our final reminder. Please complete payment if you would like to secure your slot: ${checkoutUrl}`
+        emailText = `Hello ${patientName},\n\nThis is my final follow-up regarding your consultation request. I will be closing this pending request tomorrow to keep my calendar open for active patients.\n\nIf you would still like to work together, you can complete checkout here: ${checkoutUrl}\n\nWishing you good health,\nDr. Arti Singh`
         emailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-            <div style="text-align: center; margin-bottom: 24px;">
-              <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
-              <h2 style="color: #b91c1c; margin-top: 12px; font-size: 22px;">Final Reminder</h2>
+            <p>Hello <strong>${patientName}</strong>,</p>
+            
+            <p>This is my final follow-up regarding your consultation request. Because I limit my weekly slots to ensure dedicated, high-quality care for each active patient, I will be closing this pending request tomorrow if checkout is not completed.</p>
+            
+            <p>If you are still interested in working together to address your health concerns naturally, you can secure your booking today:</p>
+            
+            <div style="text-align: center; margin: 24px 0;">
+              <a href="${checkoutUrl}" style="background-color: #b91c1c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">Complete Consultation Booking</a>
             </div>
             
-            <p>Dear <strong>${patientName}</strong>,</p>
+            <p>If you need more time, have questions, or would like to speak to our clinic support before completing payment, please just reply directly to this email and let me know.</p>
             
-            <p>This is our final follow-up regarding your consultation request. We will close this request automatically in 24 hours if checkout is not completed.</p>
-            
-            <p style="font-size: 14px;">If you have any questions or would like to speak to our care team directly before paying, please reply directly to this email and we will help you.</p>
-            
-            <div style="text-align: center; margin: 28px 0;">
-              <a href="${checkoutUrl}" style="background-color: #b91c1c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">Secure Your Consultation Slot</a>
-            </div>
+            <p style="font-size: 13px; margin-top: 24px;">Wishing you good health,</p>
+            <p style="font-size: 14px; font-weight: bold; color: #b91c1c; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
           </div>
         `
       }

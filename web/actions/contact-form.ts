@@ -155,40 +155,38 @@ Please contact the patient to schedule their consultation.`
           from: "Dr. Arti - Ayureva <dr.arti@ayureva.in>",
           to: [email],
           reply_to: "dr.arti@ayureva.in",
-          subject: "Your Consultation Request Has Been Received",
-          text: `Hello ${firstName},\n\nWe have received your consultation request. Please complete your secure payment to book your session: ${checkoutUrl}\n\nWhat is included:\n- 45-60 min private video consultation\n- Customized treatment plan\n- Digital prescription\n\nConsultation Fee: ₹999 INR (Domestic) / $49 USD (International)\n\nThank you,\nDr. Arti Singh\nAyureva Clinic`,
+          subject: "Regarding your health consultation request — Dr. Arti Singh",
+          text: `Hello ${firstName},\n\nThank you for reaching out. I have received your request regarding your health concern.\n\nTo help you address this concern from its root cause, we need to schedule a 45–60 minute video call to analyze your Dosha profile, digestion (Agni), and lifestyle.\n\nYou can secure your consultation slot and complete payment here: ${checkoutUrl}\n\nOnce done, you will be redirected to choose a convenient slot on my calendar.\n\nWarm regards,\nDr. Arti Singh\nAyureva Clinic`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-              <div style="text-align: center; margin-bottom: 24px;">
-                <img src="https://www.ayureva.in/icon.png" alt="Ayureva Logo" style="height: 48px;" />
-                <h2 style="color: #047857; margin-top: 12px; font-size: 22px;">Your Consultation Request Received</h2>
-              </div>
+              <p>Hello <strong>${firstName}</strong>,</p>
               
-              <p>Dear <strong>${firstName} ${lastName}</strong>,</p>
+              <p>Thank you for reaching out to me. I have received your request regarding your health concern.</p>
               
-              <p>Thank you for requesting an online video consultation with <strong>Dr. Arti Singh (B.A.M.S.)</strong>. We have saved your symptoms profile and health concern details.</p>
+              <p>To help you address and reverse this concern from its root cause, we need to schedule a private 45–60 minute video consultation. During our call, I will analyze your specific symptoms, evaluate your digestive fire (Agni), map your Dosha imbalances, and prescribe a personalized herbal and dietary protocol.</p>
               
               <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
-                <h3 style="color: #15803d; margin-top: 0; font-size: 16px;">What Your Consultation Includes:</h3>
-                <ul style="padding-left: 20px; margin: 0; font-size: 14px; line-height: 1.6;">
-                  <li><strong>45–60 Minute Secure Video Call</strong> with Dr. Arti Singh</li>
-                  <li><strong>Complete Case History</strong> and personalized Dosha diagnostics</li>
-                  <li><strong>Customized Herbal Medicine Formulation</strong></li>
-                  <li><strong>Personalized Diet & Lifestyle Plan</strong></li>
-                  <li><strong>14-day direct WhatsApp follow-up support</strong></li>
+                <h3 style="color: #15803d; margin-top: 0; font-size: 15px;">What We Will Cover in Your Consultation:</h3>
+                <ul style="padding-left: 20px; margin: 0; font-size: 13px; line-height: 1.6; color: #374151;">
+                  <li><strong>45–60 Minute Video Call</strong> (Private & Secure)</li>
+                  <li><strong>Complete Case History</strong> & Dosha Diagnostic mapping</li>
+                  <li><strong>Customized Herbal Prescriptions</strong> formulated for your body</li>
+                  <li><strong>Region-Specific Diet & Lifestyle Plan</strong></li>
+                  <li><strong>14-day direct WhatsApp follow-up support</strong> for guidelines</li>
                 </ul>
               </div>
               
-              <p style="font-size: 14px; color: #4b5563;">To secure your slot and schedule your session, please complete the checkout payment below:</p>
+              <p style="font-size: 13px; color: #4b5563;">You can secure your consultation slot and complete payment below:</p>
               
-              <div style="text-align: center; margin: 28px 0;">
-                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none !important;">Complete Your Checkout Payment</a>
+              <div style="text-align: center; margin: 24px 0;">
+                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">Secure Your Consultation Slot</a>
               </div>
               
-              <div style="font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 28px;">
-                <p><strong>Dr. Arti Singh</strong> is a registered Ayurvedic Physician (Reg No. 4200 Bihar) specializing in PCOS/PCOD reversal, thyroid disorders, and women's pelvic health.</p>
-                <p style="margin-top: 8px; font-style: italic;">If you have any questions, feel free to reply directly to this email.</p>
-              </div>
+              <p style="font-size: 13px; color: #4b5563;">Once your checkout is complete, you will be redirected to choose a convenient day and time slot on my calendar.</p>
+              
+              <p style="font-size: 13px; margin-top: 24px;">Warm regards,</p>
+              <p style="font-size: 14px; font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+              <p style="font-size: 12px; color: #6b7280; margin: 4px 0 0 0;">Ayurvedic Physician | Reg No. 4200</p>
             </div>
           `,
         }),
