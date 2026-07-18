@@ -155,37 +155,26 @@ Please contact the patient to schedule their consultation.`
           from: "Dr. Arti - Ayureva <dr.arti@ayureva.in>",
           to: [email],
           reply_to: "dr.arti@ayureva.in",
-          subject: "Regarding your health consultation request — Dr. Arti Singh",
-          text: `Hello ${firstName},\n\nThank you for reaching out. I have received your request regarding your health concern.\n\nTo help you address this concern from its root cause, we need to schedule a 45–60 minute video call to analyze your Dosha profile, digestion (Agni), and lifestyle.\n\nYou can secure your consultation slot and complete payment here: ${checkoutUrl}\n\nOnce done, you will be redirected to choose a convenient slot on my calendar.\n\nWarm regards,\nDr. Arti Singh\nAyureva Clinic`,
+          subject: "I received your consultation request",
+          text: `Hello ${firstName},\n\nI wanted to let you know that I have received your request regarding your health concern.\n\nTo help you, we need to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate, I will prepare a personalized Ayurvedic treatment plan and digital prescription afterwards.\n\nIf you would still like to consult with me, you can complete your booking and pick a time slot using the link below:\n${checkoutUrl}\n\nIf you have any questions or would like to share your previous reports beforehand, you can simply reply to this email.\n\nWarm regards,\nDr. Arti Singh\nAyureva Clinic`,
           html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937;">
-              <p>Hello <strong>${firstName}</strong>,</p>
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; color: #1f2937; line-height: 1.5; font-size: 14px;">
+              <p>Hello ${firstName},</p>
               
-              <p>Thank you for reaching out to me. I have received your request regarding your health concern.</p>
+              <p>I wanted to let you know that I have received your request regarding your health concern.</p>
               
-              <p>To help you address and reverse this concern from its root cause, we need to schedule a private 45–60 minute video consultation. During our call, I will analyze your specific symptoms, evaluate your digestive fire (Agni), map your Dosha imbalances, and prescribe a personalized herbal and dietary protocol.</p>
+              <p>To help you, we need to schedule a 45–60 minute video call so we can discuss your symptoms in detail and decide the most appropriate treatment approach for your condition. If appropriate after the consultation, I will prepare a personalized Ayurvedic treatment plan and digital prescription.</p>
               
-              <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
-                <h3 style="color: #15803d; margin-top: 0; font-size: 15px;">What We Will Cover in Your Consultation:</h3>
-                <ul style="padding-left: 20px; margin: 0; font-size: 13px; line-height: 1.6; color: #374151;">
-                  <li><strong>45–60 Minute Video Call</strong> (Private & Secure)</li>
-                  <li><strong>Complete Case History</strong> & Dosha Diagnostic mapping</li>
-                  <li><strong>Customized Herbal Prescriptions</strong> formulated for your body</li>
-                  <li><strong>Region-Specific Diet & Lifestyle Plan</strong></li>
-                  <li><strong>14-day direct WhatsApp follow-up support</strong> for guidelines</li>
-                </ul>
-              </div>
-              
-              <p style="font-size: 13px; color: #4b5563;">You can secure your consultation slot and complete payment below:</p>
+              <p>If you would still like to consult with me, you can complete your booking and pick a time slot using the link below:</p>
               
               <div style="text-align: center; margin: 24px 0;">
-                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">Secure Your Consultation Slot</a>
+                <a href="${checkoutUrl}" style="background-color: #047857; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; display: inline-block;">Complete Your Consultation Booking</a>
               </div>
               
-              <p style="font-size: 13px; color: #4b5563;">Once your checkout is complete, you will be redirected to choose a convenient day and time slot on my calendar.</p>
+              <p>If you have any questions or would like to share your previous medical reports with me beforehand, you can simply reply directly to this email.</p>
               
-              <p style="font-size: 13px; margin-top: 24px;">Warm regards,</p>
-              <p style="font-size: 14px; font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
+              <p style="margin-top: 24px;">Warm regards,</p>
+              <p style="font-weight: bold; color: #047857; margin: 0;">Dr. Arti Singh (B.A.M.S.)</p>
               <p style="font-size: 12px; color: #6b7280; margin: 4px 0 0 0;">Ayurvedic Physician | Reg No. 4200</p>
             </div>
           `,
