@@ -14,7 +14,10 @@ export function generateSchema(post: BlogPost) {
             "@type": "Physician",
             "name": "Dr. Arti Singh",
             "jobTitle": "BAMS (Ayurvedic Physician)",
-            "url": "https://www.ayureva.in/about"
+            "url": "https://www.ayureva.in/doctor/dr-arti-singh",
+            "sameAs": [
+                "https://www.linkedin.com/in/dr-arti-singh-bams"
+            ]
         },
         "publisher": {
             "@type": "Organization",
@@ -31,8 +34,13 @@ export function generateSchema(post: BlogPost) {
         },
         "specialty": "Ayurveda",
         "reviewedBy": {
-            "@type": "Person",
-            "name": "Dr. Arti Singh"
+            "@type": "Physician",
+            "name": "Dr. Arti Singh",
+            "jobTitle": "BAMS (Ayurvedic Physician)",
+            "url": "https://www.ayureva.in/doctor/dr-arti-singh",
+            "sameAs": [
+                "https://www.linkedin.com/in/dr-arti-singh-bams"
+            ]
         }
     }
 
@@ -72,7 +80,10 @@ export function generateSchema(post: BlogPost) {
         "author": {
             "@type": "Person",
             "name": "Dr. Arti Singh (BAMS)",
-            "url": "https://www.ayureva.in/about"
+            "url": "https://www.ayureva.in/doctor/dr-arti-singh",
+            "sameAs": [
+                "https://www.linkedin.com/in/dr-arti-singh-bams"
+            ]
         },
         "publisher": {
             "@type": "Organization",

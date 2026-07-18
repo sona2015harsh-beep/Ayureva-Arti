@@ -23,16 +23,16 @@ export const KEYWORD_DICT: Record<string, string> = {
   "hormonal imbalance recovery": "/blog/ayurvedic-management-pcos-guide",
   "infertility treatment": "/blog/ayurvedic-infertility-treatment-egg-quality",
   "improve egg quality": "/blog/ayurvedic-infertility-treatment-egg-quality",
-  "endometriosis treatment": "/blog/endometriosis-ayurvedic-treatment-chocolate-cysts",
+  "endometriosis treatment": "/ayurvedic-endometriosis-treatment",
   "thyroid treatment": "/blog/hypothyroidism-ayurvedic-treatment-diet",
   "UTI treatment": "/blog/recurrent-uti-ayurvedic-treatment-home-remedies",
   "recurrent UTI remedies": "/blog/recurrent-uti-ayurvedic-treatment-home-remedies",
-  "heavy period bleeding": "/blog/heavy-period-bleeding-ayurvedic-treatment",
+  "heavy period bleeding": "/ayurvedic-heavy-period-treatment",
   "PCOS reversal guide": "/blog/ayurvedic-management-pcos-guide",
   "Panchakarma detox": "/blog/seasonal-detox-ritucharya-immunity",
   "Shatavari benefits": "/blog/ayurvedic-infertility-treatment-egg-quality",
-  "Ashoka tree benefits": "/blog/heavy-period-bleeding-ayurvedic-treatment",
-  "Kanchanar Guggulu PCOD": "/blog/endometriosis-ayurvedic-treatment-chocolate-cysts",
+  "Ashoka tree benefits": "/ayurvedic-heavy-period-treatment",
+  "Kanchanar Guggulu PCOD": "/ayurvedic-endometriosis-treatment",
   "insulin resistance PCOS": "/blog/pcod-vs-pcos-ayurvedic-difference",
   "weight loss tips": "/blog/ayurvedic-weight-loss-tips-agni",
   "anxiety treatment": "/blog/anxiety-ayurvedic-treatment-vata-mind",
@@ -71,7 +71,12 @@ export const KEYWORD_DICT: Record<string, string> = {
   "hot flashes relief": "/blog/menopause-ayurvedic-treatment-hot-flashes",
   "psoriasis treatment": "/blog/psoriasis-ayurvedic-treatment-kitibha",
   "Kitibha care": "/blog/psoriasis-ayurvedic-treatment-kitibha",
-  "constipation remedies": "/blog/severe-constipation-ayurvedic-remedies"
+  "constipation remedies": "/blog/severe-constipation-ayurvedic-remedies",
+  "bloating relief": "/ayurvedic-bloating-gas-treatment",
+  "gas relief": "/ayurvedic-bloating-gas-treatment",
+  "bloating treatment": "/ayurvedic-bloating-gas-treatment",
+  "gas medicine": "/ayurvedic-bloating-gas-treatment",
+  "gas and bloating": "/ayurvedic-bloating-gas-treatment"
 };
 
 export function injectInternalLinks(htmlContent: string): string {

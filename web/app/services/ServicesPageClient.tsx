@@ -60,235 +60,305 @@ export default function ServicesPageClient() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors">
-                  <Heart className="w-6 h-6 text-pink-600" />
-                </div>
-                <CardTitle className="text-xl">PCOS & PCOD Ayurvedic Treatment</CardTitle>
-                <CardDescription>
-                  Best natural Ayurvedic treatment for PCOS/PCOD. Restore hormonal balance and improve fertility without
-                  side effects.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Natural hormonal balance restoration
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Insulin resistance management
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Weight management support
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Natural fertility enhancement
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors">
+                    <Heart className="w-6 h-6 text-pink-600" />
+                  </div>
+                  <CardTitle className="text-xl">PCOS & PCOD Ayurvedic Treatment</CardTitle>
+                  <CardDescription>
+                    Best natural Ayurvedic treatment for PCOS/PCOD. Restore hormonal balance and improve fertility without
+                    side effects.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Natural hormonal balance restoration
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Insulin resistance management
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Weight management support
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Natural fertility enhancement
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/pcod-ayurvedic-treatment-online">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
-                  <Calendar className="w-6 h-6 text-purple-600" />
-                </div>
-                <CardTitle className="text-xl">Menstrual Disorders Treatment</CardTitle>
-                <CardDescription>
-                  Expert Ayurvedic treatment for irregular periods, heavy bleeding, painful menstruation, and all
-                  menstrual cycle disorders.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Menstrual cycle regulation therapy
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Dysmenorrhea (period pain) treatment
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    PMS & PMDD natural management
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Amenorrhea treatment
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
+                    <Calendar className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-xl">Menstrual Disorders Treatment</CardTitle>
+                  <CardDescription>
+                    Expert Ayurvedic treatment for irregular periods, heavy bleeding, painful menstruation, and all
+                    menstrual cycle disorders.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Menstrual cycle regulation therapy
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Dysmenorrhea (period pain) treatment
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      PMS & PMDD natural management
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Amenorrhea treatment
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/ayurvedic-heavy-period-treatment">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-rose-200 transition-colors">
-                  <Baby className="w-6 h-6 text-rose-600" />
-                </div>
-                <CardTitle className="text-xl">Natural Fertility & Conception Treatment</CardTitle>
-                <CardDescription>
-                  Ayurvedic fertility enhancement and preconception care for natural pregnancy planning and reproductive
-                  health.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Natural fertility optimization
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Ovulation support therapy
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Preconception counseling
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Reproductive health assessment
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-rose-200 transition-colors">
+                    <Baby className="w-6 h-6 text-rose-600" />
+                  </div>
+                  <CardTitle className="text-xl">Natural Fertility Treatment</CardTitle>
+                  <CardDescription>
+                    Ayurvedic fertility enhancement and preconception care for natural pregnancy planning and reproductive
+                    health.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Natural fertility optimization
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Ovulation support therapy
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Preconception counseling
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Reproductive health assessment
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/blog/ayurvedic-infertility-treatment-egg-quality">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
-                  <Flower2 className="w-6 h-6 text-orange-600" />
-                </div>
-                <CardTitle className="text-xl">Menopause Management</CardTitle>
-                <CardDescription>
-                  Natural Ayurvedic support for menopausal transition and hormone replacement alternatives for women's
-                  health.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Hot flush natural relief
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Mood stabilization therapy
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Bone health support
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Sleep quality improvement
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
+                    <Flower2 className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <CardTitle className="text-xl">Menopause Management</CardTitle>
+                  <CardDescription>
+                    Natural Ayurvedic support for menopausal transition and hormone replacement alternatives for women's
+                    health.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Hot flush natural relief
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Mood stabilization therapy
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Bone health support
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Sleep quality improvement
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/blog/menopause-ayurvedic-treatment-hot-flashes">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-200 transition-colors">
-                  <Activity className="w-6 h-6 text-red-600" />
-                </div>
-                <CardTitle className="text-xl">Endometriosis & Fibroids Treatment</CardTitle>
-                <CardDescription>
-                  Ayurvedic management of endometriosis, uterine fibroids, and related pelvic conditions with natural
-                  healing.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Natural pain management
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Inflammation reduction therapy
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Hormonal regulation
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Quality of life improvement
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-200 transition-colors">
+                    <Activity className="w-6 h-6 text-red-600" />
+                  </div>
+                  <CardTitle className="text-xl">Endometriosis & Cysts Treatment</CardTitle>
+                  <CardDescription>
+                    Ayurvedic management of endometriosis, uterine fibroids, and related pelvic conditions with natural
+                    healing.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Natural pain management
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Inflammation reduction therapy
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Hormonal regulation
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Quality of life improvement
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/ayurvedic-endometriosis-treatment">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-teal-200 transition-colors">
-                  <Shield className="w-6 h-6 text-teal-600" />
-                </div>
-                <CardTitle className="text-xl">Thyroid Disorders Ayurvedic Treatment</CardTitle>
-                <CardDescription>
-                  Natural management of hypothyroidism, hyperthyroidism, and thyroid-related health issues affecting
-                  women.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Thyroid function optimization
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Metabolism regulation
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Energy level improvement
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Weight management support
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-teal-200 transition-colors">
+                    <Shield className="w-6 h-6 text-teal-600" />
+                  </div>
+                  <CardTitle className="text-xl">Thyroid Disorders Treatment</CardTitle>
+                  <CardDescription>
+                    Natural management of hypothyroidism, hyperthyroidism, and thyroid-related health issues affecting
+                    women.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Thyroid function optimization
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Metabolism regulation
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Energy level improvement
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Weight management support
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/blog/hypothyroidism-ayurvedic-treatment-diet">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
 
-            <Card className="border-2 hover:border-green-200 transition-colors group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-yellow-200 transition-colors">
-                  <Shield className="w-6 h-6 text-yellow-600" />
-                </div>
-                <CardTitle className="text-xl">UTI & Urinary Health Treatment</CardTitle>
-                <CardDescription>
-                  Natural Ayurvedic treatment for urinary tract infections, recurrent UTI, and comprehensive urinary
-                  health support for women.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Recurrent UTI prevention
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Natural infection treatment
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Urinary system strengthening
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Bladder health improvement
-                  </li>
-                </ul>
-              </CardContent>
+            <Card className="border-2 hover:border-green-200 transition-colors group flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-yellow-200 transition-colors">
+                    <Shield className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <CardTitle className="text-xl">UTI & Urinary Health Treatment</CardTitle>
+                  <CardDescription>
+                    Natural Ayurvedic treatment for urinary tract infections, recurrent UTI, and comprehensive urinary
+                    health support for women.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Recurrent UTI prevention
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Natural infection treatment
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Urinary system strengthening
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                      Bladder health improvement
+                    </li>
+                  </ul>
+                </CardContent>
+              </div>
+              <div className="p-6 pt-0 flex gap-2">
+                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                  <Link href="/blog/recurrent-uti-ayurvedic-treatment-home-remedies">Learn More</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                  <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
+                </Button>
+              </div>
             </Card>
           </div>
         </div>

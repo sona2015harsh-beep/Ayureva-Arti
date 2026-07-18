@@ -80,7 +80,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.6,
         },
-
+        {
+            url: `${baseUrl}/doctor/dr-arti-singh`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/download`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}/ayurvedic-bloating-gas-treatment`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ayurvedic-heavy-period-treatment`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ayurvedic-endometriosis-treatment`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
     ]
 
     // 2. Dynamic Blog Routes
