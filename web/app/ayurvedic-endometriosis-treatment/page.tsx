@@ -79,9 +79,60 @@ export default function EndometriosisTreatmentPage() {
             </p>
           </div>
 
+          {/* Symptoms & Red Flags */}
+          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-xs">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-serif">Symptoms & When to Seek Medical Care</h2>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-gray-900 text-sm mb-2 text-green-800">Common Symptoms We Manage</h4>
+                <ul className="space-y-2 text-xs text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Severe menstrual cramps (dysmenorrhea)
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Chronic pelvic pain between periods or during intercourse
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Painful bowel movements or urination during flow
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-red-800 text-sm mb-2">⚠️ Red Flag Warning Signs</h4>
+                <p className="text-xs text-gray-500 mb-2">Consult a doctor immediately if you experience:</p>
+                <ul className="space-y-2 text-xs text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Sudden, severe pelvic pain accompanied by fever
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Inability to pass urine or complete bowel motions
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Heavy period bleeding accompanied by dizziness/fainting
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* Pricing & Transparency */}
           <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-xs">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 font-serif">Transparent Care Options</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-serif">Transparent Care Options</h2>
+            <p className="text-xs text-gray-500 mb-6">Every online consultation with Dr. Arti Singh includes:</p>
+            <ul className="grid sm:grid-cols-2 gap-3 text-xs text-gray-600 mb-8 bg-green-50/20 border border-green-50 rounded-2xl p-6">
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> 30-45 Minute Secure Video Call
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Complete Case History & Dosha Analysis
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Customized Herbal Medicine Formulation
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Personalized Region-Specific Diet & Lifestyle Plan
+              </li>
+            </ul>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="border border-green-100 rounded-2xl p-6 bg-green-50/30">
                 <h4 className="font-bold text-gray-900 text-sm mb-1">Domestic Consultation</h4>

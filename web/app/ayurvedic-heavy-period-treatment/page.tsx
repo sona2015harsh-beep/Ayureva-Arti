@@ -79,9 +79,60 @@ export default function HeavyPeriodsTreatmentPage() {
             </p>
           </div>
 
+          {/* Symptoms & Red Flags */}
+          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-xs">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-serif">Symptoms & When to Seek Medical Care</h2>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-gray-900 text-sm mb-2 text-green-800">Common Symptoms We Manage</h4>
+                <ul className="space-y-2 text-xs text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Soaking through one or more pads/tampons per hour
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Passing blood clots larger than a quarter
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">✓</span> Menstrual bleeding lasting longer than 7 consecutive days
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-red-800 text-sm mb-2">⚠️ Red Flag Warning Signs</h4>
+                <p className="text-xs text-gray-500 mb-2">Consult a doctor immediately if bleeding is accompanied by:</p>
+                <ul className="space-y-2 text-xs text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Severe dizziness, fainting, or extreme fatigue
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Sudden, sharp pelvic pain
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span> Bleeding during pregnancy or post-menopause
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* Pricing & Transparency */}
           <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-xs">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 font-serif">Transparent Care Options</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-serif">Transparent Care Options</h2>
+            <p className="text-xs text-gray-500 mb-6">Every online consultation with Dr. Arti Singh includes:</p>
+            <ul className="grid sm:grid-cols-2 gap-3 text-xs text-gray-600 mb-8 bg-green-50/20 border border-green-50 rounded-2xl p-6">
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> 30-45 Minute Secure Video Call
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Complete Case History & Dosha Analysis
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Customized Herbal Medicine Formulation
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-600 font-bold">✓</span> Personalized Region-Specific Diet & Lifestyle Plan
+              </li>
+            </ul>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="border border-green-100 rounded-2xl p-6 bg-green-50/30">
                 <h4 className="font-bold text-gray-900 text-sm mb-1">Domestic Consultation</h4>
