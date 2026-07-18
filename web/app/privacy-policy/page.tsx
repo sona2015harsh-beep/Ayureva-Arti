@@ -186,7 +186,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="space-y-2 text-gray-600">
                   <p><strong>Dr. Arti Singh</strong></p>
-                  <p><strong>Email:</strong> drartisingh1102@gmail.com</p>
+                  <p><strong>Email:</strong> help@ayureva.in</p>
                   <p><strong>Phone:</strong> +91 9709968077</p>
                   <p><strong>Address:</strong> Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016</p>
                 </div>

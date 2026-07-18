@@ -68,7 +68,7 @@ export async function POST(request: Request) {
             name: 'Dr. Arti Kumari',
             registration: 'Reg. No. 4200',
             specialization: 'Ayurvedic Medical Officer',
-            email: 'drartisingh1102@gmail.com',
+            email: 'help@ayureva.in',
           },
         });
       }

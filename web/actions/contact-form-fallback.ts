@@ -75,7 +75,7 @@ export async function submitContactFormFallback(formData: FormData) {
     return {
       success: false,
       message:
-        "Sorry, there was an error processing your request. Please call us directly at +91 9709968077 or email drartisingh1102@gmail.com",
+        "Sorry, there was an error processing your request. Please call us directly at +91 9709968077 or email help@ayureva.in",
     }
   }
 }

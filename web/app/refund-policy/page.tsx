@@ -134,7 +134,7 @@ export default function RefundPolicyPage() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-800">5.1 How to Request a Refund</h3>
                 <ol className="list-decimal list-inside text-gray-600 space-y-1">
-                  <li>Contact us via phone (+91 9709968077) or email (drartisingh1102@gmail.com)</li>
+                  <li>Contact us via phone (+91 9709968077) or email (help@ayureva.in)</li>
                   <li>Provide your booking reference number and reason for refund</li>
                   <li>Submit any supporting documentation if required</li>
                   <li>Await confirmation and processing timeline</li>
@@ -214,7 +214,7 @@ export default function RefundPolicyPage() {
                 </p>
                 <div className="space-y-2 text-gray-600">
                   <p><strong>Dr. Arti Singh</strong></p>
-                  <p><strong>Email:</strong> drartisingh1102@gmail.com</p>
+                  <p><strong>Email:</strong> help@ayureva.in</p>
                   <p><strong>Phone:</strong> +91 9709968077</p>
                   <p><strong>Address:</strong> Road No - 13B, Bahadurpur Gumati, Rajendra Nagar, Patna - 800016</p>
                   <p><strong>Business Hours:</strong> Monday-Friday: 9 AM - 6 PM, Saturday: 9 AM - 2 PM</p>

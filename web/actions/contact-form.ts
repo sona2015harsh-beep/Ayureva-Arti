@@ -110,7 +110,7 @@ Please contact the patient to schedule their consultation.`
       },
       body: JSON.stringify({
         from: "Ayureva <onboarding@resend.dev>",
-        to: ["drartisingh1102@gmail.com"],
+        to: ["help@ayureva.in"],
         subject: `New Consultation Request from ${firstName} ${lastName}`,
         text: emailContent,
         html: `
@@ -152,9 +152,9 @@ Please contact the patient to schedule their consultation.`
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Ayureva <onboarding@resend.dev>",
+          from: "Dr. Arti - Ayureva <dr.arti@ayureva.in>",
           to: [email],
-          reply_to: "drartisingh1102@gmail.com",
+          reply_to: "dr.arti@ayureva.in",
           subject: "Your Consultation Request Has Been Received",
           text: `Hello ${firstName},\n\nWe have received your consultation request. Please complete your secure payment to book your session: ${checkoutUrl}\n\nWhat is included:\n- 45-60 min private video consultation\n- Customized treatment plan\n- Digital prescription\n\nConsultation Fee: ₹999 INR (Domestic) / $49 USD (International)\n\nThank you,\nDr. Arti Singh\nAyureva Clinic`,
           html: `
@@ -221,7 +221,7 @@ Please contact the patient to schedule their consultation.`
 
       return {
         success: false,
-        message: `${errorMessage} Please call us at +91 9709968077 or email drartisingh1102@gmail.com`,
+        message: `${errorMessage} Please call us at +91 9709968077 or email help@ayureva.in`,
       }
     }
 
@@ -237,7 +237,7 @@ Please contact the patient to schedule their consultation.`
 
     return {
       success: false,
-      message: "Sorry, there was an unexpected error. Please call us directly at +91 9709968077 or email drartisingh1102@gmail.com",
+      message: "Sorry, there was an unexpected error. Please call us directly at +91 9709968077 or email help@ayureva.in",
     }
   }
 }

@@ -150,7 +150,7 @@ export async function verifyConsultationPayment(
               },
               body: JSON.stringify({
                 from: "Ayureva <onboarding@resend.dev>",
-                to: ["drartisingh1102@gmail.com"],
+                to: ["help@ayureva.in"],
                 subject: `💰 Paid Consultation: ${lead.full_name}`,
                 text: `Hello Dr. Arti,\n\nWe have received a paid consultation booking!\n\nPatient Details:\n- Name: ${lead.full_name}\n- Phone: ${lead.phone_number}\n- Message/Concern: ${lead.message}\n- Amount Paid: ${paidCurrency} ${paidAmount}\n- Lead Source: ${lead.source}\n- Recovered via Email: ${isRecovered ? "Yes" : "No"}\n\nSession scheduling is pending. The patient will pick their slot on Calendly.`,
                 html: `

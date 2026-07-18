@@ -95,7 +95,7 @@ async function main() {
 
     // 2. Seed Doctor
     const doctor = await prisma.doctors.upsert({
-        where: { email: 'drartisingh1102@gmail.com' },
+        where: { email: 'help@ayureva.in' },
         update: {
             name: 'Dr. Arti Kumari',
             registration: 'Reg. No. 4200',
@@ -106,7 +106,7 @@ async function main() {
             name: 'Dr. Arti Kumari',
             registration: 'Reg. No. 4200',
             specialization: 'Ayurvedic Medical Officer',
-            email: 'drartisingh1102@gmail.com',
+            email: 'help@ayureva.in',
         }
     })
 

@@ -172,9 +172,9 @@ export async function GET(request: Request) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              from: "Ayureva <onboarding@resend.dev>",
+              from: "Dr. Arti - Ayureva <dr.arti@ayureva.in>",
               to: [lead.email],
-              reply_to: "drartisingh1102@gmail.com",
+              reply_to: "dr.arti@ayureva.in",
               subject: emailSubject,
               text: emailText,
               html: emailHtml,

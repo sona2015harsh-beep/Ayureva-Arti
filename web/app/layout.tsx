@@ -109,7 +109,7 @@ const jsonLd = {
   url: "https://www.ayureva.in",
   sameAs: ["https://www.ayureva.in"],
   telephone: "+919709968077",
-  email: "drartisingh1102@gmail.com",
+  email: "help@ayureva.in",
   areaServed: [
     { "@type": "Country", "name": "India" },
     { "@type": "Country", "name": "United States" },

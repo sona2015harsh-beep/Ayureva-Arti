@@ -56,8 +56,8 @@ export default function DisclaimerPage() {
               <p className="text-green-800">
                 If you have any questions about this Disclaimer, please contact us at:
                 <br />
-                <a href="mailto:drartisingh1102@gmail.com" className="font-semibold hover:text-green-600 hover:underline">
-                  drartisingh1102@gmail.com
+                <a href="mailto:help@ayureva.in" className="font-semibold hover:text-green-600 hover:underline">
+                  help@ayureva.in
                 </a>
               </p>
             </div>

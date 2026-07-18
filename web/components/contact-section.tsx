@@ -533,12 +533,12 @@ export default function ContactSection() {
                       <h4 className="font-semibold text-blue-900 mb-2">Prefer Direct Contact?</h4>
                       <div className="space-y-2">
                         <a
-                          href="mailto:drartisingh1102@gmail.com"
+                          href="mailto:help@ayureva.in"
                           className="flex items-center text-blue-700 hover:text-blue-900 transition-colors"
                           onClick={handleEmailClick}
                         >
                           <Mail className="w-4 h-4 mr-2" />
-                          Email: drartisingh1102@gmail.com
+                          Email: help@ayureva.in
                         </a>
                       </div>
                     </div>
@@ -717,11 +717,11 @@ export default function ContactSection() {
                     <h4 className="font-semibold text-gray-900">Email</h4>
                     <p className="text-gray-600">
                       <a
-                        href="mailto:drartisingh1102@gmail.com"
+                        href="mailto:help@ayureva.in"
                         className="hover:text-green-600"
                         onClick={handleEmailClick}
                       >
-                        drartisingh1102@gmail.com
+                        help@ayureva.in
                       </a>
                     </p>
                     <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
