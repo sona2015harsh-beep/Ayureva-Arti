@@ -128,6 +128,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.8,
         },
+        ...["usa", "uk", "canada", "uae"].map((c) => ({
+            url: `${baseUrl}/ayurvedic-thyroid-treatment/${c}`,
+            lastModified: currentDate,
+            changeFrequency: "monthly" as const,
+            priority: 0.8,
+        })),
+        {
+            url: `${baseUrl}/ayurvedic-pcos-treatment`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
+        ...["usa", "uk", "canada", "australia", "uae"].map((c) => ({
+            url: `${baseUrl}/ayurvedic-pcos-treatment/${c}`,
+            lastModified: currentDate,
+            changeFrequency: "monthly" as const,
+            priority: 0.8,
+        })),
+        {
+            url: `${baseUrl}/ayurvedic-ibs-bloating-treatment`,
+            lastModified: currentDate,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
+        ...["usa", "uk", "canada", "australia", "uae"].map((c) => ({
+            url: `${baseUrl}/ayurvedic-ibs-bloating-treatment/${c}`,
+            lastModified: currentDate,
+            changeFrequency: "monthly" as const,
+            priority: 0.8,
+        })),
         {
             url: `${baseUrl}/tools`,
             lastModified: currentDate,
