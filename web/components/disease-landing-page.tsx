@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ShieldCheck, Calendar, CheckCircle2, Star, Clock, FileText, Check } from "lucide-react"
 import { useGeoPricing } from "@/hooks/use-geo-pricing"
+import DiseaseSchema from "./disease-schema"
 
 interface DiseaseLandingPageProps {
   disease: "pcos" | "thyroid" | "ibs"
@@ -152,6 +153,7 @@ export default function DiseaseLandingPage({ disease, country }: DiseaseLandingP
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
+      <DiseaseSchema disease={disease} country={country} />
       {/* Hero Banner */}
       <section className="bg-gradient-to-b from-green-950 to-emerald-900 text-white py-16 lg:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.08),transparent_50%)]" />
