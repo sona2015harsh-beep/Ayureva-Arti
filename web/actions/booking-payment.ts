@@ -194,6 +194,33 @@ export async function verifyConsultationPayment(
         }
       }
 
+      // Try creating a clinic record if patient details match
+      const leadRecord = await prisma.leads.findUnique({
+        where: { id: leadId },
+      })
+
+      if (leadRecord) {
+        // Look up or create Patient record
+        let patient = await prisma.patients.findFirst({
+          where: { phone: leadRecord.phone_number },
+        })
+
+        if (!patient) {
+          patient = await prisma.patients.create({
+            data: {
+              name: leadRecord.full_name,
+              phone: leadRecord.phone_number,
+            },
+          })
+        }
+
+        // Link patient to the lead
+        await prisma.leads.update({
+          where: { id: leadId },
+          data: { patient_id: patient.id },
+        })
+      }
+
       return { success: true, message: "Payment verified successfully!" }
     } else {
       return { success: false, message: "Invalid payment signature verification failed." }
