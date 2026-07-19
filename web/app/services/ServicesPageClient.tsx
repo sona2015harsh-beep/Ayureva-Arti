@@ -94,10 +94,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/pcod-ayurvedic-treatment-online">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -137,10 +137,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/ayurvedic-heavy-period-treatment">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -180,10 +180,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/blog/ayurvedic-infertility-treatment-egg-quality">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -223,10 +223,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/blog/menopause-ayurvedic-treatment-hot-flashes">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -266,10 +266,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/ayurvedic-endometriosis-treatment">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -309,10 +309,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/blog/hypothyroidism-ayurvedic-treatment-diet">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
@@ -352,10 +352,10 @@ export default function ServicesPageClient() {
                 </CardContent>
               </div>
               <div className="p-6 pt-0 flex gap-2">
-                <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
+                <Button className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold text-xs" asChild>
                   <Link href="/blog/recurrent-uti-ayurvedic-treatment-home-remedies">Learn More</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
+                <Button variant="outline" className="flex-1 border-green-700 text-green-700 hover:bg-green-50 font-semibold text-xs" asChild>
                   <Link href="/contact" onClick={handleConsultationClick}>Book Consultation</Link>
                 </Button>
               </div>
