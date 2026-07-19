@@ -62,7 +62,19 @@ export default function DiseaseSchema({ disease, country }: DiseaseSchemaProps) 
 
   // 3. Construct JSON-LD Schema Graph
   const graph: any[] = [
-    // A. Breadcrumb Schema
+    // A. Organization Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": `${baseUrl}/#organization`,
+      "name": "Ayureva",
+      "url": baseUrl,
+      "logo": `${baseUrl}/logo.png`,
+      "sameAs": [
+        "https://www.instagram.com/ayureva.in"
+      ]
+    },
+    // B. Breadcrumb Schema
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -88,7 +100,7 @@ export default function DiseaseSchema({ disease, country }: DiseaseSchemaProps) 
         }] : [])
       ]
     },
-    // B. Physician Schema (Dr. Arti Singh)
+    // C. Physician Schema (Dr. Arti Singh)
     {
       "@context": "https://schema.org",
       "@type": "Physician",
@@ -111,10 +123,13 @@ export default function DiseaseSchema({ disease, country }: DiseaseSchemaProps) 
       "affiliation": {
         "@type": "MedicalClinic",
         "name": "Ayureva Clinic",
-        "url": baseUrl
+        "url": baseUrl,
+        "parentOrganization": {
+          "@id": `${baseUrl}/#organization`
+        }
       }
     },
-    // C. MedicalWebPage Schema
+    // D. MedicalWebPage Schema
     {
       "@context": "https://schema.org",
       "@type": "MedicalWebPage",
@@ -137,7 +152,7 @@ export default function DiseaseSchema({ disease, country }: DiseaseSchemaProps) 
         "audienceType": `${diseaseName} Patients`
       }
     },
-    // D. FAQ Schema
+    // E. FAQ Schema
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
