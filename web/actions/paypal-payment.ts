@@ -130,7 +130,7 @@ export async function verifyAndCapturePaypalPayment(leadId: string, paypalOrderI
 
     if (status === "COMPLETED") {
       // Parse paid amount and currency from capture payload
-      let paidAmount = 49
+      let paidAmount = 99
       let paidCurrency = "USD"
       try {
         if (captureResult.purchase_units?.[0]?.payments?.captures?.[0]) {

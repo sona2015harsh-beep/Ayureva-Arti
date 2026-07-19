@@ -145,7 +145,7 @@ export default function BloatingTreatmentPage() {
               <div className="border border-green-100 rounded-2xl p-6 bg-green-50/30">
                 <h4 className="font-bold text-gray-900 text-sm mb-1">International Consultation</h4>
                 <p className="text-xs text-gray-500 mb-4">For patients residing in US, UK, Canada, UAE</p>
-                <div className="text-2xl font-bold text-green-950 mb-4">$49 USD <span className="text-xs font-normal text-gray-500">/ session</span></div>
+                <div className="text-2xl font-bold text-green-950 mb-4">$99 USD <span className="text-xs font-normal text-gray-500">/ session</span></div>
                 <Button className="w-full bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl" asChild>
                   <Link href="/contact">Book International</Link>
                 </Button>
